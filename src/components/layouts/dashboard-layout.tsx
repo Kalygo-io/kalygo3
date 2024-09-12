@@ -92,7 +92,7 @@ export function DashboardLayout({
                     router.push("/");
                   }}
                 >
-                  <span className="text-white text-lg font-semibold">🔴🔵</span>
+                  <span className="text-white text-lg font-semibold">🌴</span>
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -109,8 +109,8 @@ export function DashboardLayout({
                                 item.href.split("/")[
                                   item.href.split("/").length - 1
                                 ] === current
-                                  ? "bg-blue-700 text-white"
-                                  : "text-blue-200 hover:text-white hover:bg-blue-700",
+                                  ? "bg-purple-700 text-white"
+                                  : "text-white hover:text-white hover:bg-purple-700",
                                 "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
                               )}
                             >
@@ -120,7 +120,7 @@ export function DashboardLayout({
                                     item.href.split("/").length - 1
                                   ] === current
                                     ? "text-white"
-                                    : "text-blue-200 group-hover:text-white",
+                                    : "text-white group-hover:text-white",
                                   "h-6 w-6 shrink-0"
                                 )}
                                 aria-hidden="true"
@@ -140,14 +140,14 @@ export function DashboardLayout({
                           }}
                           className={classNames(
                             "settings" === current
-                              ? "bg-blue-700 text-white"
-                              : "text-blue-200 hover:text-white hover:bg-blue-700",
+                              ? "bg-purple-700 text-white"
+                              : "text-white hover:text-white hover:bg-purple-700",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
                           )}
                         >
                           <Cog6ToothIcon
                             aria-hidden="true"
-                            className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                            className="h-6 w-6 shrink-0 text-white group-hover:text-white"
                           />
                           Settings
                         </span>
@@ -160,13 +160,13 @@ export function DashboardLayout({
                             router.push("/");
                           }}
                           className={classNames(
-                            "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
+                            "cursor-pointer text-white hover:text-white hover:bg-purple-700",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
                           <ArrowLeftStartOnRectangleIcon
                             aria-hidden="true"
-                            className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                            className="h-6 w-6 shrink-0 text-white group-hover:text-white"
                           />
                           Sign out
                         </span>
@@ -189,7 +189,7 @@ export function DashboardLayout({
                 router.push("/");
               }}
             >
-              <span className="text-white text-3xl">🔴🔵</span>
+              <span className="text-white text-3xl">🌴</span>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -203,8 +203,8 @@ export function DashboardLayout({
                             item.href.split("/")[
                               item.href.split("/").length - 1
                             ] === current
-                              ? "bg-blue-700 text-white"
-                              : "text-blue-200 hover:text-white hover:bg-blue-700",
+                              ? "bg-purple-700 text-white"
+                              : "text-white hover:text-white hover:bg-purple-700",
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
@@ -214,7 +214,7 @@ export function DashboardLayout({
                                 item.href.split("/").length - 1
                               ] === current
                                 ? "text-white"
-                                : "text-blue-200 group-hover:text-white",
+                                : "text-white group-hover:text-white",
                               "h-6 w-6 shrink-0"
                             )}
                             aria-hidden="true"
@@ -232,14 +232,14 @@ export function DashboardLayout({
                     href="/dashboard/settings"
                     className={classNames(
                       "settings" === current
-                        ? "bg-blue-700 text-white"
-                        : "text-blue-200 hover:text-white hover:bg-blue-700",
+                        ? "bg-purple-700 text-white"
+                        : "text-white hover:text-white hover:bg-purple-700",
                       "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                     )}
                   >
                     <Cog6ToothIcon
                       aria-hidden="true"
-                      className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                      className="h-6 w-6 shrink-0 text-white group-hover:text-white"
                     />
                     Settings
                   </Link>
@@ -251,13 +251,13 @@ export function DashboardLayout({
                       router.push("/");
                     }}
                     className={classNames(
-                      "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
+                      "cursor-pointer text-white hover:text-white hover:bg-purple-700",
                       "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                     )}
                   >
                     <ArrowLeftStartOnRectangleIcon
                       aria-hidden="true"
-                      className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                      className="h-6 w-6 shrink-0 text-white group-hover:text-white"
                     />
                     Sign out
                   </span>
