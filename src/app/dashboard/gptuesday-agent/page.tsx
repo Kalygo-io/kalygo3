@@ -5,7 +5,6 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 
 export default async function Page() {
   try {
-    // await protectedPageGuard();
     return (
       <DashboardLayout>
         <GptuesdayAgentUiContainer />
