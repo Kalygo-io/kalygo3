@@ -37,6 +37,7 @@ export const MapsContainer = () => {
         // });
 
         // Marker for Hialeah
+        // @ts-ignore
         const hialeahMarker = new google.maps.Marker({
           position: hialeah,
           map: map,
@@ -44,6 +45,7 @@ export const MapsContainer = () => {
         });
 
         // Marker for Opa-locka
+        // @ts-ignore
         const opaLockaMarker = new google.maps.Marker({
           position: opaLocka,
           map: map,
