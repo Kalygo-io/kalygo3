@@ -49,11 +49,11 @@ on:
     branches: ["main"]
 
 env:
-  PROJECT_ID: kalygo-v3 # Google Cloud project id
+  PROJECT_ID: kalygo # Google Cloud project id
   GAR_LOCATION: us-central1 # Artifact Registry location
-  SERVICE_NAME: kalygo3-nextjs-service # Cloud Run service name
+  SERVICE_NAME: kalygo-nextjs-service # Cloud Run service name
   SERVICE_REGION: us-east1 # Cloud Run service region
-  ARTIFACTORY_URL: us-central1-docker.pkg.dev/kalygo-v3/kalygo3-nextjs/kalygo3-nextjs
+  ARTIFACTORY_URL: us-central1-docker.pkg.dev/kalygo/kalygo-nextjs/kalygo-nextjs
 
 jobs:
   deploy:
