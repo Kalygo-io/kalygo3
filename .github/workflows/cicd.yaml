@@ -53,7 +53,7 @@ env:
   GAR_LOCATION: us-central1 # Artifact Registry location
   SERVICE_NAME: kalygo-nextjs-service # Cloud Run service name
   SERVICE_REGION: us-east1 # Cloud Run service region
-  ARTIFACTORY_URL: us-central1-docker.pkg.dev/kalygo/kalygo-nextjs/kalygo-nextjs
+  ARTIFACTORY_URL: us-central1-docker.pkg.dev/kalygo-436411/kalygo-nextjs/kalygo-nextjs
 
 jobs:
   deploy:
