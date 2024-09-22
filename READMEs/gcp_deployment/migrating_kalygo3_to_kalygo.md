@@ -10,3 +10,16 @@ Documenting the process of setting up the Kalygo v3.0 application in the `kalygo
 ## Add CICD permissions
 
 - Attach needed permissions to the S.A. account for enabling CICD
+- `gcloud config configurations activate kalygo`
+- Add the following permission to the newly created Service Account
+  ```
+  1. gcloud projects add-iam-policy-binding kalygo-436411 \
+  --member="serviceAccount:kalygo-sa@kalygo-436411.iam.gserviceaccount.com" \
+  --role="roles/artifactregistry.writer"
+  2. gcloud projects add-iam-policy-binding kalygo-436411 \
+  --member="serviceAccount:kalygo-sa@kalygo-436411.iam.gserviceaccount.com" \
+  --role="roles/run.admin"
+  3. gcloud iam service-accounts add-iam-policy-binding 830723611668-compute@developer.gserviceaccount.com \
+  --member="serviceAccount:kalygo-sa@kalygo-436411.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountUser"
+  ```
