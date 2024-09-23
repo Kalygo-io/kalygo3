@@ -28,3 +28,6 @@ Documenting the process of setting up the Kalygo v3.0 application in the `kalygo
 
 - `gcloud services enable artifactregistry.googleapis.com`
 - `gcloud services enable run.googleapis.com --project=kalygo-436411`
+
+## Connecting the FRONTEND to the BACKEND
+

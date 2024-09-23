@@ -79,21 +79,19 @@ export const WaitListForm = () => {
             <p className="text-sm text-center text-gray-200">
               Visit
               <button
-                onClick={() => window.open("https://swarms.world", "_blank")}
+                onClick={() => window.open("https://kalygo.xyz", "_blank")}
                 className="ml-1 font-medium text-blue-200 hover:text-blue-300 focus:outline-none"
               >
-                swarms.world
+                Kalygo 1.0
               </button>
             </p>
             <p className="text-sm text-center text-gray-200">
               Visit
               <button
-                onClick={() =>
-                  window.open("https://docs.swarms.world", "_blank")
-                }
+                onClick={() => window.open("https://kalygo.io", "_blank")}
                 className="ml-1 font-medium text-blue-200 hover:text-blue-300 focus:outline-none"
               >
-                docs.swarms.world
+                Kalygo 2.0
               </button>
             </p>
           </div>
