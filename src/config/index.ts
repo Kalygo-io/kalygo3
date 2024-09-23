@@ -1,3 +1,3 @@
 export const CONFIG = {
-  applicationName: "Swarms Playground",
+  applicationName: "Kalygo 3.0",
 };
