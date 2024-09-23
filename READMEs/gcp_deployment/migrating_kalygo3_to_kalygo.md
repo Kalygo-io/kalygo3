@@ -24,7 +24,7 @@ Documenting the process of setting up the Kalygo v3.0 application in the `kalygo
   --role="roles/iam.serviceAccountUser"
   ```
 
-## Also needed these permission
+## Also needed these permissions
 
 - `gcloud services enable artifactregistry.googleapis.com`
 - `gcloud services enable run.googleapis.com --project=kalygo-436411`
