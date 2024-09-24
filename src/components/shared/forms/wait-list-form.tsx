@@ -75,7 +75,7 @@ export const WaitListForm = () => {
               {isLoading ? <Spinner /> : "Join Waitlist"}
             </button>
           </form>
-          <div className="space-y-2 py-2">
+          {/* <div className="space-y-2 py-2">
             <p className="text-sm text-center text-gray-200">
               Visit
               <button
@@ -94,7 +94,7 @@ export const WaitListForm = () => {
                 Kalygo 2.0
               </button>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
