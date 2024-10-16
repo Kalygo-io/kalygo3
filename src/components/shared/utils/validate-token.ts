@@ -9,7 +9,7 @@ export async function protectedPageGuard() {
     const cookieStore = cookies();
     const jwtCookie = cookieStore.get("jwt");
 
-    if (!jwtCookie?.value) return redirect("/");
+    if (!jwtCookie?.value) return redirect("/auth");
 
     await validateToken(jwtCookie?.value);
   } catch (error) {

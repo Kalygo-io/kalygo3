@@ -20,7 +20,6 @@ export function PromptForm({
   const router = useRouter();
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
-
   const dispatch = React.useContext(ChatDispatchContext);
 
   return (
