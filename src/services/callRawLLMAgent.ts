@@ -14,7 +14,7 @@ export async function callRawLLMAgent(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        content: prompt,
+        prompt,
       }),
       credentials: "include",
     }
