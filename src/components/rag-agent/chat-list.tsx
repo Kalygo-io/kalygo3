@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/components/gptuesday-agent/chat-message";
+import { ChatMessage } from "@/components/rag-agent/chat-message";
 import { Message } from "@/ts/types/Message";
 
 export interface P {

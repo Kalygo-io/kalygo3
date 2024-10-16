@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/gptuesday-agent/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/rag-agent/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callRagAgent } from "@/services/callGptuesdayAgent";
+import { callRagAgent } from "@/services/callRagAgent";
 import { useRouter } from "next/navigation";
 
 export function PromptForm({
@@ -78,7 +78,7 @@ export function PromptForm({
           tabIndex={0}
           onKeyDown={onKeyDown}
           placeholder="Send a message."
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+          className="bg-slate-50 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
           autoFocus
           spellCheck={false}
           autoComplete="off"

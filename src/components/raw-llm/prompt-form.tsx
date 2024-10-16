@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/no-rag/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/raw-llm/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callNoRagAgent } from "@/services/callNoRagAgent";
+import { callRawLLMAgent } from "@/services/callRawLLMAgent";
 import { useRouter } from "next/navigation";
 
 export function PromptForm({
@@ -50,7 +50,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callNoRagAgent(sessionId, prompt, dispatch);
+          await callRawLLMAgent(sessionId, prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",

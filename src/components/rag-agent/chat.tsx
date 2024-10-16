@@ -1,9 +1,9 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/gptuesday-agent/chat-session-context";
-import { ChatList } from "@/components/gptuesday-agent/chat-list";
-import { ChatPanel } from "@/components/gptuesday-agent/chat-panel";
-import { EmptyScreen } from "@/components/gptuesday-agent/empty-screen";
+import { ChatContext } from "@/app/dashboard/rag-agent/chat-session-context";
+import { ChatList } from "@/components/rag-agent/chat-list";
+import { ChatPanel } from "@/components/rag-agent/chat-panel";
+import { EmptyScreen } from "@/components/rag-agent/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";

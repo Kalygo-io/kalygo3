@@ -6,14 +6,29 @@ export const navigation = [
   //   href: "/dashboard/rearrange",
   //   icon: FaDiceOne,
   // },
+  // {
+  //   name: "Design and Run Swarm",
+  //   href: "/dashboard/design-and-run",
+  //   icon: FaDiceOne,
+  // },
+  // {
+  //   name: "Spreadsheet Swarm",
+  //   href: "/dashboard/spreadsheet",
+  //   icon: FaDiceTwo,
+  // },
   {
-    name: "Design and Run Swarm",
-    href: "/dashboard/design-and-run",
+    name: "Raw LLM",
+    href: "/dashboard/raw-llm",
     icon: FaDiceOne,
   },
   {
-    name: "Spreadsheet Swarm",
-    href: "/dashboard/spreadsheet",
+    name: "No RAG",
+    href: "/dashboard/no-rag",
     icon: FaDiceTwo,
+  },
+  {
+    name: "R.A.G. Agent",
+    href: "/dashboard/rag-agent",
+    icon: FaDiceThree,
   },
 ];

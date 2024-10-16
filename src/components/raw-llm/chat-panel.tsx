@@ -1,4 +1,4 @@
-import { PromptForm } from "@/components/no-rag/prompt-form";
+import { PromptForm } from "@/components/raw-llm/prompt-form";
 
 export interface ChatPanelProps {
   sessionId: string;

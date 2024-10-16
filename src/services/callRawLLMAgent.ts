@@ -1,14 +1,14 @@
-import { Action } from "@/app/dashboard/gptuesday-agent/chat-session-reducer";
+import { Action } from "@/app/dashboard/no-rag/chat-session-reducer";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callRagAgent(
+export async function callRawLLMAgent(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/rag-agent/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/raw-llm/completion`,
     {
       method: "POST",
       headers: {

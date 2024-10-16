@@ -6,13 +6,13 @@
 				<g>
 					<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" values="0 50 50;360 50 50" keyTimes="0;1" dur="0.7575757575757576s">
 					</animateTransform>
-					<path fill-opacity="0.8" fill="#ed154b" d="M50 50L50 0A50 50 0 0 1 100 50Z">
+					<path fill-opacity="0.8" fill="#154bed" d="M50 50L50 0A50 50 0 0 1 100 50Z">
 					</path>
 				</g>
 				<g>
 					<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0101010101010102s">
 					</animateTransform>
-					<path fill-opacity="0.8" fill="#89102d" d="M50 50L50 0A50 50 0 0 1 100 50Z" transform="rotate(90 50 50)">
+					<path fill-opacity="0.8" fill="#102d89" d="M50 50L50 0A50 50 0 0 1 100 50Z" transform="rotate(90 50 50)">
 					</path>
 				</g>
 				<g>

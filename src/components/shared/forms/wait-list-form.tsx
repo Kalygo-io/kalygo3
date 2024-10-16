@@ -24,7 +24,7 @@ export const WaitListForm = () => {
       console.log("after joinWaitingList...");
       setEmail("");
       setIsLoading(false);
-      successToast("You are now on the SWARMS PLAYGROUND waitlist!");
+      successToast("You are now on the Kalygo waitlist!");
     } catch (err) {
       setIsLoading(false);
       errorReporter(err);
