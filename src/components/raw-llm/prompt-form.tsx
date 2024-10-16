@@ -50,7 +50,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callRawLLMAgent(sessionId, prompt, dispatch);
+          await callRawLLMAgent(prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",

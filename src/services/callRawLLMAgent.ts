@@ -3,7 +3,6 @@ import { nanoid } from "@/shared/utils";
 import React from "react";
 
 export async function callRawLLMAgent(
-  sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
@@ -15,7 +14,6 @@ export async function callRawLLMAgent(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionId: sessionId,
         content: prompt,
       }),
       credentials: "include",
