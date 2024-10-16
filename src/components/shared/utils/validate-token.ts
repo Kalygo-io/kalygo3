@@ -9,6 +9,8 @@ export async function protectedPageGuard() {
     const cookieStore = cookies();
     const jwtCookie = cookieStore.get("jwt");
 
+    debugger;
+
     if (!jwtCookie?.value) return redirect("/auth");
 
     await validateToken(jwtCookie?.value);
