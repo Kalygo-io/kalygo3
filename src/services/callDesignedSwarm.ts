@@ -1,4 +1,4 @@
-import { Action } from "@/app/dashboard/rearrange/chat-session-reducer";
+import { Action } from "@/app/dashboard/design-and-run/chat-session-reducer";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
