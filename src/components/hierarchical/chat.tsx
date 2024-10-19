@@ -1,19 +1,19 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/design-and-run/chat-session-context";
-import { ChatList } from "@/components/design-and-run/chat-list";
-import { ChatPanel } from "@/components/design-and-run/chat-panel";
-import { EmptyScreen } from "@/components/design-and-run/empty-screen";
+import { ChatContext } from "@/app/dashboard/hierarchical/chat-session-context";
+import { ChatList } from "@/components/hierarchical/chat-list";
+import { ChatPanel } from "@/components/hierarchical/chat-panel";
+import { EmptyScreen } from "@/components/hierarchical/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
-import Drawer from "@/components/design-and-run/drawer";
+import CustomizeSwarmDrawer from "@/components/hierarchical/customize-crew-drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import Aside from "@/components/design-and-run/aside";
+import CustomizeSwarmDrawerNoDialog from "./customize-crew-drawer-no-dialog";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
-export function Chat({ className }: ChatProps) {
+export function Chat({ id, className }: ChatProps) {
   const [input, setInput] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
@@ -34,7 +34,7 @@ export function Chat({ className }: ChatProps) {
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
   }, []);
 
-  console.log("chat.tsx");
+  // console.log("chat.tsx");
 
   return (
     <>
@@ -67,7 +67,19 @@ export function Chat({ className }: ChatProps) {
 
       <aside className="text-white pt-16 fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-700 px-4 py-6 sm:px-6 lg:px-8 xl:block">
         <div className="pt-8">
-          <Aside topNavHeight={topNavElClientHeight} />
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Customize Swarm</h2>
+            <button
+              className="text-gray-400 hover:text-gray-200"
+              onClick={toggleDrawer}
+            >
+              <Cog6ToothIcon className="w-6 h-6" />
+            </button>
+          </div>
+          <div className="text-gray-400 mt-2">
+            Customize the appearance and behavior of the AI chatbot.
+            <CustomizeSwarmDrawerNoDialog topNavHeight={topNavElClientHeight} />
+          </div>
         </div>
       </aside>
 
@@ -78,7 +90,7 @@ export function Chat({ className }: ChatProps) {
         <Cog6ToothIcon className="w-6 h-6 text-white cursor-pointer group-hover:text-gray-700" />
       </div>
 
-      <Drawer
+      <CustomizeSwarmDrawer
         topNavHeight={topNavElClientHeight}
         open={drawerOpen}
         setOpen={setDrawerOpen}

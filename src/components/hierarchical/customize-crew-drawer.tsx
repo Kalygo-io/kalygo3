@@ -3,11 +3,11 @@
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useSwarmDesignerContext } from "@/context/swarm-designer-context";
+import { useHierarchicalContext } from "@/context/hierarchical-context";
 import { Separator } from "@/components/shared/separator";
 import { toast } from "react-toastify";
 import { errorReporter } from "@/shared/errorReporter";
-import { validateFlow } from "@/components/design-and-run/helpers/validate-flow";
+import { validateFlow } from "@/components/hierarchical/helpers/validate-flow";
 
 interface P {
   topNavHeight: number;
@@ -17,7 +17,7 @@ interface P {
 
 export default function CustomizeSwarmDrawer(P: P) {
   const [agentCount, setAgentCount] = useState(0);
-  const { context, setSwarmDesignerContext } = useSwarmDesignerContext();
+  const { context, setHierarchicalContext } = useHierarchicalContext();
 
   const [localData, setLocalData] = useState({
     agents: context.agents || {},
@@ -77,7 +77,7 @@ export default function CustomizeSwarmDrawer(P: P) {
         flow: localData.flow,
       });
 
-      setSwarmDesignerContext(localData);
+      setHierarchicalContext(localData);
       toast.success("Swarm customized successfully");
     } catch (error) {
       errorReporter(error, true);

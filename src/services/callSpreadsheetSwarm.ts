@@ -54,7 +54,6 @@ export async function callSpreadsheetSwarm(
       const parsedChunk = JSON.parse(chunk);
       dispatchEventToState(parsedChunk, dispatch, accMessage);
     } catch (e) {
-      // debugger
       let multiChunkAcc = "";
 
       let idx = 0;

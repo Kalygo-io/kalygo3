@@ -1,11 +1,11 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useSwarmDesignerContext } from "@/context/swarm-designer-context";
+import { useHierarchicalContext } from "@/context/hierarchical-context";
 import { Separator } from "@/components/shared/separator";
 import { toast } from "react-toastify";
 import { errorReporter } from "@/shared/errorReporter";
-import { validateFlow } from "@/components/design-and-run/helpers/validate-flow";
+import { validateFlow } from "@/components/hierarchical/helpers/validate-flow";
 import { callSwarmDesigner } from "@/services/callSwarmDesigner";
 import { Spinner } from "@/components/shared/common/spinner";
 
@@ -18,7 +18,7 @@ export default function CustomizeSwarmDrawerNoDialog(P: P) {
     useState(false);
   const [swarmDesignerPrompt, setSwarmDesignerPrompt] = useState("");
 
-  const { context, setSwarmDesignerContext } = useSwarmDesignerContext();
+  const { context, setHierarchicalContext } = useHierarchicalContext();
 
   const [localData, setLocalData] = useState({
     agents: context.agents || [],
@@ -89,7 +89,7 @@ export default function CustomizeSwarmDrawerNoDialog(P: P) {
 
       console.log("localData", localData);
 
-      setSwarmDesignerContext(localData);
+      setHierarchicalContext(localData);
       toast.success("Swarm customized successfully");
     } catch (error) {
       errorReporter(error, true);
@@ -114,7 +114,7 @@ export default function CustomizeSwarmDrawerNoDialog(P: P) {
         agents: swarmConfig.agents,
         flow: swarmConfig.flow,
       });
-      setSwarmDesignerContext({
+      setHierarchicalContext({
         agents: swarmConfig.agents,
         flow: swarmConfig.flow,
       });

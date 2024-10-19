@@ -3,17 +3,17 @@
 import {
   ChatContext,
   ChatDispatchContext,
-} from "@/app/dashboard/rearrange/chat-session-context";
+} from "@/app/dashboard/hierarchical/chat-session-context";
 import {
   Action,
   chatReducer,
   initialState,
-} from "@/app/dashboard/rearrange/chat-session-reducer";
-import { Chat as RearrangeSwarmChat } from "@/components/rearrange/chat";
+} from "@/app/dashboard/hierarchical/chat-session-reducer";
+import { Chat as SwarmDesignerChat } from "@/components/hierarchical/chat";
 import { BlocksUnion } from "@/ts/types/BlocksUnion";
 import { useReducer } from "react";
 
-export function RearrangeContainer() {
+export function HierarchicalContainer() {
   const [chat, dispatch] = useReducer<
     (
       state: {
@@ -32,7 +32,7 @@ export function RearrangeContainer() {
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>
-        <RearrangeSwarmChat />
+        <SwarmDesignerChat />
       </ChatDispatchContext.Provider>
     </ChatContext.Provider>
   );

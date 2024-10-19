@@ -14,6 +14,6 @@ export default async function Page() {
       </DashboardLayout>
     );
   } catch (error) {
-    return redirect("/");
+    return <h1 className="text-white">Oops!</h1>;
   }
 }

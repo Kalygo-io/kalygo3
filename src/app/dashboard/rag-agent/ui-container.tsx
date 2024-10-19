@@ -8,16 +8,16 @@ import {
   chatReducer,
   initialState,
 } from "@/app/dashboard/rag-agent/chat-session-reducer";
-import { Chat as GptuesdayChat } from "@/components/rag-agent/chat";
+import { Chat as RagChat } from "@/components/rag-agent/chat";
 import { useReducer } from "react";
 
-export function GptuesdayAgentUiContainer() {
+export function RagAgentUiContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
 
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>
-        <GptuesdayChat />
+        <RagChat />
       </ChatDispatchContext.Provider>
     </ChatContext.Provider>
   );

@@ -46,7 +46,6 @@ export function chatReducer(
 ) {
   switch (action.type) {
     case "ADD_DEFAULT_BLOCK": {
-      console.log("ADD_DEFAULT_BLOCK");
       return {
         ...state,
         blocks: [
@@ -70,9 +69,7 @@ export function chatReducer(
             action.payload.parallelGroupId
       );
 
-      // debugger
       if (index === -1) {
-        // debugger
         return {
           ...state,
           blocks: [
@@ -180,8 +177,6 @@ export function chatReducer(
     }
 
     case "SET_COMPLETION_LOADING": {
-      console.log("SET_COMPLETION_LOADING");
-
       return {
         ...state,
         completionLoading: action.payload,

@@ -16,7 +16,7 @@ export function ChatPanel({ input, setInput, sessionId }: ChatPanelProps) {
         <div className="mx-8 space-y-4 border-t bg-gray-800 border-gray-700 px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm input={input} setInput={setInput} sessionId={sessionId} />
           <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
-            Made with ❤️ for AiSalon Miami 🌴
+            Made with ❤️ in Miami 🌴
           </p>
         </div>
       </div>

@@ -114,17 +114,6 @@ export function DashboardLayout({
                                 "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
                               )}
                             >
-                              <item.icon
-                                className={classNames(
-                                  item.href.split("/")[
-                                    item.href.split("/").length - 1
-                                  ] === current
-                                    ? "text-white"
-                                    : "text-blue-200 group-hover:text-white",
-                                  "h-6 w-6 shrink-0"
-                                )}
-                                aria-hidden="true"
-                              />
                               {item.name}
                             </span>
                           </li>
@@ -208,17 +197,6 @@ export function DashboardLayout({
                             "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
-                          <item.icon
-                            className={classNames(
-                              item.href.split("/")[
-                                item.href.split("/").length - 1
-                              ] === current
-                                ? "text-white"
-                                : "text-blue-200 group-hover:text-white",
-                              "h-6 w-6 shrink-0"
-                            )}
-                            aria-hidden="true"
-                          />
                           {item.name}
                         </Link>
                       </li>
