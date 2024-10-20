@@ -134,10 +134,27 @@ export const CustomizeSwarm = (P: P) => {
                           index: number
                         ) => (
                           <div key={index}>
-                            <fieldset className="border border-gray-400 p-2 rounded-md">
+                            <fieldset className="flex-1 border border-gray-400 p-2 rounded-md relative">
                               <legend className="text-gray-400 text-sm px-1">
                                 Agent {index + 1}
                               </legend>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updatedAgents = [...localData.agents];
+                                  updatedAgents.splice(index, 1);
+                                  setLocalData((prevData) => ({
+                                    ...prevData,
+                                    agents: updatedAgents,
+                                  }));
+                                }}
+                                className="absolute top-[-20px] right-[-10px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 rounded-full"
+                              >
+                                <XMarkIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              </button>
                               <input
                                 id={`agents.${index}.name`}
                                 name={`agents.${index}.name`}
@@ -165,21 +182,12 @@ export const CustomizeSwarm = (P: P) => {
                       )}
                     </div>
                     <div className="flex justify-end mt-2">
-                      {/* Add Agent button */}
                       <button
                         type="button"
                         className="px-2 py-1 text-sm font-medium text-blue-200 hover:text-blue-300 focus:outline-none"
                         onClick={handleAddAgent}
                       >
                         + Add Agent
-                      </button>
-                      {/* Remove Agent button */}
-                      <button
-                        type="button"
-                        className="px-2 py-1 ml-2 text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none"
-                        onClick={handleRemoveAgent}
-                      >
-                        - Remove Agent
                       </button>
                     </div>
                   </div>

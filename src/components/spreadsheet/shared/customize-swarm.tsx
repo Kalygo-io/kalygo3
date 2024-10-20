@@ -11,7 +11,6 @@ interface P {
 }
 
 export const CustomizeSwarm = (P: P) => {
-  const [agentCount, setAgentCount] = useState(4);
   const { context, setSpreadsheetSwarmContext } = useSpreadsheetSwarmContext();
 
   const [localData, setLocalData] = useState<{
@@ -21,7 +20,7 @@ export const CustomizeSwarm = (P: P) => {
   });
 
   const handleAddAgent = () => {
-    if (agentCount < 10) {
+    if (context.agents.length < 10) {
       setLocalData((prevData) => ({
         ...prevData,
         agents: [
@@ -32,7 +31,6 @@ export const CustomizeSwarm = (P: P) => {
           },
         ],
       }));
-      setAgentCount(agentCount + 1);
     }
   };
 
@@ -123,9 +121,8 @@ export const CustomizeSwarm = (P: P) => {
                                   ...prevData,
                                   agents: updatedAgents,
                                 }));
-                                setAgentCount(agentCount - 1);
                               }}
-                              className="absolute top-[-20px] right-[-10px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 rounded-full"
+                              className="absolute top-[-18px] right-[-8px] text-red-800 hover:text-red-900 focus:outline-none bg-gray-700 border border-gray-500 rounded-full"
                             >
                               <XMarkIcon
                                 className="h-5 w-5"
