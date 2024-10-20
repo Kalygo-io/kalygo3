@@ -7,13 +7,13 @@ import { EmptyScreen } from "@/components/spreadsheet/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
-import CustomizeSwarmDrawer from "@/components/spreadsheet/customize-swarm-drawer";
+import Drawer from "@/components/spreadsheet/drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import CustomizeSwarmDrawerNoDialog from "./customize-swarm-drawer-no-dialog";
+import Aside from "./aside";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
-export function Chat({ id, className }: ChatProps) {
+export function Chat({ className }: ChatProps) {
   const [input, setInput] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
@@ -76,7 +76,7 @@ export function Chat({ id, className }: ChatProps) {
           </div>
           <div className="text-gray-400 mt-2">
             Customize the appearance and behavior of the AI chatbot.
-            <CustomizeSwarmDrawerNoDialog topNavHeight={topNavElClientHeight} />
+            <Aside topNavHeight={topNavElClientHeight} />
           </div>
         </div>
       </aside>
@@ -88,7 +88,7 @@ export function Chat({ id, className }: ChatProps) {
         <Cog6ToothIcon className="w-6 h-6 text-white cursor-pointer group-hover:text-gray-700" />
       </div>
 
-      <CustomizeSwarmDrawer
+      <Drawer
         topNavHeight={topNavElClientHeight}
         open={drawerOpen}
         setOpen={setDrawerOpen}

@@ -14,7 +14,7 @@ export default function CustomizeSwarmAside(P: P) {
   return (
     <div>
       <div className="absolute inset-0 overflow-hidden pt-16">
-        <CustomizeSwarm parent="aside" />
+        <CustomizeSwarm parentTitle="Aside" />
       </div>
     </div>
   );

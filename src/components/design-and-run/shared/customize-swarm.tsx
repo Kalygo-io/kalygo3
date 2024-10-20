@@ -7,7 +7,7 @@ import { errorReporter } from "@/shared/errorReporter";
 import { successToast } from "@/shared/toasts";
 
 interface P {
-  parent: string;
+  parentTitle: string;
 }
 
 export const CustomizeSwarm = (P: P) => {
@@ -86,12 +86,15 @@ export const CustomizeSwarm = (P: P) => {
     }
   };
 
-  console.log("customize-swarm.tsx", P.parent);
+  console.log("customize-swarm.tsx", P.parentTitle);
 
   return (
     <div className="flex h-full flex-col divide-y divide-gray-700 bg-gray-800 shadow-xl">
       <div className="h-0 flex-1 overflow-y-auto">
         <div className="bg-black px-4 py-6 sm:px-6">
+          <div className="font-semibold text-white">
+            Design Swarm - {P.parentTitle}
+          </div>
           <SwarmDesignerPromptForm
             localData={localData}
             setLocalData={setLocalData}

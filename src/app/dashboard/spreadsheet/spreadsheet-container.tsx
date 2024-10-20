@@ -29,6 +29,8 @@ export function SpreadsheetContainer() {
     }
   >(chatReducer, initialState);
 
+  console.log("--- SpreadsheetContainer ---");
+
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>

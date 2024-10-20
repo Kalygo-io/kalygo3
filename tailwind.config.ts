@@ -18,18 +18,3 @@ const config: Config = {
   plugins: [require("@tailwindcss/forms")],
 };
 export default config;
-
-// theme: {
-//   extend: {
-//     backgroundImage: {
-//       "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-//       "gradient-conic":
-//         "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-//     },
-//     lineHeight: {
-//       "extra-loose": "2.5",
-//       "12": "4rem",
-//     },
-//   },
-// },
-// plugins: [require("@tailwindcss/forms")],

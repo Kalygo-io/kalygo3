@@ -51,7 +51,6 @@ export const SwarmDesignerPromptForm = (P: P) => {
 
   return (
     <form className="space-y-0">
-      <div className="font-semibold text-white">Design Swarm</div>
       <p className="text-sm leading-6 text-blue-300">
         What are you aiming to accomplish? We&apos;ll generate a group of agents
         designed to efficiently achieve your goal.

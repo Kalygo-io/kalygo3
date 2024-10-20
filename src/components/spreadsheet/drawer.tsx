@@ -2,12 +2,13 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { CustomizeSwarm } from "@/components/design-and-run/shared/customize-swarm";
+import { CustomizeSwarm } from "./shared/customize-swarm";
 
 interface P {
   topNavHeight: number;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  className?: string;
 }
 
 export default function Drawer(P: P) {
@@ -18,7 +19,6 @@ export default function Drawer(P: P) {
       className={`relative z-10 xl:hidden`}
     >
       <div className="fixed inset-0" />
-
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div
@@ -28,7 +28,7 @@ export default function Drawer(P: P) {
               transition
               className="pointer-events-auto w-screen max-w-96 transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700 border-gray-900 border-l-2"
             >
-              <CustomizeSwarm parentTitle="Drawer" />
+              <CustomizeSwarm title="Drawer" setDrawerOpen={P.setOpen} />
             </DialogPanel>
           </div>
         </div>
