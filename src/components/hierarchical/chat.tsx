@@ -35,6 +35,8 @@ export function Chat({ id, className }: ChatProps) {
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
   }, []);
 
+  console.log("chat.tsx");
+
   return (
     <>
       <div className="xl:pr-96">
@@ -72,7 +74,7 @@ export function Chat({ id, className }: ChatProps) {
       <aside className="text-white pt-16 fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-700 px-4 py-6 sm:px-6 lg:px-8 xl:block">
         <div className="pt-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Customize Swarm</h2>
+            <h2 className="text-lg font-semibold">Customize Crew</h2>
             <button
               className="text-gray-400 hover:text-gray-200"
               onClick={toggleDrawer}
@@ -91,7 +93,7 @@ export function Chat({ id, className }: ChatProps) {
         className={`fixed top-16 right-0 m-4 xl:hidden`}
         onClick={toggleDrawer}
       >
-        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
+        <Cog6ToothIcon className="text-text_default_color w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
       <Drawer

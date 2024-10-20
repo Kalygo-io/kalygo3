@@ -1,5 +1,3 @@
-import { PromptForm } from "@/components/raw-llm/prompt-form";
-
 export interface P {
   sessionId: string;
   input: string;

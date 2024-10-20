@@ -39,17 +39,6 @@ export const CustomizeSwarm = (P: P) => {
     }
   };
 
-  const handleRemoveAgent = () => {
-    if (localData.agents.length > 0) {
-      console.log(localData.agents.slice(0, -1));
-
-      setLocalData((prevData) => ({
-        ...prevData,
-        agents: prevData.agents.slice(0, -1),
-      }));
-    }
-  };
-
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
 
@@ -148,7 +137,7 @@ export const CustomizeSwarm = (P: P) => {
                                     agents: updatedAgents,
                                   }));
                                 }}
-                                className="absolute top-[-20px] right-[-10px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 rounded-full"
+                                className="absolute top-[-18px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
                               >
                                 <XMarkIcon
                                   className="h-5 w-5"

@@ -83,7 +83,7 @@ export function Chat({ className }: ChatProps) {
         className={`fixed top-16 right-0 m-4 xl:hidden`}
         onClick={toggleDrawer}
       >
-        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
+        <Cog6ToothIcon className="text-text_default_color w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
       <Drawer

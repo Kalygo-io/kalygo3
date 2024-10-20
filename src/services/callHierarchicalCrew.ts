@@ -5,8 +5,8 @@ export async function callHierarchicalCrew(
   sessionId: string,
   prompt: string,
   context: {
-    agents: Record<string, { name: string; system_prompt: string }>;
-    flow: string;
+    managerAgent: { role: string; goal: string; backstory: string };
+    workerAgents: any[];
   },
   dispatch: React.Dispatch<Action>,
   signal: AbortSignal

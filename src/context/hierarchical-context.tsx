@@ -4,13 +4,21 @@ import React, { createContext, useState, useContext } from "react";
 
 interface IHierarchicalContext {
   context: {
-    agents: any;
-    flow: string;
+    managerAgent: {
+      role: string;
+      goal: string;
+      backstory: string;
+    };
+    workerAgents: any[];
   };
   setHierarchicalContext: React.Dispatch<
     React.SetStateAction<{
-      agents: any;
-      flow: string;
+      managerAgent: {
+        role: string;
+        goal: string;
+        backstory: string;
+      };
+      workerAgents: any[];
     }>
   >;
 }
@@ -25,11 +33,19 @@ export const HierarchicalProvider = ({
   children: React.ReactNode;
 }) => {
   const [data, setData] = useState<{
-    agents: { name: string; system_prompt: string }[];
-    flow: string;
+    managerAgent: {
+      role: string;
+      goal: string;
+      backstory: string;
+    };
+    workerAgents: { role: string; goal: string; backstory: string }[];
   }>({
-    agents: [],
-    flow: "",
+    managerAgent: {
+      role: "",
+      goal: "",
+      backstory: "",
+    },
+    workerAgents: [],
   });
 
   return (
