@@ -1,8 +1,7 @@
-import { Action } from "@/app/dashboard/design-and-run/chat-session-reducer";
-import { nanoid } from "@/shared/utils";
+import { Action } from "@/app/dashboard/hierarchical/chat-session-reducer";
 import React from "react";
 
-export async function callDesignedSwarm(
+export async function callHierarchicalCrew(
   sessionId: string,
   prompt: string,
   context: {
@@ -12,19 +11,21 @@ export async function callDesignedSwarm(
   dispatch: React.Dispatch<Action>,
   signal: AbortSignal
 ) {
+  console.log("callHierarchicalCrew");
+
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/design-and-run-swarm/stream`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/hierarchical-crew`,
     {
-      method: "POST",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        sessionId: sessionId,
-        content: prompt,
-        agentsConfig: context.agents,
-        flow: context.flow,
-      }),
+      // body: JSON.stringify({
+      //   sessionId: sessionId,
+      //   content: prompt,
+      //   agentsConfig: context.agents,
+      //   flow: context.flow,
+      // }),
       credentials: "include",
       signal: signal, // Pass the signal to the fetch request
     }

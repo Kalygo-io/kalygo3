@@ -239,14 +239,6 @@ export default function Aside(P: P) {
                           >
                             + Add Agent
                           </button>
-                          {/* Remove Agent button */}
-                          <button
-                            type="button"
-                            className="px-2 py-1 ml-2 text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none"
-                            onClick={handleRemoveAgent}
-                          >
-                            - Remove Agent
-                          </button>
                         </div>
                       </div>
                     </div>

@@ -22,7 +22,7 @@ export const ChatPanelForAsideLayout = (P: P) => {
             sessionId={P.sessionId}
           />
           <p className="text-gray-200 px-2 text-center text-xs leading-normal hidden sm:block">
-            A Swarms x Kalygo experiment 🧪
+            Kalygo &copy; {new Date().getFullYear()}
           </p>
         </div>
       </div>

@@ -7,9 +7,9 @@ import { EmptyScreen } from "@/components/shared/chat/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
-import CustomizeSwarmDrawer from "@/components/hierarchical/drawer";
+import Drawer from "@/components/hierarchical/drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import CustomizeSwarmDrawerNoDialog from "@/components/hierarchical/aside";
+import Aside from "@/components/hierarchical/aside";
 import { PromptForm } from "@/components/hierarchical/prompt-form";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
@@ -52,7 +52,7 @@ export function Chat({ id, className }: ChatProps) {
               ) : (
                 <EmptyScreen
                   content={
-                    <h1 className="text-default_text_color text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
+                    <h1 className="text-text_default_color text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
                       Hierarchical Crew 🥇
                     </h1>
                   }
@@ -82,7 +82,7 @@ export function Chat({ id, className }: ChatProps) {
           </div>
           <div className="text-gray-400 mt-2">
             Customize the appearance and behavior of the AI chatbot.
-            <CustomizeSwarmDrawerNoDialog topNavHeight={topNavElClientHeight} />
+            <Aside topNavHeight={topNavElClientHeight} />
           </div>
         </div>
       </aside>
@@ -94,7 +94,7 @@ export function Chat({ id, className }: ChatProps) {
         <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
-      <CustomizeSwarmDrawer
+      <Drawer
         topNavHeight={topNavElClientHeight}
         open={drawerOpen}
         setOpen={setDrawerOpen}

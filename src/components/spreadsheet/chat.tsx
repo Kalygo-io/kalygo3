@@ -56,7 +56,9 @@ export function Chat({ className }: ChatProps) {
                       <h1 className="text-text_default_color text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
                         Spreadsheet Swarm 🏳️‍🌈
                       </h1>
-                      <div>Designed by Swarms 🔴</div>
+                      <div className="text-text_default_color">
+                        Designed by Swarms 🔴
+                      </div>
                     </>
                   }
                 />

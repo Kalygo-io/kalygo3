@@ -39,7 +39,7 @@ export const WaitListForm = () => {
     <>
       <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="w-full max-w-md p-8 space-y-6 bg-black rounded shadow-md">
-          <div className="text-center text-3xl">🟣🔵</div>
+          <div className="text-center text-3xl">🔵</div>
           <div className="mb-6 text-center">
             <h1 className="text-3xl font-bold text-gray-200">
               {CONFIG.applicationName}

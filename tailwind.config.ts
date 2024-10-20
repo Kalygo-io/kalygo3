@@ -19,7 +19,9 @@ const config: Config = {
       yellow: colors.yellow,
       blue: colors.blue,
       red: colors.red,
-      text_default_color: "#000",
+      // Kathryn Grayson Nanz
+      text_default_color: "#fff",
+      default_background_color: "#000",
     },
     extend: {
       backgroundImage: {

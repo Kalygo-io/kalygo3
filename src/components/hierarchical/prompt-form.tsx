@@ -4,15 +4,14 @@ import * as React from "react";
 
 import {
   ChatDispatchContext,
-  ChatContext,
   useHierarchicalChatContext,
 } from "@/app/dashboard/hierarchical/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { useRouter } from "next/navigation";
 import { useHierarchicalContext } from "@/context/hierarchical-context";
-import { callDesignedSwarm } from "@/services/callDesignedSwarm";
-import { StopCircleIcon, StopIcon } from "@heroicons/react/24/outline";
+import { callHierarchicalCrew } from "@/services/callHierarchicalCrew";
+import { StopIcon } from "@heroicons/react/24/outline";
 
 export function PromptForm({
   input,
@@ -68,7 +67,13 @@ export function PromptForm({
           const signal = abortControllerRef.current.signal;
 
           // Make the API call with the abort signal
-          await callDesignedSwarm(sessionId, prompt, context, dispatch, signal);
+          await callHierarchicalCrew(
+            sessionId,
+            prompt,
+            context,
+            dispatch,
+            signal
+          );
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
