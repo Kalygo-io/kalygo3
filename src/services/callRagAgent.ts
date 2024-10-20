@@ -1,4 +1,5 @@
 import { Action } from "@/app/dashboard/rag-agent/chat-session-reducer";
+import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
@@ -100,6 +101,8 @@ function dispatchEventToState(
       },
     });
   } else if (parsedChunk["event"] === "on_chat_model_end") {
+  } else if (parsedChunk["event"] === "event_stream_error") {
+    errorToast("Error in text/event-stream");
   } else {
     console.error("Unknown event:", parsedChunk["event"]);
   }
