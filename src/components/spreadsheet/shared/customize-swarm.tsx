@@ -14,28 +14,25 @@ export const CustomizeSwarm = (P: P) => {
   const [agentCount, setAgentCount] = useState(4);
   const { context, setSpreadsheetSwarmContext } = useSpreadsheetSwarmContext();
 
-  const [localData, setLocalData] = useState({
-    agents: context.agents || {},
+  const [localData, setLocalData] = useState<{
+    agents: any[];
+  }>({
+    agents: context.agents || [],
   });
 
   const handleAddAgent = () => {
     if (agentCount < 10) {
-      setAgentCount(agentCount + 1);
-    }
-  };
-
-  const handleRemoveAgent = () => {
-    if (agentCount > 1) {
-      delete localData.agents[agentCount - 1];
-
       setLocalData((prevData) => ({
         ...prevData,
-        agents: {
-          ...localData.agents,
-        },
+        agents: [
+          ...prevData.agents,
+          {
+            name: "",
+            system_prompt: "",
+          },
+        ],
       }));
-
-      setAgentCount(agentCount - 1);
+      setAgentCount(agentCount + 1);
     }
   };
 
@@ -110,32 +107,52 @@ export const CustomizeSwarm = (P: P) => {
                     Agents
                   </label>
                   <div className="mt-2">
-                    {[...Array(agentCount)].map((_, index) => (
+                    {localData?.agents?.map((i, index) => (
                       <div key={index}>
-                        <fieldset className="border border-gray-400 p-2 rounded-md">
-                          <legend className="text-gray-400 text-sm px-1">
-                            Agent {index + 1}
-                          </legend>
-                          <input
-                            id={`agents.${index}.name`}
-                            name={`agents.${index}.name`}
-                            value={localData?.agents?.[index]?.name || ""}
-                            onChange={handleChange}
-                            placeholder={`Agent name`}
-                            className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
-                          />
-                          <textarea
-                            key={index}
-                            id={`agents.${index}.system_prompt`}
-                            name={`agents.${index}.system_prompt`}
-                            value={
-                              localData?.agents?.[index]?.system_prompt || ""
-                            }
-                            onChange={handleChange}
-                            placeholder={`System prompt`}
-                            className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2 h-14"
-                          />
-                        </fieldset>
+                        <div className="flex items-center space-x-2">
+                          <fieldset className="flex-1 border border-gray-400 p-2 rounded-md relative">
+                            <legend className="text-gray-400 text-sm px-1">
+                              Agent {index + 1}
+                            </legend>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updatedAgents = [...localData.agents];
+                                updatedAgents.splice(index, 1);
+                                setLocalData((prevData) => ({
+                                  ...prevData,
+                                  agents: updatedAgents,
+                                }));
+                                setAgentCount(agentCount - 1);
+                              }}
+                              className="absolute top-[-20px] right-[-10px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 rounded-full"
+                            >
+                              <XMarkIcon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                            </button>
+                            <input
+                              id={`agents.${index}.name`}
+                              name={`agents.${index}.name`}
+                              value={localData?.agents?.[index]?.name || ""}
+                              onChange={handleChange}
+                              placeholder={`Agent name`}
+                              className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
+                            />
+                            <textarea
+                              key={index}
+                              id={`agents.${index}.system_prompt`}
+                              name={`agents.${index}.system_prompt`}
+                              value={
+                                localData?.agents?.[index]?.system_prompt || ""
+                              }
+                              onChange={handleChange}
+                              placeholder={`System prompt`}
+                              className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2 h-14"
+                            />
+                          </fieldset>
+                        </div>
                         <Separator className="my-4 bg-gray-700" />
                       </div>
                     ))}
@@ -147,13 +164,6 @@ export const CustomizeSwarm = (P: P) => {
                       onClick={handleAddAgent}
                     >
                       + Add Agent
-                    </button>
-                    <button
-                      type="button"
-                      className="px-2 py-1 ml-2 text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none"
-                      onClick={handleRemoveAgent}
-                    >
-                      - Remove Agent
                     </button>
                   </div>
                 </div>
