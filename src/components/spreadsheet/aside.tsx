@@ -10,7 +10,7 @@ export default function Aside(P: P) {
   return (
     <div>
       <div className="absolute inset-0 overflow-hidden pt-16">
-        <CustomizeSwarm title="Aside" />
+        <CustomizeSwarm />
       </div>
     </div>
   );

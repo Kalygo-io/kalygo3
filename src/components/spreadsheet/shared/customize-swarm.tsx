@@ -6,7 +6,7 @@ import { Separator } from "@radix-ui/react-separator";
 import React, { Dispatch, SetStateAction, useState } from "react";
 
 interface P {
-  title: string;
+  title?: string;
   setDrawerOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -74,10 +74,10 @@ export const CustomizeSwarm = (P: P) => {
   return (
     <form className="flex h-full flex-col divide-y divide-gray-700 bg-gray-800 shadow-xl">
       <div className="h-0 flex-1 overflow-y-auto">
-        <div className="bg-black px-4 py-6 sm:px-6">
-          <div className="flex items-center justify-between">
+        <div className="bg-black px-4 py-6 sm:px-6 space-y-1">
+          <div className="flex items-center justify-between font-semibold text-white w-full">
             <div className="text-base font-semibold leading-6 text-white">
-              Customize Swarm - {P.title}
+              Customize Swarm {P.title}
             </div>
             <div className="ml-3 flex h-7 items-center">
               <button

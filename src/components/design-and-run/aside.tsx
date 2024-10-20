@@ -9,12 +9,10 @@ interface P {
 }
 
 export default function CustomizeSwarmAside(P: P) {
-  console.log("Aside");
-
   return (
     <div>
       <div className="absolute inset-0 overflow-hidden pt-16">
-        <CustomizeSwarm parentTitle="Aside" />
+        <CustomizeSwarm />
       </div>
     </div>
   );

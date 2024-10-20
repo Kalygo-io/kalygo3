@@ -28,7 +28,7 @@ export default function Drawer(P: P) {
               transition
               className="pointer-events-auto w-screen max-w-96 transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700 border-gray-900 border-l-2"
             >
-              <CustomizeSwarm parentTitle="Drawer" />
+              <CustomizeSwarm parentTitle="Drawer" setDrawerOpen={P.setOpen} />
             </DialogPanel>
           </div>
         </div>

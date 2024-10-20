@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SwarmDesignerPromptForm } from "./swarm-designer-prompt-form";
 import { Separator } from "@radix-ui/react-separator";
 import { useSwarmDesignerContext } from "@/context/swarm-designer-context";
 import { validateFlow } from "@/components/design-and-run/helpers/validate-flow";
 import { errorReporter } from "@/shared/errorReporter";
 import { successToast } from "@/shared/toasts";
+import { XMarkIcon } from "@heroicons/react/16/solid";
 
 interface P {
-  parentTitle: string;
+  parentTitle?: string;
+  setDrawerOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const CustomizeSwarm = (P: P) => {
@@ -86,14 +88,24 @@ export const CustomizeSwarm = (P: P) => {
     }
   };
 
-  console.log("customize-swarm.tsx", P.parentTitle);
-
   return (
     <div className="flex h-full flex-col divide-y divide-gray-700 bg-gray-800 shadow-xl">
       <div className="h-0 flex-1 overflow-y-auto">
-        <div className="bg-black px-4 py-6 sm:px-6">
-          <div className="font-semibold text-white">
-            Design Swarm - {P.parentTitle}
+        <div className="bg-black px-4 py-6 sm:px-6 space-y-1">
+          <div className="flex items-center justify-between font-semibold text-white w-full">
+            <span>Design Swarm {P.parentTitle}</span>
+            <button
+              type="button"
+              onClick={() => {
+                console.log("!!!");
+                P.setDrawerOpen && P.setDrawerOpen(false);
+              }}
+              className="xl:hidden relative rounded-md bg-blue-700 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+            >
+              <span className="absolute -inset-2.5" />
+              <span className="sr-only">Close panel</span>
+              <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+            </button>
           </div>
           <SwarmDesignerPromptForm
             localData={localData}

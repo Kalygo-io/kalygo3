@@ -34,8 +34,6 @@ export function Chat({ className }: ChatProps) {
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
   }, []);
 
-  console.log("chat.tsx");
-
   return (
     <>
       <div className="xl:pr-96">
