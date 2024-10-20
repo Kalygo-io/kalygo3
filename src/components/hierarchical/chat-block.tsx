@@ -47,7 +47,7 @@ export const ChatBlock = memo(
             </div>
             <div
               className={cn(
-                `px-1 space-y-2 overflow-hidden`,
+                `px-1 space-y-2 overflow-hidden w-full`,
                 "ml-4",
                 P.block.error && "text-red-600"
               )}

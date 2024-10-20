@@ -30,7 +30,7 @@ export const RequestPasswordResetForm = () => {
         <div className="w-full max-w-md p-8 space-y-6 bg-black rounded shadow-md">
           <div className="text-center text-3xl">🔴🔵</div>
           <div className="mb-6 text-center">
-            <h1 className="text-3xl uppercase font-bold text-gray-200">
+            <h1 className="text-3xl font-bold text-gray-200">
               {CONFIG.applicationName}
             </h1>
           </div>

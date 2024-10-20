@@ -15,7 +15,7 @@ interface P {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function CustomizeSwarmDrawer(P: P) {
+export default function Drawer(P: P) {
   const [agentCount, setAgentCount] = useState(0);
   const { context, setHierarchicalContext } = useHierarchicalContext();
 

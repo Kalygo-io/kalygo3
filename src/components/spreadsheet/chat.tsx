@@ -1,9 +1,10 @@
 "use client";
 
 import { ChatContext } from "@/app/dashboard/spreadsheet/chat-session-context";
-import { ChatList } from "@/components/spreadsheet/chat-list";
-import { ChatPanel } from "@/components/spreadsheet/chat-panel";
-import { EmptyScreen } from "@/components/spreadsheet/empty-screen";
+import { SwarmChatList } from "@/components/shared/chat/swarm-chat-list";
+import { ChatPanelForAsideLayout } from "@/components/shared/chat/chat-panel-for-aside-layout";
+import { EmptyScreen } from "@/components/shared/chat/empty-screen";
+import { PromptForm } from "@/components/spreadsheet/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
@@ -44,20 +45,28 @@ export function Chat({ className }: ChatProps) {
           >
             <div className={cn("pb-[200px]", className)} ref={messagesRef}>
               {chatState.blocks.length ? (
-                <ChatList
+                <SwarmChatList
                   blocks={chatState.blocks}
                   isCompletionLoading={chatState.completionLoading}
                 />
               ) : (
-                <EmptyScreen />
+                <EmptyScreen
+                  content={
+                    <>
+                      <h1 className="text-text_default_color text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
+                        Spreadsheet Swarm 🏳️‍🌈
+                      </h1>
+                      <div>Designed by Swarms 🔴</div>
+                    </>
+                  }
+                />
               )}
             </div>
-            <ChatPanel
+            <ChatPanelForAsideLayout
               sessionId={chatState.sessionId}
               input={input}
               setInput={setInput}
-              isAtBottom={isAtBottom}
-              scrollToBottom={scrollToBottom}
+              promptForm={PromptForm}
             />
           </div>
         </div>
@@ -85,7 +94,7 @@ export function Chat({ className }: ChatProps) {
         className={`fixed top-16 right-0 m-4 xl:hidden`}
         onClick={toggleDrawer}
       >
-        <Cog6ToothIcon className="w-6 h-6 text-white cursor-pointer group-hover:text-gray-700" />
+        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
       <Drawer

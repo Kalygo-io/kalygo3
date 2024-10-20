@@ -6,12 +6,12 @@ import { Separator } from "@/components/shared/separator";
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { stringToColor } from "@/shared/uuidToColorCode";
-import { Block } from "@/ts/types/Block";
 import { ParallelGroupBlock } from "@/ts/types/ParallelGroupBlock";
-import { SubBlock } from "@/components/spreadsheet/sub-block";
+import { SubBlock } from "@/components/shared/chat/sub-block";
+import { BlocksUnion } from "@/ts/types/BlocksUnion";
+import { MessageActions } from "@/components/shared/chat/message-actions";
 import { DownloadLinkButtonBlock } from "@/ts/types/DownloadLinkButtonBlock";
 import { TableCellsIcon } from "@heroicons/react/16/solid";
-import { BlocksUnion } from "@/ts/types/BlocksUnion";
 
 interface P {
   index: number;
@@ -48,7 +48,7 @@ export const ChatBlock = memo(
             </div>
             <div
               className={cn(
-                `px-1 space-y-2 overflow-hidden`,
+                `w-full px-1 space-y-2 overflow-hidden`,
                 "ml-4",
                 P.block.error && "text-red-600"
               )}
@@ -72,11 +72,17 @@ export const ChatBlock = memo(
                 {P.block.content}
               </ReactMarkdown>
             </div>
+            <MessageActions message={P.block} />
           </div>
+
           <Separator className="my-4 bg-gray-900" />
         </div>
       );
     } else if (P.block.type === "group") {
+      const hexCode = stringToColor(
+        (P.block as ParallelGroupBlock).parallelGroupId
+      );
+
       return (
         <div key={P.block.id}>
           <div className="group relative mb-4 items-start bg-gray-900 p-4 rounded-md flex text-gray-200">
@@ -113,11 +119,7 @@ export const ChatBlock = memo(
         </div>
       );
     } else {
-      return (
-        <div className="text-white" key={P.block.id}>
-          UNSUPPORTED MESSAGE
-        </div>
-      );
+      return <div key={P.block.id}>UNSUPPORTED MESSAGE</div>;
     }
   },
   (prevProps, nextProps) => {

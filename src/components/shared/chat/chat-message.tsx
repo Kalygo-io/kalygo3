@@ -42,7 +42,6 @@ export const ChatMessage = memo(
             <div
               className={cn(
                 `px-1 space-y-2 overflow-hidden`,
-                // P.message.role === "human" ? "ml-4" : "mr-4",
                 "ml-4",
                 P.message.error && "text-red-600"
               )}

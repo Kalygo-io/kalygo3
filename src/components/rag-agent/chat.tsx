@@ -1,12 +1,13 @@
 "use client";
 
 import { ChatContext } from "@/app/dashboard/rag-agent/chat-session-context";
-import { ChatList } from "@/components/rag-agent/chat-list";
-import { ChatPanel } from "@/components/rag-agent/chat-panel";
-import { EmptyScreen } from "@/components/rag-agent/empty-screen";
+import { ChatList } from "@/components/shared/chat/chat-list";
+import { ChatPanel } from "@/components/shared/chat/chat-panel";
+import { EmptyScreen } from "@/components/shared/chat/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
+import { PromptForm } from "@/components/rag-agent/prompt-form";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -32,15 +33,20 @@ export function Chat({ id, className }: ChatProps) {
             isCompletionLoading={chatState.completionLoading}
           />
         ) : (
-          <EmptyScreen />
+          <EmptyScreen
+            content={
+              <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
+                R.A.G. Agent 🌴
+              </h1>
+            }
+          />
         )}
       </div>
       <ChatPanel
         sessionId={chatState.sessionId}
         input={input}
         setInput={setInput}
-        isAtBottom={isAtBottom}
-        scrollToBottom={scrollToBottom}
+        promptForm={PromptForm}
       />
     </div>
   );

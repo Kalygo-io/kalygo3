@@ -1,22 +1,17 @@
-import { ChatBlock } from "@/components/spreadsheet/chat-block";
-import { Block } from "@/ts/types/Block";
+import { ChatBlock } from "@/components/shared/chat/swarm-chat-block";
 import { BlocksUnion } from "@/ts/types/BlocksUnion";
-import { ParallelGroupBlock } from "@/ts/types/ParallelGroupBlock";
 
 export interface P {
   isCompletionLoading: boolean;
   blocks: BlocksUnion[];
 }
 
-export function ChatList(P: P) {
+export function SwarmChatList(P: P) {
   if (!P.blocks.length) {
     return null;
   }
 
   return (
-    // <div className="relative mx-auto lg:max-w-[calc(100%-18rem)] px-4">
-    // <div className="relative mx-auto px-4 lg:pr-8">
-    // <div className="mx-auto lg:pl-72 lg:pr-96">
     <div>
       {P.blocks.map((block: BlocksUnion, index: number) => {
         return <ChatBlock key={block.id} index={index} block={block} />;

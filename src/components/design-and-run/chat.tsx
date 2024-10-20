@@ -1,15 +1,16 @@
 "use client";
 
 import { ChatContext } from "@/app/dashboard/design-and-run/chat-session-context";
-import { ChatList } from "@/components/design-and-run/chat-list";
-import { ChatPanel } from "@/components/design-and-run/chat-panel";
-import { EmptyScreen } from "@/components/design-and-run/empty-screen";
+import { SwarmChatList } from "@/components/shared/chat/swarm-chat-list";
+import { ChatPanelForAsideLayout } from "@/components/shared/chat/chat-panel-for-aside-layout";
+import { EmptyScreen } from "@/components/shared/chat/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
 import Drawer from "@/components/design-and-run/drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import Aside from "@/components/design-and-run/aside";
+import { PromptForm } from "@/components/design-and-run/prompt-form";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -18,8 +19,7 @@ export function Chat({ className }: ChatProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
   const chatState = useContext(ChatContext);
-  const { messagesRef, scrollRef, isAtBottom, scrollToBottom } =
-    useScrollAnchor();
+  const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   useEffect(() => {
     scrollToBottom();
@@ -44,20 +44,28 @@ export function Chat({ className }: ChatProps) {
           >
             <div className={cn("pb-[200px]", className)} ref={messagesRef}>
               {chatState.blocks.length ? (
-                <ChatList
+                <SwarmChatList
                   blocks={chatState.blocks}
                   isCompletionLoading={chatState.completionLoading}
                 />
               ) : (
-                <EmptyScreen />
+                <EmptyScreen
+                  content={
+                    <>
+                      <h1 className="text-center text-text_default text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
+                        Design & Run Swarm 🖼️
+                      </h1>
+                      <div className="text-base">Designed by Swarms 🔴</div>
+                    </>
+                  }
+                />
               )}
             </div>
-            <ChatPanel
+            <ChatPanelForAsideLayout
               sessionId={chatState.sessionId}
               input={input}
               setInput={setInput}
-              isAtBottom={isAtBottom}
-              scrollToBottom={scrollToBottom}
+              promptForm={PromptForm}
             />
           </div>
         </div>
@@ -73,7 +81,7 @@ export function Chat({ className }: ChatProps) {
         className={`fixed top-16 right-0 m-4 xl:hidden`}
         onClick={toggleDrawer}
       >
-        <Cog6ToothIcon className="w-6 h-6 text-white cursor-pointer group-hover:text-gray-700" />
+        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
       <Drawer

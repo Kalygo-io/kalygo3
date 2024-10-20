@@ -5,15 +5,15 @@ import { cn } from "@/shared/utils";
 import { Block } from "@/ts/types/Block";
 import { CheckIcon, ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 
-interface ChatMessageActionsProps extends React.ComponentProps<"div"> {
+interface MessageActionsProps extends React.ComponentProps<"div"> {
   message: Block;
 }
 
-export function ChatMessageActions({
+export function MessageActions({
   message,
   className,
   ...props
-}: ChatMessageActionsProps) {
+}: MessageActionsProps) {
   const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
 
   const onCopy = () => {
@@ -24,7 +24,7 @@ export function ChatMessageActions({
   return (
     <div
       className={cn(
-        "w-full flex items-center justify-end transition-opacity group-hover:opacity-100",
+        "flex items-center justify-end transition-opacity group-hover:opacity-100",
         className
       )}
       {...props}

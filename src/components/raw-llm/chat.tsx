@@ -1,9 +1,10 @@
 "use client";
 
 import { ChatContext } from "@/app/dashboard/raw-llm/chat-session-context";
-import { ChatList } from "@/components/raw-llm/chat-list";
-import { ChatPanel } from "@/components/raw-llm/chat-panel";
-import { EmptyScreen } from "@/components/raw-llm/empty-screen";
+import { ChatList } from "@/components/shared/chat/chat-list";
+import { ChatPanel } from "@/components/shared/chat/chat-panel";
+import { EmptyScreen } from "@/components/shared/chat/empty-screen";
+import { PromptForm } from "@/components/raw-llm/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
@@ -13,8 +14,7 @@ export interface ChatProps extends React.ComponentProps<"div"> {}
 export function Chat({ id, className }: ChatProps) {
   const [input, setInput] = useState("");
   const chatState = useContext(ChatContext);
-  const { messagesRef, scrollRef, isAtBottom, scrollToBottom } =
-    useScrollAnchor();
+  const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   useEffect(() => {
     scrollToBottom();
@@ -32,15 +32,22 @@ export function Chat({ id, className }: ChatProps) {
             isCompletionLoading={chatState.completionLoading}
           />
         ) : (
-          <EmptyScreen />
+          <EmptyScreen
+            content={
+              <>
+                <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
+                  Raw LLM 🍣
+                </h1>
+              </>
+            }
+          />
         )}
       </div>
       <ChatPanel
         sessionId={chatState.sessionId}
         input={input}
         setInput={setInput}
-        isAtBottom={isAtBottom}
-        scrollToBottom={scrollToBottom}
+        promptForm={PromptForm}
       />
     </div>
   );

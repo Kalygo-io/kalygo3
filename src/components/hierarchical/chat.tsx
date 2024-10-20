@@ -2,14 +2,15 @@
 
 import { ChatContext } from "@/app/dashboard/hierarchical/chat-session-context";
 import { ChatList } from "@/components/hierarchical/chat-list";
-import { ChatPanel } from "@/components/hierarchical/chat-panel";
-import { EmptyScreen } from "@/components/hierarchical/empty-screen";
+import { ChatPanelForAsideLayout } from "@/components/shared/chat/chat-panel-for-aside-layout";
+import { EmptyScreen } from "@/components/shared/chat/empty-screen";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
-import CustomizeSwarmDrawer from "@/components/hierarchical/customize-crew-drawer";
+import CustomizeSwarmDrawer from "@/components/hierarchical/drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import CustomizeSwarmDrawerNoDialog from "./customize-crew-drawer-no-dialog";
+import CustomizeSwarmDrawerNoDialog from "@/components/hierarchical/aside";
+import { PromptForm } from "@/components/hierarchical/prompt-form";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -34,8 +35,6 @@ export function Chat({ id, className }: ChatProps) {
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
   }, []);
 
-  // console.log("chat.tsx");
-
   return (
     <>
       <div className="xl:pr-96">
@@ -51,15 +50,20 @@ export function Chat({ id, className }: ChatProps) {
                   isCompletionLoading={chatState.completionLoading}
                 />
               ) : (
-                <EmptyScreen />
+                <EmptyScreen
+                  content={
+                    <h1 className="text-default_text_color text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
+                      Hierarchical Crew 🥇
+                    </h1>
+                  }
+                />
               )}
             </div>
-            <ChatPanel
+            <ChatPanelForAsideLayout
               sessionId={chatState.sessionId}
               input={input}
               setInput={setInput}
-              isAtBottom={isAtBottom}
-              scrollToBottom={scrollToBottom}
+              promptForm={PromptForm}
             />
           </div>
         </div>
@@ -87,7 +91,7 @@ export function Chat({ id, className }: ChatProps) {
         className={`fixed top-16 right-0 m-4 xl:hidden`}
         onClick={toggleDrawer}
       >
-        <Cog6ToothIcon className="w-6 h-6 text-white cursor-pointer group-hover:text-gray-700" />
+        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
       </div>
 
       <CustomizeSwarmDrawer

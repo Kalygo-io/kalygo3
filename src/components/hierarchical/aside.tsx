@@ -13,7 +13,7 @@ interface P {
   topNavHeight: number;
 }
 
-export default function CustomizeSwarmDrawerNoDialog(P: P) {
+export default function Aside(P: P) {
   const [callSwarmDesignerLoading, setCallSwarmDesignerLoading] =
     useState(false);
   const [swarmDesignerPrompt, setSwarmDesignerPrompt] = useState("");
