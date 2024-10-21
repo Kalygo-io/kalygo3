@@ -41,11 +41,43 @@ export const HierarchicalProvider = ({
     workerAgents: { role: string; goal: string; backstory: string }[];
   }>({
     managerAgent: {
-      role: "",
-      goal: "",
-      backstory: "",
+      role: "Chief Editor",
+      goal: "To oversee the news reporting process and ensure all news articles meet editorial standards.",
+      backstory:
+        "With years of experience in journalism, the Chief Editor leads the news crew, ensuring accuracy, fairness, and clarity in all reports.",
     },
-    workerAgents: [],
+    workerAgents: [
+      {
+        role: "Field Reporter",
+        goal: "To gather news stories from various locations and provide firsthand accounts.",
+        backstory:
+          "The Field Reporter is always on the move, capturing the pulse of events as they unfold on the ground.",
+      },
+      {
+        role: "Investigative Journalist",
+        goal: "To conduct in-depth research and uncover hidden truths behind major news stories.",
+        backstory:
+          "With a keen eye for detail, the Investigative Journalist digs deep into stories to reveal the facts that matter.",
+      },
+      {
+        role: "News Analyst",
+        goal: "To interpret and analyze news stories to provide context and understanding to the audience.",
+        backstory:
+          "The News Analyst uses their expertise to break down complex news stories, offering insights and perspectives.",
+      },
+      {
+        role: "Photojournalist",
+        goal: "To capture compelling images that complement news stories and provide visual context.",
+        backstory:
+          "Armed with a camera, the Photojournalist tells stories through powerful imagery that captures the essence of events.",
+      },
+      {
+        role: "Copy Editor",
+        goal: "To review and edit news articles for grammar, style, and accuracy before publication.",
+        backstory:
+          "The Copy Editor ensures that every piece of writing is polished and error-free, maintaining the publication's standards.",
+      },
+    ],
   });
 
   return (

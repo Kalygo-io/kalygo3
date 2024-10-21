@@ -17,8 +17,6 @@ interface P {
 }
 
 export default function Drawer(P: P) {
-  console.log("Drawer");
-
   return (
     <Dialog
       open={P.open}

@@ -51,7 +51,7 @@ export const CrewDesignerPromptForm = (P: P) => {
       <form className="space-y-0">
         <p className="text-sm leading-6 text-blue-300">
           What are you aiming to accomplish? We&apos;ll generate a group of
-          agents designed to efficiently achieve your goal.
+          hierarchical agents designed to efficiently achieve your goal.
         </p>
         <div>
           <div className="w-full">

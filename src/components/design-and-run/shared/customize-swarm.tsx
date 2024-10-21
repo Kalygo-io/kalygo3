@@ -86,7 +86,6 @@ export const CustomizeSwarm = (P: P) => {
             <button
               type="button"
               onClick={() => {
-                console.log("!!!");
                 P.setDrawerOpen && P.setDrawerOpen(false);
               }}
               className="xl:hidden relative rounded-md bg-blue-700 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"

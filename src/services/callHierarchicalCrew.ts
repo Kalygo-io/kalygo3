@@ -14,18 +14,17 @@ export async function callHierarchicalCrew(
   console.log("callHierarchicalCrew");
 
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/hierarchical-crew`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/hierarchical-crew/stream`,
     {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify({
-      //   sessionId: sessionId,
-      //   content: prompt,
-      //   agentsConfig: context.agents,
-      //   flow: context.flow,
-      // }),
+      body: JSON.stringify({
+        sessionId: sessionId,
+        content: prompt,
+        agentsConfig: context,
+      }),
       credentials: "include",
       signal: signal, // Pass the signal to the fetch request
     }

@@ -51,8 +51,6 @@ export function DashboardLayout({
   const segments = pathname.split("/");
   const current = segments[segments.length - 1];
 
-  console.log("dashboard-layout.tsx");
-
   return (
     <>
       <div>

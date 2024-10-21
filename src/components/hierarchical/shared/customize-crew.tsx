@@ -80,9 +80,6 @@ export const CustomizeCrew = (P: P) => {
     }
   };
 
-  console.log("context", context);
-  console.log("localData", localData);
-
   return (
     <div className="flex h-full flex-col divide-y divide-gray-700 bg-gray-800 shadow-xl">
       <div className="h-0 flex-1 overflow-y-auto">
@@ -166,10 +163,29 @@ export const CustomizeCrew = (P: P) => {
                           index: number
                         ) => (
                           <div key={index}>
-                            <fieldset className="border border-gray-400 p-2 rounded-md">
+                            <fieldset className="border border-gray-400 p-2 rounded-md relative">
                               <legend className="text-gray-400 text-sm px-1">
                                 Agent {index + 1}
                               </legend>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updatedAgents = [
+                                    ...localData.workerAgents,
+                                  ];
+                                  updatedAgents.splice(index, 1);
+                                  setLocalData((prevData) => ({
+                                    ...prevData,
+                                    workerAgents: updatedAgents,
+                                  }));
+                                }}
+                                className="absolute top-[-18px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
+                              >
+                                <XMarkIcon
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              </button>
                               <input
                                 id={`worker-agent.${index}.role`}
                                 name={`worker-agent.${index}.role`}
@@ -216,7 +232,25 @@ export const CustomizeCrew = (P: P) => {
       <div className="flex flex-shrink-0 justify-end px-4 py-4">
         <button
           type="button"
-          onClick={() => setLocalData(context)}
+          onClick={() => {
+            setHierarchicalContext({
+              managerAgent: {
+                role: "",
+                goal: "",
+                backstory: "",
+              },
+              workerAgents: [],
+            });
+
+            setLocalData({
+              managerAgent: {
+                role: "",
+                goal: "",
+                backstory: "",
+              },
+              workerAgents: [],
+            });
+          }}
           className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
         >
           Reset
