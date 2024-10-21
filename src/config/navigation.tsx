@@ -1,5 +1,3 @@
-import { FaDiceOne, FaDiceTwo, FaDiceThree, FaDiceFour } from "react-icons/fa";
-
 export const navigation = [
   {
     name: "Raw LLM",
