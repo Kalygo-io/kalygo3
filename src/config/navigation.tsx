@@ -15,8 +15,8 @@ export const navigation = [
     name: "Spreadsheet Swarm",
     href: "/dashboard/spreadsheet",
   },
-  // {
-  //   name: "Hierarchical Crew",
-  //   href: "/dashboard/hierarchical",
-  // },
+  {
+    name: "Hierarchical Crew",
+    href: "/dashboard/hierarchical",
+  },
 ];

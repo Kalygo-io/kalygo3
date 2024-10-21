@@ -43,7 +43,7 @@ export function DashboardLayout({
       onClick: async () => {
         await logoutRequest();
         setSidebarOpen(false);
-        router.push("/");
+        router.push("/auth");
       },
     },
   ];
@@ -146,7 +146,7 @@ export function DashboardLayout({
                           onClick={async () => {
                             await logoutRequest();
                             setSidebarOpen(false);
-                            router.push("/");
+                            router.push("/auth");
                           }}
                           className={classNames(
                             "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
@@ -226,7 +226,7 @@ export function DashboardLayout({
                   <span
                     onClick={async () => {
                       await logoutRequest();
-                      router.push("/");
+                      router.push("/auth");
                     }}
                     className={classNames(
                       "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",

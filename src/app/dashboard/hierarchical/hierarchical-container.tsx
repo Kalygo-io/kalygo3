@@ -9,7 +9,7 @@ import {
   chatReducer,
   initialState,
 } from "@/app/dashboard/hierarchical/chat-session-reducer";
-import { Chat as SwarmDesignerChat } from "@/components/hierarchical/chat";
+import { Chat as HierarchicalCrewChat } from "@/components/hierarchical/chat";
 import { BlocksUnion } from "@/ts/types/BlocksUnion";
 import { useReducer } from "react";
 
@@ -32,7 +32,7 @@ export function HierarchicalContainer() {
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>
-        <SwarmDesignerChat />
+        <HierarchicalCrewChat />
       </ChatDispatchContext.Provider>
     </ChatContext.Provider>
   );

@@ -11,10 +11,10 @@ export async function callHierarchicalCrew(
   dispatch: React.Dispatch<Action>,
   signal: AbortSignal
 ) {
-  console.log("callHierarchicalCrew");
+  console.log("!!! callHierarchicalCrew !!!");
 
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/hierarchical-crew/stream`,
+    `${process.env.NEXT_PUBLIC_CREWAI_API_URL}/api/hierarchical-crew/stream`,
     {
       method: "POST",
       headers: {
@@ -26,6 +26,8 @@ export async function callHierarchicalCrew(
         crewConfig: context,
       }),
       credentials: "include",
+      // referrerPolicy: "no-referrer",
+
       signal: signal, // Pass the signal to the fetch request
     }
   );

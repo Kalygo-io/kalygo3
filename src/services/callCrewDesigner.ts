@@ -1,6 +1,6 @@
 export async function callCrewDesigner(prompt: string) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/hierarchical-crew/design`,
+    `${process.env.NEXT_PUBLIC_CREWAI_API_URL}/api/hierarchical-crew/design`,
     {
       method: "POST",
       headers: {
