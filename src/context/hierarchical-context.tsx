@@ -41,41 +41,20 @@ export const HierarchicalProvider = ({
     workerAgents: { role: string; goal: string; backstory: string }[];
   }>({
     managerAgent: {
-      role: "Chief Editor",
-      goal: "To oversee the news reporting process and ensure all news articles meet editorial standards.",
-      backstory:
-        "With years of experience in journalism, the Chief Editor leads the news crew, ensuring accuracy, fairness, and clarity in all reports.",
+      role: "Project Manager",
+      goal: "Your goal is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard.",
+      backstory: `You're an experienced project manager who has been tasked with overseeing the news reporting team. Your team consists of 2 reporters who are responsible for finding the most relevant latest information about Haiti. Your role is to coordinate the efforts of the crew members, ensuring that each task is completed on time and to the highest standard. Include detailed sources and citations in your report so that the information can be verified.`,
     },
     workerAgents: [
       {
-        role: "Field Reporter",
-        goal: "To gather news stories from various locations and provide firsthand accounts.",
-        backstory:
-          "The Field Reporter is always on the move, capturing the pulse of events as they unfold on the ground.",
+        role: "Le Nouvelliste Reporter",
+        goal: "Conduct thorough research on latest news available on https://lenouvelliste.com/",
+        backstory: `You're an expert news reporter who is part of a team of journalists aggregating news about Haiti from various sources. Your role is to find the most relevant information about Haiti from the Le Nouvelliste's website and accurately relay it to the reporting director who will report it to readership. Include detailed sources and citations in your report so that the information can be verified.`,
       },
       {
-        role: "Investigative Journalist",
-        goal: "To conduct in-depth research and uncover hidden truths behind major news stories.",
-        backstory:
-          "With a keen eye for detail, the Investigative Journalist digs deep into stories to reveal the facts that matter.",
-      },
-      {
-        role: "News Analyst",
-        goal: "To interpret and analyze news stories to provide context and understanding to the audience.",
-        backstory:
-          "The News Analyst uses their expertise to break down complex news stories, offering insights and perspectives.",
-      },
-      {
-        role: "Photojournalist",
-        goal: "To capture compelling images that complement news stories and provide visual context.",
-        backstory:
-          "Armed with a camera, the Photojournalist tells stories through powerful imagery that captures the essence of events.",
-      },
-      {
-        role: "Copy Editor",
-        goal: "To review and edit news articles for grammar, style, and accuracy before publication.",
-        backstory:
-          "The Copy Editor ensures that every piece of writing is polished and error-free, maintaining the publication's standards.",
+        role: "Loop Haiti News Reporter",
+        goal: "Conduct thorough research on the latest news available on https://haiti.loopnews.com/",
+        backstory: `You're an expert news reporter who is part of a team of journalists aggregating news about Haiti from various sources. Your role is to find the most relevant information about Haiti from the Loops News Haiti website and accurately relay it to the reporting director who will report it to readership. Include detailed sources and citations in your report so that the information can be verified.`,
       },
     ],
   });

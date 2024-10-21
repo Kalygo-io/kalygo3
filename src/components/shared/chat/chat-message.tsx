@@ -41,7 +41,7 @@ export const ChatMessage = memo(
             </div>
             <div
               className={cn(
-                `px-1 space-y-2 overflow-hidden`,
+                `px-1 space-y-2 overflow-scroll`,
                 "ml-4",
                 P.message.error && "text-red-600"
               )}

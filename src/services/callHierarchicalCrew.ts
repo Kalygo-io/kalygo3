@@ -23,7 +23,7 @@ export async function callHierarchicalCrew(
       body: JSON.stringify({
         sessionId: sessionId,
         content: prompt,
-        agentsConfig: context,
+        crewConfig: context,
       }),
       credentials: "include",
       signal: signal, // Pass the signal to the fetch request
