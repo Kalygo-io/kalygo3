@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "@/app/globals.css";
 import "@/app/custom-scrollbar.css";
 import "react-toastify/dist/ReactToastify.css";
+import "@/app/react-markdown.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

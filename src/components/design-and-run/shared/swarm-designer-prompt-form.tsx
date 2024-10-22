@@ -60,7 +60,7 @@ export const SwarmDesignerPromptForm = (P: P) => {
           <div className="mt-2">
             <div className="flex rounded-md shadow-sm ring-gray-300 sm:max-w-md">
               <textarea
-                rows={5}
+                rows={4}
                 value={swarmDesignerPrompt}
                 onChange={(e) => setSwarmDesignerPrompt(e.target.value)}
                 id="swarm-designer-prompt"

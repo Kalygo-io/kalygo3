@@ -19,8 +19,7 @@ export function Chat({ id, className }: ChatProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
   const chatState = useContext(ChatContext);
-  const { messagesRef, scrollRef, isAtBottom, scrollToBottom } =
-    useScrollAnchor();
+  const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   useEffect(() => {
     scrollToBottom();

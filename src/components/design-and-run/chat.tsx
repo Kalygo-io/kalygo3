@@ -55,9 +55,9 @@ export function Chat({ className }: ChatProps) {
                       <h1 className="text-center text-text_default_color text-5xl font-semibold leading-12 text-ellipsis overflow-hidden leading-normal">
                         Design & Run Swarm 🖼️
                       </h1>
-                      <div className="text-text_default_color">
+                      {/* <div className="text-text_default_color">
                         Designed by Swarms 🔴
-                      </div>
+                      </div> */}
                     </>
                   }
                 />

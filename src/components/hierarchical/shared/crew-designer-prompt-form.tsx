@@ -58,7 +58,7 @@ export const CrewDesignerPromptForm = (P: P) => {
             <div className="mt-2">
               <div className="flex rounded-md shadow-sm ring-gray-300 sm:max-w-md">
                 <textarea
-                  rows={5}
+                  rows={4}
                   value={crewDesignerPrompt}
                   onChange={(e) => setCrewDesignerPrompt(e.target.value)}
                   id="swarm-designer-prompt"

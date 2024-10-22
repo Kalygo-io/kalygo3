@@ -11,8 +11,6 @@ export async function callHierarchicalCrew(
   dispatch: React.Dispatch<Action>,
   signal: AbortSignal
 ) {
-  console.log("!!! callHierarchicalCrew !!!");
-
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_CREWAI_API_URL}/api/hierarchical-crew/stream`,
     {
@@ -143,6 +141,17 @@ function dispatchEventToState(
   } else if (parsedChunk["event"] === "on_chat_model_end") {
     console.log("LLM END");
     accMessage.content = "";
+  } else if (parsedChunk["event"] === "crew_final_output") {
+    dispatch({
+      type: "ADD_DEFAULT_BLOCK",
+      payload: {
+        id: parsedChunk["id"],
+        agentName: agentName,
+        content: parsedChunk["data"],
+        type: "ai",
+        error: null,
+      },
+    });
   } else {
     console.error("Unknown event:", parsedChunk["event"]);
   }

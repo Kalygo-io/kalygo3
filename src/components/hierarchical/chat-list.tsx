@@ -1,7 +1,5 @@
 import { ChatBlock } from "@/components/hierarchical/chat-block";
-import { Block } from "@/ts/types/Block";
 import { BlocksUnion } from "@/ts/types/BlocksUnion";
-import { ParallelGroupBlock } from "@/ts/types/ParallelGroupBlock";
 
 export interface P {
   isCompletionLoading: boolean;

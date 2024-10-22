@@ -8,11 +8,11 @@ export const navigation = [
     href: "/dashboard/rag-agent",
   },
   {
-    name: "Design and Run Swarm",
+    name: "Design and Run Crew",
     href: "/dashboard/design-and-run",
   },
   {
-    name: "Spreadsheet Swarm",
+    name: "Spreadsheet Crew",
     href: "/dashboard/spreadsheet",
   },
   {

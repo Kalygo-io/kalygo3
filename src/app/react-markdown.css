@@ -1,0 +1,60 @@
+.markdown {
+  /* some root styles here */
+}
+
+.markdown ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  list-style: disc outside none;
+}
+
+.markdown ol li {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 1em;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown ol li:first-child {
+  margin-top: 0;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown ol li:last-child {
+  margin-bottom: 0;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown ul {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  list-style: disc outside none;
+}
+
+.markdown ul li {
+  margin-top: 1em;
+  margin-left: 1em;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown ul li:first-child {
+  margin-top: 0;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown ol li:last-child {
+  margin-bottom: 0;
+  display: list-item;
+  text-align: -webkit-match-parent;
+}
+
+.markdown p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-weight: 400;
+}

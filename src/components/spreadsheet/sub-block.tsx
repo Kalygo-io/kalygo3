@@ -1,13 +1,9 @@
 import { cn } from "@/shared/utils";
-import { BiUser } from "react-icons/bi";
 import { GiArtificialIntelligence } from "react-icons/gi";
 
-import { Separator } from "@/components/shared/separator";
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import { stringToColor } from "@/shared/uuidToColorCode";
-import { Block } from "@/ts/types/Block";
-import { ParallelGroupBlock } from "@/ts/types/ParallelGroupBlock";
 import { BlocksUnion } from "@/ts/types/BlocksUnion";
 
 interface P {

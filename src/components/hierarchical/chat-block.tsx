@@ -54,6 +54,7 @@ export const ChatBlock = memo(
             >
               <b className="text-lg">{P.block.agentName}</b>
               <ReactMarkdown
+                className={"markdown"}
                 components={{
                   p({ className, children, ...props }) {
                     return (
