@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { CrewDesignerPromptForm } from "@/components/hierarchical/shared/crew-designer-prompt-form";
 import { errorToast, successToast } from "@/shared/toasts";
 import { errorReporter } from "@/shared/errorReporter";
-import { Separator } from "@radix-ui/react-separator";
 
 interface P {
   parentTitle?: string;
@@ -32,6 +31,7 @@ export const CustomizeCrew = (P: P) => {
           {
             role: "",
             goal: "",
+            expanded: true,
           },
         ],
       }));
@@ -157,6 +157,7 @@ export const CustomizeCrew = (P: P) => {
                     </fieldset>
                   </div>
                 </div>
+
                 <div>
                   <div>
                     <label
@@ -175,52 +176,85 @@ export const CustomizeCrew = (P: P) => {
                           index: number
                         ) => (
                           <div key={index}>
-                            <fieldset className="border border-gray-400 p-2 rounded-md relative">
-                              <legend className="text-gray-400 text-sm px-1">
-                                Agent {index + 1}
-                              </legend>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const updatedAgents = [
-                                    ...localData.workerAgents,
-                                  ];
-                                  updatedAgents.splice(index, 1);
-                                  setLocalData((prevData) => ({
-                                    ...prevData,
-                                    workerAgents: updatedAgents,
-                                  }));
-                                }}
-                                className="absolute top-[-18px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
-                              >
-                                <XMarkIcon
-                                  className="h-5 w-5"
-                                  aria-hidden="true"
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updatedAgents =
+                                  localData.workerAgents.map((agent, i) =>
+                                    i === index
+                                      ? { ...agent, expanded: !agent.expanded }
+                                      : agent
+                                  );
+                                setLocalData((prevData) => ({
+                                  ...prevData,
+                                  workerAgents: updatedAgents,
+                                }));
+                              }}
+                              className="text-blue-200 hover:text-blue-300 focus:outline-none mt-2"
+                            >
+                              {localData.workerAgents[index].expanded
+                                ? `- Collapse`
+                                : `+ ${localData.workerAgents[index].role}`}
+                            </button>
+                            {localData.workerAgents[index].expanded && (
+                              <fieldset className="border border-gray-400 p-2 rounded-md relative">
+                                <legend className="text-gray-400 text-sm px-1">
+                                  Worker {index + 1}
+                                </legend>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updatedAgents = [
+                                      ...localData.workerAgents,
+                                    ];
+                                    updatedAgents.splice(index, 1);
+                                    setLocalData((prevData) => ({
+                                      ...prevData,
+                                      workerAgents: updatedAgents,
+                                    }));
+                                  }}
+                                  className="absolute top-[-18px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
+                                >
+                                  <XMarkIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                                <input
+                                  id={`worker-agent.${index}.role`}
+                                  name={`worker-agent.${index}.role`}
+                                  value={
+                                    localData?.workerAgents?.[index]?.role || ""
+                                  }
+                                  onChange={handleChangeWorkers}
+                                  placeholder={`Role`}
+                                  className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
                                 />
-                              </button>
-                              <input
-                                id={`worker-agent.${index}.role`}
-                                name={`worker-agent.${index}.role`}
-                                value={
-                                  localData?.workerAgents?.[index]?.role || ""
-                                }
-                                onChange={handleChangeWorkers}
-                                placeholder={`Role`}
-                                className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
-                              />
-                              <textarea
-                                rows={2}
-                                id={`worker-agent.${index}.goal`}
-                                name={`worker-agent.${index}.goal`}
-                                value={
-                                  localData?.workerAgents?.[index]?.goal || ""
-                                }
-                                onChange={handleChangeWorkers}
-                                placeholder={`Goal`}
-                                className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
-                              />
-                            </fieldset>
-                            <Separator className="my-4 bg-gray-700" />
+                                <textarea
+                                  rows={2}
+                                  id={`worker-agent.${index}.goal`}
+                                  name={`worker-agent.${index}.goal`}
+                                  value={
+                                    localData?.workerAgents?.[index]?.goal || ""
+                                  }
+                                  onChange={handleChangeWorkers}
+                                  placeholder={`Goal`}
+                                  className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
+                                />
+                                <textarea
+                                  rows={4}
+                                  id={`worker-agent.${index}.backstory`}
+                                  name={`worker-agent.${index}.backstory`}
+                                  value={
+                                    localData?.workerAgents?.[index]
+                                      ?.backstory || ""
+                                  }
+                                  onChange={handleChangeWorkers}
+                                  placeholder={`Backstory`}
+                                  className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
+                                />
+                              </fieldset>
+                            )}
                           </div>
                         )
                       )}

@@ -28,8 +28,13 @@ export const SwarmDesignerProvider = ({
     agents: { name: string; system_prompt: string }[];
     flow: string;
   }>({
-    agents: [],
-    flow: "",
+    agents: [
+      {
+        name: "Python Expert",
+        system_prompt: "Python Expert",
+      },
+    ],
+    flow: "Python Expert",
   });
 
   return (
