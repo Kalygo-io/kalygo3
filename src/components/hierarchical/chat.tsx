@@ -18,6 +18,8 @@ export function Chat({ id, className }: ChatProps) {
   const [input, setInput] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
+  const [asideWidth, setAsideWidth] = useState(382); // Default width (96px = 384px)
+  const [isResizing, setIsResizing] = useState(false);
   const chatState = useContext(ChatContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
@@ -29,6 +31,43 @@ export function Chat({ id, className }: ChatProps) {
     setDrawerOpen(!drawerOpen);
   };
 
+  const handleMouseDown = () => {
+    setIsResizing(true);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isResizing) {
+      // Calculate new width and limit it to 50% of the screen
+      const newWidth = Math.min(
+        window.innerWidth - e.clientX,
+        window.innerWidth / 2
+      );
+      if (newWidth >= 382) {
+        // Set a minimum width of 300px
+        setAsideWidth(newWidth);
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (isResizing) setIsResizing(false);
+  };
+
+  useEffect(() => {
+    if (isResizing) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isResizing]);
+
   useEffect(() => {
     const topNavEl = document?.getElementById("dashboard-sticky-top-nav");
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
@@ -36,6 +75,7 @@ export function Chat({ id, className }: ChatProps) {
 
   return (
     <>
+      {/* <div className={cn("xl:pr-96", `xl:pr-[${asideWidth}px]`)}> */}
       <div className="xl:pr-96">
         <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
           <div
@@ -63,12 +103,16 @@ export function Chat({ id, className }: ChatProps) {
               input={input}
               setInput={setInput}
               promptForm={PromptForm}
+              asideWidth={asideWidth} // Pass the new prop
             />
           </div>
         </div>
       </div>
 
-      <aside className="text-white pt-16 fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-700 px-4 py-6 sm:px-6 lg:px-8 xl:block">
+      <aside
+        className="text-white pt-16 fixed inset-y-0 right-0 overflow-y-auto border-l border-gray-700 px-4 py-6 sm:px-6 lg:px-8 hidden xl:block"
+        style={{ width: `${asideWidth}px` }}
+      >
         <div className="pt-8">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">Customize Crew</h2>
@@ -86,8 +130,15 @@ export function Chat({ id, className }: ChatProps) {
         </div>
       </aside>
 
+      {/* Draggable Handle */}
       <div
-        className={`fixed top-16 right-0 m-4 xl:hidden`}
+        className="fixed inset-y-0 right-0 z-10 w-0.5 cursor-ew-resize bg-gray-600 hidden xl:block"
+        onMouseDown={handleMouseDown}
+        style={{ right: `${asideWidth}px` }}
+      />
+
+      <div
+        className="fixed top-16 right-0 m-4 xl:hidden"
         onClick={toggleDrawer}
       >
         <Cog6ToothIcon className="text-text_default_color w-6 h-6 cursor-pointer group-hover:text-gray-700" />

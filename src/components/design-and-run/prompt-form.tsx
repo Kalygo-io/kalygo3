@@ -34,8 +34,6 @@ export function PromptForm({
   const dispatch = React.useContext(ChatDispatchContext);
 
   const abortControllerRef = React.useRef<AbortController | null>(null);
-  // const abortController = new AbortController();
-  // const signal = abortController.signal;
 
   return (
     <form
