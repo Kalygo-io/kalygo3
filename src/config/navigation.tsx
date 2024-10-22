@@ -25,7 +25,7 @@ export const navigation = [
     enabled: false,
   },
   {
-    name: "Hierarchical Haiti News Crew",
+    name: "Hierarchical Haitian News Crew",
     href: "/dashboard/hierarchical-haitian-news-crew",
     enabled: true,
   },
