@@ -13,7 +13,6 @@ export interface ChatPanelProps {
     };
     sessionId: string;
   }>;
-  asideWidth: number; // New prop to dynamically adjust layout
 }
 
 const MIN_PANEL_HEIGHT = 16; // Minimum height for the panel
@@ -51,7 +50,6 @@ export const ChatPanelForHierarchicalNewsCrewsAsideLayout: React.FC<
     <div
       ref={panelRef}
       style={{ height: "300px" }} // Initial height
-      // className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] bg-black border-t border-gray-700 shadow-lg rounded-t-xl"
       className="fixed inset-x-0 bottom-0 w-full peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] bg-black border-t border-gray-700 shadow-lg rounded-t-xl"
     >
       {/* Draggable handle */}

@@ -9,6 +9,7 @@ export interface ChatPanelProps {
     setInput: (value: string) => void;
     sessionId: string;
   }>;
+  asideWidth: number; // New prop to dynamically adjust layout
 }
 
 export const ChatPanelForAsideLayout: React.FC<ChatPanelProps> = ({
@@ -16,18 +17,10 @@ export const ChatPanelForAsideLayout: React.FC<ChatPanelProps> = ({
   input,
   setInput,
   promptForm: PromptForm,
+  asideWidth,
 }) => {
   return (
-    <div
-      // className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in lg:pl-72"
-      className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]"
-      style={
-        {
-          // paddingLeft: asideWidth >= 300 ? `${asideWidth}px` : "250px", // Adjust padding based on asideWidth
-          // paddingLeft: "250px", // Adjust padding based on asideWidth
-        }
-      }
-    >
+    <div className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
       <div className="mx-auto lg:pl-72 xl:pr-96">
         <div className="mx-8 space-y-4 border-t bg-black border-gray-700 px-4 py-2 shadow-lg rounded-t-xl sm:border md:py-4">
           <PromptForm input={input} setInput={setInput} sessionId={sessionId} />

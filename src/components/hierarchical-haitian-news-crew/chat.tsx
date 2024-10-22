@@ -103,7 +103,6 @@ export function Chat({ id, className }: ChatProps) {
               sessionId={chatState.sessionId}
               task={context.task}
               promptForm={PromptForm}
-              asideWidth={asideWidth} // Pass the new prop
             />
           </div>
         </div>

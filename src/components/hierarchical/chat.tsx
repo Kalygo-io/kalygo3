@@ -103,7 +103,6 @@ export function Chat({ id, className }: ChatProps) {
               input={input}
               setInput={setInput}
               promptForm={PromptForm}
-              asideWidth={asideWidth} // Pass the new prop
             />
           </div>
         </div>
