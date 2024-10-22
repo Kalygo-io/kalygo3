@@ -9,7 +9,6 @@ export interface ChatPanelProps {
     setInput: (value: string) => void;
     sessionId: string;
   }>;
-  asideWidth: number; // New prop to dynamically adjust layout
 }
 
 export const ChatPanelForAsideLayout: React.FC<ChatPanelProps> = ({
@@ -17,7 +16,6 @@ export const ChatPanelForAsideLayout: React.FC<ChatPanelProps> = ({
   input,
   setInput,
   promptForm: PromptForm,
-  asideWidth, // New prop
 }) => {
   return (
     <div

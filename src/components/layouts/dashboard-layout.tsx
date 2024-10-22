@@ -186,19 +186,25 @@ export function DashboardLayout({
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <Link
-                          href={item.href}
-                          className={classNames(
-                            item.href.split("/")[
-                              item.href.split("/").length - 1
-                            ] === current
-                              ? "bg-blue-700 text-white"
-                              : "text-blue-200 hover:text-white hover:bg-blue-700",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          )}
-                        >
-                          {item.name}
-                        </Link>
+                        {item.enabled ? (
+                          <Link
+                            href={item.href}
+                            className={classNames(
+                              item.href.split("/")[
+                                item.href.split("/").length - 1
+                              ] === current
+                                ? "bg-blue-700 text-white"
+                                : "text-blue-200 hover:text-white hover:bg-blue-700",
+                              "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            )}
+                          >
+                            {item.name}
+                          </Link>
+                        ) : (
+                          <span className="text-gray-500 p-2 cursor-default text-sm leading-6 font-semibold">
+                            {item.name}
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
