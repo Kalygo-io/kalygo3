@@ -56,7 +56,7 @@ export const CrewDesignerPromptForm = (P: P) => {
         <div>
           <div className="w-full">
             <div className="mt-2">
-              <div className="flex rounded-md shadow-sm ring-gray-300 sm:max-w-md">
+              <div className="flex rounded-md shadow-sm ring-gray-300">
                 <textarea
                   rows={4}
                   value={crewDesignerPrompt}
@@ -76,7 +76,7 @@ export const CrewDesignerPromptForm = (P: P) => {
           <button
             type="button"
             onClick={handleCrewDesignerPromptSubmit}
-            className="flex w-full justify-center rounded-b-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="flex w-full justify-center rounded-b-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-blue-600"
           >
             {callCrewDesignerLoading ? <Spinner /> : "Run Crew Builder"}
           </button>
