@@ -2,7 +2,7 @@ import { useHierarchicalContext } from "@/context/hierarchical-context";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import React, { useEffect, useState } from "react";
 import { CrewDesignerPromptForm } from "@/components/hierarchical/shared/crew-designer-prompt-form";
-import { successToast } from "@/shared/toasts";
+import { errorToast, successToast } from "@/shared/toasts";
 import { errorReporter } from "@/shared/errorReporter";
 import { Separator } from "@radix-ui/react-separator";
 
@@ -40,6 +40,21 @@ export const CustomizeCrew = (P: P) => {
 
   const handleChangeManager = (e: { target: { name: any; value: any } }) => {
     console.log("handleChangeManager");
+    const { name, value } = e.target;
+
+    if (name.startsWith("manager-agent.")) {
+      const [_, agentProperty] = name.split(".");
+
+      setLocalData((prevData) => ({
+        ...prevData,
+        managerAgent: {
+          ...prevData.managerAgent,
+          [agentProperty]: value,
+        },
+      }));
+    } else {
+      errorToast("Invalid manager property");
+    }
   };
 
   const handleChangeWorkers = (e: { target: { name: any; value: any } }) => {
@@ -60,10 +75,7 @@ export const CustomizeCrew = (P: P) => {
         ],
       }));
     } else {
-      setLocalData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
+      errorToast("Invalid worker property");
     }
   };
 
@@ -198,8 +210,8 @@ export const CustomizeCrew = (P: P) => {
                               />
                               <textarea
                                 rows={2}
-                                id={`agents.${index}.goal`}
-                                name={`agents.${index}.goal`}
+                                id={`worker-agent.${index}.goal`}
+                                name={`worker-agent.${index}.goal`}
                                 value={
                                   localData?.workerAgents?.[index]?.goal || ""
                                 }
