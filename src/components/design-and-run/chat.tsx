@@ -68,6 +68,7 @@ export function Chat({ className }: ChatProps) {
               input={input}
               setInput={setInput}
               promptForm={PromptForm}
+              asideWidth={384}
             />
           </div>
         </div>
