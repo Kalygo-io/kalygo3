@@ -58,3 +58,12 @@
   margin-bottom: 1em;
   font-weight: 400;
 }
+
+.markdown a {
+  color: lightblue;
+  text-decoration: none;
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}

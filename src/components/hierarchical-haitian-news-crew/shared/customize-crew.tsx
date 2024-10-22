@@ -125,7 +125,10 @@ export const CustomizeCrew = (P: P) => {
                     Manager Agent
                   </label>
                   <div className="mt-2">
-                    <fieldset className="border border-yellow-400 p-2 rounded-md">
+                    <fieldset className="border border-yellow-400 p-2 rounded-md space-y-2">
+                      <label className="block text-sm font-medium text-gray-200 mt-2">
+                        Role
+                      </label>
                       <input
                         id={`manager-agent.role`}
                         name={`manager-agent.role`}
@@ -134,6 +137,9 @@ export const CustomizeCrew = (P: P) => {
                         placeholder={`Role`}
                         className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-0"
                       />
+                      <label className="block text-sm font-medium text-gray-200 mt-2">
+                        Goal
+                      </label>
                       <textarea
                         rows={2}
                         id={`manager-agent.goal`}
@@ -143,6 +149,9 @@ export const CustomizeCrew = (P: P) => {
                         placeholder={`Goal`}
                         className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
                       />
+                      <label className="block text-sm font-medium text-gray-200 mt-2">
+                        Backstory
+                      </label>
                       <textarea
                         rows={4}
                         id={`manager-agent.backstory`}
@@ -195,7 +204,7 @@ export const CustomizeCrew = (P: P) => {
                                 : `+ ${localData.workerAgents[index].role}`}
                             </button>
                             {localData.workerAgents[index].expanded && (
-                              <fieldset className="border border-gray-400 p-2 rounded-md relative">
+                              <fieldset className="border border-gray-400 p-2 rounded-md relative space-y-2">
                                 <legend className="text-gray-400 text-sm px-1">
                                   Worker {index + 1}
                                 </legend>
@@ -211,13 +220,16 @@ export const CustomizeCrew = (P: P) => {
                                       workerAgents: updatedAgents,
                                     }));
                                   }}
-                                  className="absolute top-[-18px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
+                                  className="absolute top-[-24px] right-[-8px] text-red-700 hover:text-red-800 focus:outline-none bg-gray-600 border border-gray-500 rounded-full"
                                 >
                                   <XMarkIcon
                                     className="h-5 w-5"
                                     aria-hidden="true"
                                   />
                                 </button>
+                                <label className="block text-sm font-medium text-gray-200 mt-2">
+                                  Role
+                                </label>
                                 <input
                                   id={`worker-agent.${index}.role`}
                                   name={`worker-agent.${index}.role`}
@@ -228,6 +240,9 @@ export const CustomizeCrew = (P: P) => {
                                   placeholder={`Role`}
                                   className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
                                 />
+                                <label className="block text-sm font-medium text-gray-200 mt-2">
+                                  Goal
+                                </label>
                                 <textarea
                                   rows={2}
                                   id={`worker-agent.${index}.goal`}
@@ -239,6 +254,9 @@ export const CustomizeCrew = (P: P) => {
                                   placeholder={`Goal`}
                                   className="bg-gray-800 block w-full rounded-md border-0 py-1.5 text-gray-200 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 mt-2"
                                 />
+                                <label className="block text-sm font-medium text-gray-200 mt-2">
+                                  Backstory
+                                </label>
                                 <textarea
                                   rows={4}
                                   id={`worker-agent.${index}.backstory`}

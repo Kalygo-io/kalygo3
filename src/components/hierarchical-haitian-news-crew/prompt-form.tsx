@@ -11,13 +11,18 @@ import { nanoid } from "@/shared/utils";
 import { useRouter } from "next/navigation";
 import { useHierarchicalHaitianNewsCrewContext } from "@/context/hierarchical-haitian-news-crew-context";
 import { callHierarchicalHaitianNewsCrew } from "@/services/callHierarchicalHaitianNewsCrew";
-import { StopIcon } from "@heroicons/react/24/outline";
+
 import { Spinner } from "../shared/common/spinner";
+import { Dispatch, SetStateAction } from "react";
 
 export function PromptForm({
   task,
   sessionId,
+  emails,
+  setEmails,
 }: {
+  emails: string;
+  setEmails: Dispatch<SetStateAction<string>>;
   task: {
     description: string;
     expected_output: string;
@@ -66,8 +71,11 @@ export function PromptForm({
           abortControllerRef.current = new AbortController();
           const signal = abortControllerRef.current.signal;
 
+          console.log("emails", emails);
+
           // Make the API call with the abort signal
           await callHierarchicalHaitianNewsCrew(
+            emails,
             sessionId,
             context,
             dispatch,
@@ -95,6 +103,9 @@ export function PromptForm({
       }}
     >
       <div className="relative flex max-h-full w-full grow flex-col overflow-hidden bg-background space-y-2">
+        <label className="block text-sm font-medium text-gray-200">
+          Task Description
+        </label>
         <textarea
           ref={inputRef}
           onKeyDown={onKeyDown}
@@ -105,6 +116,9 @@ export function PromptForm({
           rows={4}
           value={task.description}
         />
+        <label className="block text-sm font-medium text-gray-200">
+          Expected Output
+        </label>
         <textarea
           ref={inputRef}
           tabIndex={0}
@@ -115,6 +129,16 @@ export function PromptForm({
           readOnly
           rows={2}
           value={task.expected_output}
+        />
+        <label className="block text-sm font-medium text-gray-200">
+          Notify Emails
+        </label>
+        <input
+          type="text"
+          placeholder="Enter emails separated by commas"
+          value={emails}
+          onChange={(e) => setEmails(e.target.value)}
+          className="block w-full rounded-md border-0 py-1.5 text-gray-200 bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
         />
         <div>
           {chatContext.completionLoading ? (

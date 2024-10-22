@@ -16,6 +16,7 @@ import { useHierarchicalHaitianNewsCrewContext } from "@/context/hierarchical-ha
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
 export function Chat({ id, className }: ChatProps) {
+  const [emails, setEmails] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [topNavElClientHeight, setTopNavElClientHeight] = useState(0);
   const [asideWidth, setAsideWidth] = useState(382); // Default width (96px = 384px)
@@ -100,6 +101,8 @@ export function Chat({ id, className }: ChatProps) {
               )}
             </div>
             <ChatPanelForHierarchicalNewsCrewsAsideLayout
+              emails={emails}
+              setEmails={setEmails}
               sessionId={chatState.sessionId}
               task={context.task}
               promptForm={PromptForm}

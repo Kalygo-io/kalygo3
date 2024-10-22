@@ -9,16 +9,16 @@ export const navigation = [
     href: "/dashboard/rag-agent",
     enabled: true,
   },
-  {
-    name: "Design and Run Swarm",
-    href: "/dashboard/design-and-run",
-    enabled: true,
-  },
-  {
-    name: "Spreadsheet Swarm",
-    href: "/dashboard/spreadsheet",
-    enabled: true,
-  },
+  // {
+  //   name: "Design and Run Swarm",
+  //   href: "/dashboard/design-and-run",
+  //   enabled: true,
+  // },
+  // {
+  //   name: "Spreadsheet Swarm",
+  //   href: "/dashboard/spreadsheet",
+  //   enabled: true,
+  // },
   {
     name: "Hierarchical Crew",
     href: "/dashboard/hierarchical",

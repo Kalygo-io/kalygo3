@@ -2,6 +2,7 @@ import { Action } from "@/app/dashboard/hierarchical-haitian-news-crew/chat-sess
 import React from "react";
 
 export async function callHierarchicalHaitianNewsCrew(
+  emails: string,
   sessionId: string,
   context: {
     managerAgent: { role: string; goal: string; backstory: string };
@@ -18,6 +19,7 @@ export async function callHierarchicalHaitianNewsCrew(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        emails,
         sessionId: sessionId,
         content: prompt,
         crewConfig: context,

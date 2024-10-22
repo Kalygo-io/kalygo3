@@ -1,7 +1,9 @@
-import React, { useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 
 export interface ChatPanelProps {
   sessionId: string;
+  emails: string;
+  setEmails: Dispatch<SetStateAction<string>>;
   task: {
     description: string;
     expected_output: string;
@@ -12,6 +14,8 @@ export interface ChatPanelProps {
       expected_output: string;
     };
     sessionId: string;
+    emails: string;
+    setEmails: Dispatch<SetStateAction<string>>;
   }>;
 }
 
@@ -19,7 +23,7 @@ const MIN_PANEL_HEIGHT = 16; // Minimum height for the panel
 
 export const ChatPanelForHierarchicalNewsCrewsAsideLayout: React.FC<
   ChatPanelProps
-> = ({ sessionId, task, promptForm: PromptForm }) => {
+> = ({ sessionId, task, promptForm: PromptForm, emails, setEmails }) => {
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Handler for dragging
@@ -62,7 +66,12 @@ export const ChatPanelForHierarchicalNewsCrewsAsideLayout: React.FC<
 
       <div className="mx-auto lg:pl-72 xl:pr-96">
         <div className="mx-8 space-y-4 px-4 py-2">
-          <PromptForm task={task} sessionId={sessionId} />
+          <PromptForm
+            task={task}
+            sessionId={sessionId}
+            emails={emails}
+            setEmails={setEmails}
+          />
           <p className="text-gray-200 px-2 text-center text-xs leading-normal hidden sm:block">
             Kalygo &copy; {new Date().getFullYear()}
           </p>
