@@ -19,6 +19,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { navigation } from "@/config/navigation";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -184,7 +185,13 @@ export function DashboardLayout({
                 router.push("/");
               }}
             >
-              <span className="text-white text-3xl">🔵</span>
+              <Image
+                src="/ledger-ai-logo.svg"
+                alt="Ledger AI Logo"
+                width={50}
+                height={50}
+                className="h-10 w-auto"
+              />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
