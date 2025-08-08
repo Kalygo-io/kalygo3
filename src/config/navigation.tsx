@@ -1,29 +1,54 @@
 export const navigation = [
   {
-    name: "Raw LLM",
+    name: "LEVEL 1: Raw LLM",
     href: "/dashboard/raw-llm",
     enabled: true,
   },
   {
-    name: "No RAG",
+    name: 'LEVEL 2: Adding "memory" to LLM',
     href: "/dashboard/no-rag",
     enabled: true,
   },
   {
-    name: "R.A.G. Agent",
+    name: "LEVEL 3: Naive RAG",
     href: "/dashboard/rag-agent",
     enabled: true,
   },
   {
-    name: "ReAct Agent",
+    name: "LEVEL 4: RAG + Reranking",
+    href: "/dashboard/reranking",
+    enabled: true,
+  },
+  {
+    name: "LEVEL 5: Agentic RAG",
     href: "/dashboard/re-act",
     enabled: true,
   },
-  // {
-  //   name: "Design and Run Swarm",
-  //   href: "/dashboard/design-and-run",
-  //   enabled: true,
-  // },
+  {
+    name: "LEVEL 6: Multimodal Embeddings",
+    href: "/dashboard/multimodal",
+    enabled: true,
+  },
+  {
+    name: "LEVEL 7: Hybrid Search",
+    href: "/dashboard/swarm",
+    enabled: true,
+  },
+  {
+    name: "LEVEL 8: Access Control",
+    href: "/dashboard/swarm",
+    enabled: true,
+  },
+  {
+    name: "LEVEL 9: Chunking",
+    href: "/dashboard/swarm",
+    enabled: true,
+  },
+  {
+    name: "LEVEL 10: Evals",
+    href: "/dashboard/swarm",
+    enabled: true,
+  },
   // {
   //   name: "Spreadsheet Swarm",
   //   href: "/dashboard/spreadsheet",
