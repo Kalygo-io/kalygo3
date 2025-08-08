@@ -14,6 +14,9 @@ export default async function Page() {
       </DashboardLayout>
     );
   } catch (error) {
+    console.log("! error !", error);
+    debugger;
+
     return <h1 className="text-white">Oops!</h1>;
   }
 }
