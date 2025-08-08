@@ -49,19 +49,4 @@ export const navigation = [
     href: "/dashboard/swarm",
     enabled: true,
   },
-  // {
-  //   name: "Spreadsheet Swarm",
-  //   href: "/dashboard/spreadsheet",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Hierarchical Crew",
-  //   href: "/dashboard/hierarchical",
-  //   enabled: false,
-  // },
-  // {
-  //   name: "Hierarchical Haitian News Crew",
-  //   href: "/dashboard/hierarchical-haitian-news-crew",
-  //   enabled: true,
-  // },
 ];
