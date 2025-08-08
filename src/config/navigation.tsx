@@ -5,8 +5,18 @@ export const navigation = [
     enabled: true,
   },
   {
+    name: "No RAG",
+    href: "/dashboard/no-rag",
+    enabled: true,
+  },
+  {
     name: "R.A.G. Agent",
     href: "/dashboard/rag-agent",
+    enabled: true,
+  },
+  {
+    name: "ReAct Agent",
+    href: "/dashboard/re-act",
     enabled: true,
   },
   // {
@@ -19,14 +29,14 @@ export const navigation = [
   //   href: "/dashboard/spreadsheet",
   //   enabled: true,
   // },
-  {
-    name: "Hierarchical Crew",
-    href: "/dashboard/hierarchical",
-    enabled: false,
-  },
-  {
-    name: "Hierarchical Haitian News Crew",
-    href: "/dashboard/hierarchical-haitian-news-crew",
-    enabled: true,
-  },
+  // {
+  //   name: "Hierarchical Crew",
+  //   href: "/dashboard/hierarchical",
+  //   enabled: false,
+  // },
+  // {
+  //   name: "Hierarchical Haitian News Crew",
+  //   href: "/dashboard/hierarchical-haitian-news-crew",
+  //   enabled: true,
+  // },
 ];
