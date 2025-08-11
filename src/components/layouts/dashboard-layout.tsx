@@ -185,13 +185,7 @@ export function DashboardLayout({
                 router.push("/");
               }}
             >
-              <Image
-                src="/ledger-ai-logo.svg"
-                alt="Ledger AI Logo"
-                width={50}
-                height={50}
-                className="h-10 w-auto"
-              />
+              🔵
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
