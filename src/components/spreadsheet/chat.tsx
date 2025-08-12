@@ -2,15 +2,14 @@
 
 import { ChatContext } from "@/app/dashboard/spreadsheet/chat-session-context";
 import { SwarmChatList } from "@/components/shared/chat/swarm-chat-list";
-import { ChatPanelForAsideLayout } from "@/components/shared/chat/chat-panel-for-aside-layout";
+import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { EmptyScreen } from "@/components/shared/chat/empty-screen";
-import { PromptForm } from "@/components/spreadsheet/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
-import Drawer from "@/components/spreadsheet/drawer";
-import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import Aside from "./aside";
+import { PromptForm } from "@/components/spreadsheet/prompt-form";
+import { Drawer } from "@/components/spreadsheet/drawer";
+import { Aside } from "@/components/spreadsheet/aside";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -43,7 +42,10 @@ export function Chat({ className }: ChatProps) {
             className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
             ref={scrollRef}
           >
-            <div className={cn("pb-[200px]", className)} ref={messagesRef}>
+            <div
+              className={cn("pb-[200px] chat-messages-fade", className)}
+              ref={messagesRef}
+            >
               {chatState.blocks.length ? (
                 <SwarmChatList
                   blocks={chatState.blocks}
@@ -64,47 +66,17 @@ export function Chat({ className }: ChatProps) {
                 />
               )}
             </div>
-            <ChatPanelForAsideLayout
+            <ChatPanel
               sessionId={chatState.sessionId}
               input={input}
               setInput={setInput}
               promptForm={PromptForm}
-              asideWidth={382}
             />
           </div>
         </div>
       </div>
-
-      <aside className="text-white pt-16 fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-700 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-        <div className="pt-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Customize Swarm</h2>
-            <button
-              className="text-gray-400 hover:text-gray-200"
-              onClick={toggleDrawer}
-            >
-              <Cog6ToothIcon className="w-6 h-6" />
-            </button>
-          </div>
-          <div className="text-gray-400 mt-2">
-            Customize the appearance and behavior of the AI chatbot.
-            <Aside topNavHeight={topNavElClientHeight} />
-          </div>
-        </div>
-      </aside>
-
-      <div
-        className={`fixed top-16 right-0 m-4 xl:hidden`}
-        onClick={toggleDrawer}
-      >
-        <Cog6ToothIcon className="w-6 h-6 cursor-pointer group-hover:text-gray-700" />
-      </div>
-
-      <Drawer
-        topNavHeight={topNavElClientHeight}
-        open={drawerOpen}
-        setOpen={setDrawerOpen}
-      />
+      <Aside />
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} />
     </>
   );
 }

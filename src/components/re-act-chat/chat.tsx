@@ -25,7 +25,10 @@ export function Chat({ id, className }: ChatProps) {
       className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] scrollbar-hidden"
       ref={scrollRef}
     >
-      <div className={cn("pb-[200px]", className)} ref={messagesRef}>
+      <div
+        className={cn("pb-[200px] chat-messages-fade", className)}
+        ref={messagesRef}
+      >
         {chatState.messages.length ? (
           <ChatList
             messages={chatState.messages}

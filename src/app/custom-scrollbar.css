@@ -1,4 +1,4 @@
-/* Custom scrollbar styles using WebKit (Chrome, Safari, Edge) */
+/* Custom scrollbar styles */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px; /* Thinner, more elegant scrollbar */
 }
@@ -31,19 +31,15 @@
 .scrollbar-hidden::-webkit-scrollbar {
   width: 0px;
 }
-
 .scrollbar-hidden::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .scrollbar-hidden::-webkit-scrollbar-thumb {
   background: transparent;
 }
-
 .scrollbar-hidden:hover::-webkit-scrollbar {
   width: 8px;
 }
-
 .scrollbar-hidden:hover::-webkit-scrollbar-thumb {
   background-color: rgba(156, 163, 175, 0.3);
   border-radius: 4px;
@@ -54,12 +50,49 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
 }
-
 .scrollbar-hidden {
   scrollbar-width: none;
 }
-
 .scrollbar-hidden:hover {
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+/* Chat message fade-out effect - POSITIONED BETWEEN MESSAGES AND PANEL */
+.chat-messages-fade {
+  position: relative;
+}
+
+.chat-messages-fade::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 30%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.6) 80%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  pointer-events: none;
+  z-index: 5; /* Between messages and chat panel */
+  /* Adjust for sidebar on larger screens */
+  margin-left: 0;
+}
+
+/* Adjust for sidebar on larger screens */
+@media (min-width: 1024px) {
+  .chat-messages-fade::after {
+    margin-left: 18rem; /* lg:pl-[250px] equivalent */
+  }
+}
+
+@media (min-width: 1280px) {
+  .chat-messages-fade::after {
+    margin-left: 19rem; /* xl:pl-[300px] equivalent */
+  }
 }

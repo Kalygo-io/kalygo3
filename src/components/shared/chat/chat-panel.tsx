@@ -11,7 +11,10 @@ export interface P {
 
 export function ChatPanel(P: P) {
   return (
-    <div className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]">
+    <div
+      className="fixed inset-x-0 bottom-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]"
+      style={{ zIndex: 10 }}
+    >
       <div className="mx-auto lg:pl-72 lg:max-w-[calc(100%-18rem)]">
         <div className="mx-8 space-y-4 border-t bg-black border-gray-700 px-4 py-2 shadow-lg rounded-t-xl sm:border md:py-4">
           <P.promptForm

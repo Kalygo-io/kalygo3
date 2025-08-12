@@ -11,6 +11,14 @@ import Drawer from "@/components/hierarchical/drawer";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import Aside from "@/components/hierarchical/aside";
 import { PromptForm } from "@/components/hierarchical/prompt-form";
+import { useHierarchicalContext } from "@/context/hierarchical-context";
+import { useHierarchicalChatContext } from "@/app/dashboard/hierarchical/chat-session-context";
+import { useRouter } from "next/navigation";
+import { callHierarchicalCrew } from "@/services/callHierarchicalCrew";
+import { nanoid } from "@/shared/utils";
+import { ChatDispatchContext } from "@/app/dashboard/hierarchical/chat-session-context";
+import { StopIcon } from "@heroicons/react/24/outline";
+import { AbortController } from "abort-controller";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -73,6 +81,68 @@ export function Chat({ id, className }: ChatProps) {
     setTopNavElClientHeight(topNavEl?.clientHeight || 0);
   }, []);
 
+  const { context } = useHierarchicalContext();
+  const hierarchicalChatContext = useHierarchicalChatContext();
+  const router = useRouter();
+  const dispatch = React.useContext(ChatDispatchContext);
+
+  const handleSubmit = async (e: any) => {
+    const humanMessageId = nanoid();
+    const prompt = input.trim();
+    try {
+      e.preventDefault();
+
+      setInput("");
+      if (!prompt) return;
+
+      dispatch({
+        type: "ADD_DEFAULT_BLOCK",
+        payload: {
+          id: humanMessageId,
+          content: prompt,
+          type: "prompt",
+          error: null,
+        },
+      });
+
+      dispatch({
+        type: "SET_COMPLETION_LOADING",
+        payload: true,
+      });
+
+      // Initialize a new AbortController for each request
+      const abortController = new AbortController();
+      const signal = abortController.signal;
+
+      // Make the API call with the abort signal
+      await callHierarchicalCrew(
+        hierarchicalChatContext.sessionId,
+        prompt,
+        context,
+        dispatch,
+        signal
+      );
+
+      dispatch({
+        type: "SET_COMPLETION_LOADING",
+        payload: false,
+      });
+    } catch (error) {
+      dispatch({
+        type: "SET_COMPLETION_LOADING",
+        payload: false,
+      });
+      dispatch({
+        type: "EDIT_DEFAULT_BLOCK",
+        payload: {
+          id: humanMessageId,
+          error: error,
+        },
+      });
+      console.error(error);
+    }
+  };
+
   return (
     <>
       {/* <div className={cn("xl:pr-96", `xl:pr-[${asideWidth}px]`)}> */}
@@ -82,7 +152,10 @@ export function Chat({ id, className }: ChatProps) {
             className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
             ref={scrollRef}
           >
-            <div className={cn("pb-[200px]", className)} ref={messagesRef}>
+            <div
+              className={cn("pb-[200px] chat-messages-fade", className)}
+              ref={messagesRef}
+            >
               {chatState.blocks.length ? (
                 <ChatList
                   blocks={chatState.blocks}
