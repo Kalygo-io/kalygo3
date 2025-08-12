@@ -29,18 +29,16 @@ export function Chat({ id, className }: ChatProps) {
 
   return (
     <>
-      <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-        {/* Toggle Button */}
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={toggleDrawer}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white"
-          >
-            <InformationCircleIcon className="w-5 h-5 text-blue-400" />
-            <span className="hidden sm:inline">Context</span>
-          </button>
-        </div>
+      {/* Toggle Button - Fixed positioned in top-right of viewport */}
+      <button
+        onClick={toggleDrawer}
+        className="fixed top-20 right-4 z-50 flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
+      >
+        <InformationCircleIcon className="w-4 h-4 text-blue-400" />
+        <span className="hidden sm:inline text-sm">Context</span>
+      </button>
 
+      <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
         <div
           className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px] scrollbar-hidden"
           ref={scrollRef}
