@@ -6,8 +6,8 @@ import { ChatDispatchContext } from "@/app/dashboard/spreadsheet/chat-session-co
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { callSpreadsheetSwarm } from "@/services/callSpreadsheetSwarm";
-import { useRouter } from "next/navigation";
-import { useSpreadsheetSwarmContext } from "@/context/spreadsheet-context";
+import { ResizableTextarea } from "@/components/shared/resizable-textarea";
+import { useSpreadsheetContext } from "@/context/spreadsheet-context";
 
 export function PromptForm({
   input,
@@ -18,10 +18,9 @@ export function PromptForm({
   setInput: (value: string) => void;
   sessionId: string;
 }) {
-  const router = useRouter();
   const { formRef, onKeyDown } = useEnterSubmit();
-  const { context } = useSpreadsheetSwarmContext();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const { context } = useSpreadsheetContext();
 
   const dispatch = React.useContext(ChatDispatchContext);
 
@@ -75,7 +74,7 @@ export function PromptForm({
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background">
-        <textarea
+        <ResizableTextarea
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
@@ -88,6 +87,8 @@ export function PromptForm({
           rows={3}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          minHeight={80}
+          maxHeight={240}
         />
       </div>
     </form>

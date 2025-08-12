@@ -2,16 +2,12 @@
 
 import * as React from "react";
 
-import {
-  ChatDispatchContext,
-  useHierarchicalChatContext,
-} from "@/app/dashboard/hierarchical/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/hierarchical/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { useRouter } from "next/navigation";
-import { useHierarchicalContext } from "@/context/hierarchical-context";
 import { callHierarchicalCrew } from "@/services/callHierarchicalCrew";
-import { StopIcon } from "@heroicons/react/24/outline";
+import { ResizableTextarea } from "@/components/shared/resizable-textarea";
+import { StopIcon } from "@heroicons/react/24/solid";
 
 export function PromptForm({
   input,
@@ -22,18 +18,11 @@ export function PromptForm({
   setInput: (value: string) => void;
   sessionId: string;
 }) {
-  const router = useRouter();
   const { formRef, onKeyDown } = useEnterSubmit();
-  const { context } = useHierarchicalContext();
-  const chatContext = useHierarchicalChatContext();
-
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
-
-  const dispatch = React.useContext(ChatDispatchContext);
-
   const abortControllerRef = React.useRef<AbortController | null>(null);
-  // const abortController = new AbortController();
-  // const signal = abortController.signal;
+
+  const chatContext = React.useContext(ChatDispatchContext);
 
   return (
     <form
@@ -47,45 +36,41 @@ export function PromptForm({
           setInput("");
           if (!prompt) return;
 
-          dispatch({
-            type: "ADD_DEFAULT_BLOCK",
+          chatContext.dispatch({
+            type: "ADD_MESSAGE",
             payload: {
               id: humanMessageId,
               content: prompt,
-              type: "prompt",
+              role: "human",
               error: null,
             },
           });
 
-          dispatch({
+          chatContext.dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: true,
           });
 
-          // Initialize a new AbortController for each request
           abortControllerRef.current = new AbortController();
-          const signal = abortControllerRef.current.signal;
 
-          // Make the API call with the abort signal
           await callHierarchicalCrew(
             sessionId,
             prompt,
-            context,
-            dispatch,
-            signal
+            chatContext.dispatch,
+            abortControllerRef.current.signal
           );
 
-          dispatch({
+          chatContext.dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: false,
           });
         } catch (error) {
-          dispatch({
+          chatContext.dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: false,
           });
-          dispatch({
-            type: "EDIT_DEFAULT_BLOCK",
+          chatContext.dispatch({
+            type: "EDIT_MESSAGE",
             payload: {
               id: humanMessageId,
               error: error,
@@ -107,7 +92,7 @@ export function PromptForm({
             <StopIcon className="h-6 w-6" />
           </button>
         )}
-        <textarea
+        <ResizableTextarea
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
@@ -120,6 +105,8 @@ export function PromptForm({
           rows={3}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          minHeight={80}
+          maxHeight={240}
         />
       </div>
     </form>

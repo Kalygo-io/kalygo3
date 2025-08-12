@@ -6,7 +6,7 @@ import { ChatDispatchContext } from "@/app/dashboard/raw-llm/chat-session-contex
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { callRawLLMAgent } from "@/services/callRawLLMAgent";
-import { useRouter } from "next/navigation";
+import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 
 export function PromptForm({
   input,
@@ -17,7 +17,6 @@ export function PromptForm({
   setInput: (value: string) => void;
   sessionId: string;
 }) {
-  const router = useRouter();
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -50,7 +49,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callRawLLMAgent(prompt, dispatch);
+          await callRawLLMAgent(sessionId, prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
@@ -73,7 +72,7 @@ export function PromptForm({
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background">
-        <textarea
+        <ResizableTextarea
           ref={inputRef}
           tabIndex={0}
           onKeyDown={onKeyDown}
@@ -86,6 +85,8 @@ export function PromptForm({
           rows={3}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          minHeight={80}
+          maxHeight={240}
         />
       </div>
     </form>
