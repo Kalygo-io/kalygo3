@@ -15,6 +15,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
   Bars3Icon,
   XMarkIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -24,6 +25,8 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { logoutRequest } from "@/services/logoutRequest";
+import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
+import { ChatSession } from "@/services/chatSessionService";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -37,6 +40,7 @@ export function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { sessions, deleteSession } = useChatSessions();
 
   const userNavigation = [
     {
@@ -51,6 +55,144 @@ export function DashboardLayout({
 
   const segments = pathname.split("/");
   const current = segments[segments.length - 1];
+
+  const handleSessionClick = (session: ChatSession) => {
+    // Navigate to the level with session ID as query parameter
+    router.push(`${session.level}?session=${session.id}`);
+    setSidebarOpen(false);
+  };
+
+  const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation();
+    deleteSession(sessionId);
+  };
+
+  const SidebarContent = () => (
+    <div className="flex grow flex-col overflow-y-auto bg-black px-6">
+      {/* Logo Section */}
+      <div className="py-6">
+        <div
+          className="flex h-8 shrink-0 items-center cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          🔵
+        </div>
+      </div>
+
+      {/* Divider after logo */}
+      <div className="border-t border-gray-700 mb-6"></div>
+
+      {/* Navigation Sections */}
+      <nav className="flex flex-1 flex-col">
+        <ul role="list" className="flex flex-1 flex-col">
+          {/* Levels Section */}
+          <li className="mb-6">
+            <div className="text-xs font-semibold leading-6 text-gray-400 mb-3 uppercase tracking-wider">
+              Levels
+            </div>
+            <ul role="list" className="-mx-2 space-y-1">
+              {navigation.map((item) => (
+                <li key={item.name}>
+                  {item.enabled ? (
+                    <span
+                      onClick={() => {
+                        router.push(item.href);
+                        setSidebarOpen(false);
+                      }}
+                      className={classNames(
+                        item.href.split("/")[
+                          item.href.split("/").length - 1
+                        ] === current
+                          ? "bg-blue-700 text-white"
+                          : "text-blue-200 hover:text-white hover:bg-blue-700",
+                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer transition-colors duration-150"
+                      )}
+                    >
+                      {item.name}
+                    </span>
+                  ) : (
+                    <span className="text-gray-500 cursor-default group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                      {item.name}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </li>
+
+          {/* Divider between Levels and Recent Sessions */}
+          <div className="border-t border-gray-700 mb-6"></div>
+
+          {/* Recent Sessions Section */}
+          <li className="mb-6">
+            <div className="text-xs font-semibold leading-6 text-gray-400 mb-3 uppercase tracking-wider">
+              Recent Sessions
+            </div>
+            <ul role="list" className="-mx-2 space-y-1">
+              {sessions.length === 0 ? (
+                <li className="text-gray-500 text-sm px-2 py-1">
+                  No recent sessions
+                </li>
+              ) : (
+                sessions.map((session) => (
+                  <li key={session.id}>
+                    <div
+                      onClick={() => handleSessionClick(session)}
+                      className="group flex items-center justify-between gap-x-3 rounded-md p-2 text-sm leading-6 text-blue-200 hover:text-white hover:bg-blue-700 cursor-pointer transition-colors duration-150"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium truncate">
+                          {session.title}
+                        </div>
+                        <div className="text-xs text-gray-400 truncate">
+                          {session.levelName}
+                        </div>
+                      </div>
+                      <button
+                        onClick={(e) => handleDeleteSession(e, session.id)}
+                        className="opacity-0 group-hover:opacity-100 transition-all duration-150 p-1 hover:bg-red-600 rounded"
+                      >
+                        <TrashIcon className="h-4 w-4 text-red-400 hover:text-red-200" />
+                      </button>
+                    </div>
+                  </li>
+                ))
+              )}
+            </ul>
+          </li>
+        </ul>
+
+        {/* Divider before sign out */}
+        <div className="border-t border-gray-700 mb-6"></div>
+
+        {/* Sign Out Section */}
+        <div className="pb-6">
+          <ul className="space-y-1">
+            <li>
+              <span
+                onClick={async () => {
+                  await logoutRequest();
+                  router.push("/auth");
+                }}
+                className={classNames(
+                  "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
+                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-150"
+                )}
+              >
+                <ArrowLeftStartOnRectangleIcon
+                  aria-hidden="true"
+                  className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                />
+                Sign out
+              </span>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  );
 
   return (
     <>
@@ -85,177 +227,14 @@ export function DashboardLayout({
                   </button>
                 </div>
               </TransitionChild>
-              {/* Sidebar component, swap this element with another sidebar if you like */}
-              <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4 cursor-pointer">
-                <div
-                  className="flex h-16 shrink-0 items-center"
-                  onClick={() => {
-                    router.push("/");
-                  }}
-                >
-                  <span className="text-white text-lg font-semibold">🔵</span>
-                </div>
-                <nav className="flex flex-1 flex-col">
-                  <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
-                          <li key={item.name}>
-                            {item.enabled ? (
-                              <span
-                                onClick={() => {
-                                  router.push(item.href);
-                                  setSidebarOpen(false);
-                                }}
-                                className={classNames(
-                                  item.href.split("/")[
-                                    item.href.split("/").length - 1
-                                  ] === current
-                                    ? "bg-blue-700 text-white"
-                                    : "text-blue-200 hover:text-white hover:bg-blue-700",
-                                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
-                                )}
-                              >
-                                {item.name}
-                              </span>
-                            ) : (
-                              <span className="text-gray-500 cursor-default group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                                {item.name}
-                              </span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                    <ul className="mt-auto space-y-1">
-                      {/* <li>
-                        <span
-                          onClick={() => {
-                            router.push("/dashboard/settings");
-                            setSidebarOpen(false);
-                          }}
-                          className={classNames(
-                            "settings" === current
-                              ? "bg-blue-700 text-white"
-                              : "text-blue-200 hover:text-white hover:bg-blue-700",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer"
-                          )}
-                        >
-                          <Cog6ToothIcon
-                            aria-hidden="true"
-                            className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
-                          />
-                          Settings
-                        </span>
-                      </li> */}
-                      <li>
-                        <span
-                          onClick={async () => {
-                            await logoutRequest();
-                            setSidebarOpen(false);
-                            router.push("/auth");
-                          }}
-                          className={classNames(
-                            "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                          )}
-                        >
-                          <ArrowLeftStartOnRectangleIcon
-                            aria-hidden="true"
-                            className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
-                          />
-                          Sign out
-                        </span>
-                      </li>
-                    </ul>
-                  </ul>
-                </nav>
-              </div>
+              <SidebarContent />
             </DialogPanel>
           </div>
         </Dialog>
 
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col border-r border-gray-700">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 pb-4">
-            <div
-              className="flex h-16 shrink-0 items-center cursor-pointer"
-              onClick={() => {
-                router.push("/");
-              }}
-            >
-              🔵
-            </div>
-            <nav className="flex flex-1 flex-col">
-              <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                <li>
-                  <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        {item.enabled ? (
-                          <Link
-                            href={item.href}
-                            className={classNames(
-                              item.href.split("/")[
-                                item.href.split("/").length - 1
-                              ] === current
-                                ? "bg-blue-700 text-white"
-                                : "text-blue-200 hover:text-white hover:bg-blue-700",
-                              "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        ) : (
-                          <span className="text-gray-500 cursor-default group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                            {item.name}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              </ul>
-              <ul className="space-y-1">
-                {/* <li>
-                  <Link
-                    href="/dashboard/settings"
-                    className={classNames(
-                      "settings" === current
-                        ? "bg-blue-700 text-white"
-                        : "text-blue-200 hover:text-white hover:bg-blue-700",
-                      "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                    )}
-                  >
-                    <Cog6ToothIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
-                    />
-                    Settings
-                  </Link>
-                </li> */}
-                <li>
-                  <span
-                    onClick={async () => {
-                      await logoutRequest();
-                      router.push("/auth");
-                    }}
-                    className={classNames(
-                      "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
-                      "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                    )}
-                  >
-                    <ArrowLeftStartOnRectangleIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
-                    />
-                    Sign out
-                  </span>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <SidebarContent />
         </div>
 
         <div className="lg:pl-72">

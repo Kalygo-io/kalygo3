@@ -7,6 +7,10 @@ export type Action =
       payload: Message;
     }
   | {
+      type: "SET_MESSAGES";
+      payload: Message[];
+    }
+  | {
       type: "SET_COMPLETION_LOADING";
       payload: boolean;
     }
@@ -43,6 +47,12 @@ export function chatReducer(
         ],
       };
     }
+    case "SET_MESSAGES": {
+      return {
+        ...state,
+        messages: action.payload,
+      };
+    }
     case "EDIT_MESSAGE": {
       const index = state.messages.findIndex((m) => m.id === action.payload.id);
 
@@ -65,6 +75,8 @@ export function chatReducer(
       };
     }
     default: {
+      console.log("! Unknown action type !", action);
+
       throw Error("Unknown action type");
     }
   }

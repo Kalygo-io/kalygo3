@@ -7,6 +7,10 @@ export type Action =
       payload: Message;
     }
   | {
+      type: "SET_MESSAGES";
+      payload: Message[];
+    }
+  | {
       type: "SET_COMPLETION_LOADING";
       payload: boolean;
     }
@@ -46,6 +50,12 @@ export function chatReducer(
             error: action.payload.error,
           },
         ],
+      };
+    }
+    case "SET_MESSAGES": {
+      return {
+        ...state,
+        messages: action.payload,
       };
     }
     case "EDIT_MESSAGE": {
