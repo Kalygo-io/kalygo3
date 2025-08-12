@@ -41,12 +41,12 @@ export const navigation = [
   },
   {
     name: "LEVEL 9: Chunking",
-    href: "/dashboard/swarm",
+    href: "/dashboard/chunking",
     enabled: true,
   },
   {
     name: "LEVEL 10: Evals",
-    href: "/dashboard/swarm",
+    href: "/dashboard/evals",
     enabled: true,
   },
 ];
