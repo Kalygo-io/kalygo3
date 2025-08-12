@@ -31,12 +31,12 @@ export const navigation = [
   },
   {
     name: "LEVEL 7: Hybrid Search",
-    href: "/dashboard/swarm",
+    href: "/dashboard/hybrid-search",
     enabled: true,
   },
   {
     name: "LEVEL 8: Access Control",
-    href: "/dashboard/swarm",
+    href: "/dashboard/access-control",
     enabled: true,
   },
   {
