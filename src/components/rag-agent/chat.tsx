@@ -39,7 +39,7 @@ export function Chat({ id, className }: ChatProps) {
           <EmptyScreen
             content={
               <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
-                R.A.G. Agent 🌴
+                Naive R.A.G. 🌴
               </h1>
             }
           />

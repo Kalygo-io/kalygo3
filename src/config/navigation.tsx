@@ -15,7 +15,7 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "L4: RAG + Reranking",
+    name: "L4: Reranking",
     href: "/dashboard/reranking",
     enabled: true,
   },
