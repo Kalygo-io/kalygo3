@@ -19,31 +19,36 @@ export const ChatMessage = memo(
         <div key={P.message.id}>
           <div
             className={cn(
-              "group relative mb-4 items-start bg-white p-4 rounded-md",
-              P.message.role === "human" ? "bg-white" : "bg-gray-50",
-              "flex"
+              "group relative mb-6 items-start p-6 rounded-xl transition-all duration-200",
+              P.message.role === "human"
+                ? "bg-white/10 backdrop-blur-sm border border-white/20"
+                : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
+              "flex hover:shadow-lg hover:scale-[1.01]"
             )}
           >
             <div
               className={cn(
-                "flex size-8 shrink-0 select-none items-center justify-center rounded-md border shadow",
+                "flex size-10 shrink-0 select-none items-center justify-center rounded-full border-2 shadow-lg transition-all duration-200",
                 P.message.role === "human"
-                  ? "bg-background"
-                  : "bg-primary text-primary-foreground",
-                `${P.message.error && "text-red-600"}`
+                  ? "bg-gradient-to-br from-blue-500 to-blue-600 border-blue-400/30 text-white"
+                  : "bg-gradient-to-br from-purple-500 to-purple-600 border-purple-400/30 text-white",
+                `${
+                  P.message.error &&
+                  "border-red-500/50 bg-gradient-to-br from-red-500 to-red-600"
+                }`
               )}
             >
               {P.message.role === "human" ? (
-                <BiUser />
+                <BiUser className="text-lg" />
               ) : (
-                <GiArtificialIntelligence color="blue" />
+                <GiArtificialIntelligence className="text-lg" />
               )}
             </div>
             <div
               className={cn(
-                `px-1 space-y-2 overflow-scroll`,
-                "ml-4",
-                P.message.error && "text-red-600"
+                `px-4 space-y-3 overflow-hidden`,
+                "ml-4 flex-1",
+                P.message.error && "text-red-400"
               )}
             >
               <ReactMarkdown
@@ -51,6 +56,7 @@ export const ChatMessage = memo(
                   p({ className, children, ...props }) {
                     return (
                       <p
+                        className="text-gray-100 leading-relaxed"
                         style={{
                           whiteSpace: "pre-wrap",
                         }}
@@ -59,13 +65,27 @@ export const ChatMessage = memo(
                       </p>
                     );
                   },
+                  code({ className, children, ...props }) {
+                    return (
+                      <code className="bg-gray-800/50 px-2 py-1 rounded-md text-sm font-mono text-blue-300">
+                        {children}
+                      </code>
+                    );
+                  },
+                  pre({ className, children, ...props }) {
+                    return (
+                      <pre className="bg-gray-800/50 p-4 rounded-lg overflow-x-auto custom-scrollbar">
+                        {children}
+                      </pre>
+                    );
+                  },
                 }}
               >
                 {P.message.content}
               </ReactMarkdown>
             </div>
           </div>
-          <Separator className="my-4 bg-gray-100" />
+          <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />
         </div>
       );
     } else {
