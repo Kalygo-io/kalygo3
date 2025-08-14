@@ -45,6 +45,11 @@ export const navigation = [
     enabled: true,
   },
   {
+    name: "Graph RAG",
+    href: "/dashboard/graph-rag",
+    enabled: true,
+  },
+  {
     name: "Hybrid Search",
     href: "/dashboard/hybrid-search",
     enabled: true,
