@@ -10,6 +10,11 @@ export const navigation = [
     enabled: true,
   },
   {
+    name: "Embeddings",
+    href: "/dashboard/embeddings",
+    enabled: true,
+  },
+  {
     name: "Similarity Search",
     href: "/dashboard/similarity-search",
     enabled: true,

@@ -3,14 +3,13 @@
 import { redirect } from "next/navigation";
 import { protectedPageGuard } from "@/components/shared/utils/validate-token";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
-import { AgenticRagContainer } from "./agentic-rag-container";
 
 export default async function Page() {
   try {
     await protectedPageGuard();
     return (
       <DashboardLayout>
-        <AgenticRagContainer />
+        <div className="text-white text-center">Embeddings DEMO...</div>
       </DashboardLayout>
     );
   } catch (error) {
