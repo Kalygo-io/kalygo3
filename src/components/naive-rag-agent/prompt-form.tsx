@@ -2,10 +2,10 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/no-rag/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/naive-rag-agent/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callNoRagAgent } from "@/services/callNoRagAgent";
+import { callRagAgent } from "@/services/callRagAgent";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 
 export function PromptForm({
@@ -48,7 +48,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callNoRagAgent(sessionId, prompt, dispatch);
+          await callRagAgent(sessionId, prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",

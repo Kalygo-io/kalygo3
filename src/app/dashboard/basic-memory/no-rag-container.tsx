@@ -2,7 +2,7 @@
 
 import { ChatContext, ChatDispatchContext } from "./chat-session-context";
 import { chatReducer, initialState } from "./chat-session-reducer";
-import { Chat as StreamingWithMemoryChat } from "@/components/no-rag/chat";
+import { Chat as StreamingWithMemoryChat } from "@/components/basic-memory/chat";
 import { useReducer } from "react";
 
 export function NoRagContainer() {

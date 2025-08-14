@@ -3,21 +3,21 @@
 import {
   ChatContext,
   ChatDispatchContext,
-} from "@/app/dashboard/rag-agent/chat-session-context";
+} from "@/app/dashboard/basic-memory/chat-session-context";
 import {
   chatReducer,
   initialState,
-} from "@/app/dashboard/rag-agent/chat-session-reducer";
-import { Chat as RagChat } from "@/components/rag-agent/chat";
+} from "@/app/dashboard/basic-memory/chat-session-reducer";
+import { Chat as NoRagChat } from "@/components/basic-memory/chat";
 import { useReducer } from "react";
 
-export function RagAgentUiContainer() {
+export function NoRagUiContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
 
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>
-        <RagChat />
+        <NoRagChat />
       </ChatDispatchContext.Provider>
     </ChatContext.Provider>
   );

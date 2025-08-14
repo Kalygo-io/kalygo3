@@ -1,4 +1,4 @@
-import { Action } from "@/app/dashboard/no-rag/chat-session-reducer";
+import { Action } from "@/app/dashboard/basic-memory/chat-session-reducer";
 import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
@@ -9,7 +9,7 @@ export async function callNoRagAgent(
   dispatch: React.Dispatch<Action>
 ) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/no-rag-agent/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/basic-memory/completion`,
     {
       method: "POST",
       headers: {

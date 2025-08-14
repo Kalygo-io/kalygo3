@@ -93,7 +93,7 @@ export function DashboardLayout({
               Levels
             </div>
             <ul role="list" className="-mx-2 space-y-1">
-              {navigation.map((item) => (
+              {navigation.map((item, navItemIndex) => (
                 <li key={item.name}>
                   {item.enabled ? (
                     <span
@@ -110,7 +110,7 @@ export function DashboardLayout({
                         "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer transition-colors duration-150"
                       )}
                     >
-                      {item.name}
+                      L{navItemIndex + 1}: {item.name}
                     </span>
                   ) : (
                     <span className="text-gray-500 cursor-default group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">

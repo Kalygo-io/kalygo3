@@ -40,7 +40,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Raw LLM</h2>
+            <h2 className="text-lg font-semibold text-white">Basic Memory</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -81,13 +81,15 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-blue-400 mb-2">
-                    What is an LLM?
+                    Simple &quot;Memory&quot; Trick
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    A Large Language Model (LLM) is a foundational pillar of
-                    modern AI systems. It processes text input in parallel and
-                    autoregressively predicts tokens until a stop token is
-                    predicted or its context is exhausted.
+                    A simple trick for adding the illusion of memory to an LLM
+                    is to send the last few messages in a session along with
+                    each subsequent prompt. For example, send the last 5
+                    messages related to the current session with the subsequent
+                    prompt. This creates an illusion of the LLM remembering the
+                    recent chat history.
                   </p>
                 </div>
 
@@ -98,19 +100,19 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                   <ul className="space-y-2 text-sm text-white">
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>No memory of previous conversations</span>
+                      <span>Uses last N messages for context</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Each response is independent</span>
+                      <span>Creates illusion of memory</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Limited to training data knowledge</span>
+                      <span>Simple session-based approach</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>No external data access</span>
+                      <span>No external data or tools</span>
                     </li>
                   </ul>
                 </div>

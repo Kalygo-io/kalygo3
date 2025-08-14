@@ -40,10 +40,10 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">No RAG Context</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Naive RAG Agent
+            </h2>
             <div className="flex items-center space-x-2">
-              <LightBulbIcon className="w-5 h-5 text-blue-400" />
-              <span className="text-sm text-gray-400">Level 2</span>
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
@@ -129,16 +129,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
             {activeTab === "flowchart" && (
               <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Naive RAG Flow Chart
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    A visual representation of how Naive RAG retrieves documents
-                    and generates responses.
-                  </p>
-                </div>
-
                 <div className="bg-gray-800 rounded-lg p-8 text-center">
                   <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-white text-lg font-medium">Coming Soon</p>
