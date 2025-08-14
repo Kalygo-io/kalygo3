@@ -12,6 +12,7 @@ import { ContextualAside } from "@/components/similarity-search/contextual-aside
 export function SimilaritySearchDemoContainer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ["recommendations/workouts", searchQuery],
@@ -54,6 +55,18 @@ export function SimilaritySearchDemoContainer() {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const toggleCardExpansion = (index: number) => {
+    setExpandedCards((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
   };
 
   if (error)
@@ -160,6 +173,8 @@ export function SimilaritySearchDemoContainer() {
                     scoreColor = "text-red-500";
                   }
 
+                  const isExpanded = expandedCards.has(index);
+
                   return (
                     <div
                       key={index}
@@ -193,12 +208,64 @@ export function SimilaritySearchDemoContainer() {
                           {scorePercentage}%
                         </span>
                       </div>
-                      <p className="text-gray-300 text-sm mb-4 line-clamp-3">
-                        {workout.metadata.description}
-                      </p>
-                      <div className="text-xs text-gray-500">
-                        <span className="font-medium">Created by:</span>{" "}
-                        {workout.metadata.created_by}
+
+                      <div className="space-y-3">
+                        <p
+                          className={`text-gray-300 text-sm ${
+                            isExpanded ? "" : "line-clamp-3"
+                          }`}
+                        >
+                          {workout.metadata.description}
+                        </p>
+
+                        {isExpanded && (
+                          <div className="space-y-2 text-sm text-gray-300">
+                            <div className="border-t border-gray-700 pt-3">
+                              <h4 className="font-semibold text-white mb-2">
+                                Workout Details:
+                              </h4>
+                              <div className="space-y-1">
+                                <div>
+                                  <span className="font-medium">Title:</span>{" "}
+                                  {workout.metadata.title}
+                                </div>
+                                <div>
+                                  <span className="font-medium">
+                                    Similarity Score:
+                                  </span>{" "}
+                                  {scorePercentage}%
+                                </div>
+                                <div>
+                                  <span className="font-medium">
+                                    Created by:
+                                  </span>{" "}
+                                  {workout.metadata.created_by}
+                                </div>
+                                <div>
+                                  <span className="font-medium">
+                                    Full Description:
+                                  </span>
+                                </div>
+                                <p className="text-gray-300 text-sm leading-relaxed">
+                                  {workout.metadata.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-700">
+                        <div className="text-xs text-gray-500">
+                          <span className="font-medium">Created by:</span>{" "}
+                          {workout.metadata.created_by}
+                        </div>
+                        <button
+                          onClick={() => toggleCardExpansion(index)}
+                          className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                        >
+                          {isExpanded ? "See less..." : "See more..."}
+                        </button>
                       </div>
                     </div>
                   );
