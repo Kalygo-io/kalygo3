@@ -10,8 +10,13 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Naive RAG",
-    href: "/dashboard/naive-rag-agent",
+    name: "Similarity Search",
+    href: "/dashboard/similarity-search",
+    enabled: true,
+  },
+  {
+    name: "Naive RAG Chat",
+    href: "/dashboard/naive-rag-chat",
     enabled: true,
   },
   {
@@ -20,13 +25,23 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Agentic RAG",
+    name: "Re-Act Agent",
     href: "/dashboard/re-act",
+    enabled: true,
+  },
+  {
+    name: "Agentic RAG",
+    href: "/dashboard/agentic-rag",
     enabled: true,
   },
   {
     name: "Multimodal Embeddings",
     href: "/dashboard/multimodal",
+    enabled: true,
+  },
+  {
+    name: "BM25",
+    href: "/dashboard/bm25",
     enabled: true,
   },
   {
@@ -47,6 +62,11 @@ export const navigation = [
   {
     name: "Evals",
     href: "/dashboard/evals",
+    enabled: true,
+  },
+  {
+    name: "Fine-tuning",
+    href: "/dashboard/fine-tuning",
     enabled: true,
   },
 ];

@@ -40,9 +40,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">
-              Naive RAG Agent
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Naive RAG Chat</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -86,10 +84,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     What is Naive RAG?
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Naive RAG (Retrieval-Augmented Generation) is the foundation
-                    of knowledge-enhanced AI systems. It combines document
-                    retrieval with LLM generation to provide more accurate and
-                    contextual responses.
+                    Naive RAG aka &quot;Similarity Search&quot; is a precise
+                    technique for searching through data. For high accuracy use
+                    cases it tends to fall short.
                   </p>
                 </div>
 
@@ -107,20 +104,19 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
                       <span>
-                        Augments LLM context with retrieved information
+                        Hydrates LLM prompt with retrieved information
                       </span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
                       <span>
-                        Generates responses based on retrieved content
+                        Generates responses that incorporate the retrieved
+                        content
                       </span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>
-                        Basic semantic search without advanced filtering
-                      </span>
+                      <span>Cosine vs. Euclidean vs. Dot Product</span>
                     </li>
                   </ul>
                 </div>

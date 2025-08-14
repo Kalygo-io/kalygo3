@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import "@/app/custom-scrollbar.css";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/react-markdown.css";
+import { ReactQueryClientProvider } from "@/components/shared/providers/ReactQueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <ToastContainer />
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          {children}
+          <ToastContainer />
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

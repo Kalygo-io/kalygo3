@@ -1,15 +1,15 @@
-import { Action } from "@/app/dashboard/rag-agent/chat-session-reducer";
+import { Action } from "@/app/dashboard/naive-rag-chat/chat-session-reducer";
 import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callRagAgent(
+export async function callNaiveRagChat(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/rag-agent/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/naive-rag-chat/completion`,
     {
       method: "POST",
       headers: {

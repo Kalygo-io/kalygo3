@@ -3,15 +3,15 @@
 import {
   ChatContext,
   ChatDispatchContext,
-} from "@/app/dashboard/naive-rag-agent/chat-session-context";
+} from "@/app/dashboard/naive-rag-chat/chat-session-context";
 import {
   chatReducer,
   initialState,
-} from "@/app/dashboard/naive-rag-agent/chat-session-reducer";
+} from "@/app/dashboard/naive-rag-chat/chat-session-reducer";
 import { Chat as NaiveRagChat } from "@/components/naive-rag-agent/chat";
 import { useReducer } from "react";
 
-export function RagAgentUiContainer() {
+export function NaiveRagChatUiContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
 
   return (

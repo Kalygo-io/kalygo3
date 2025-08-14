@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/naive-rag-agent/chat-session-context";
+import { ChatContext } from "@/app/dashboard/naive-rag-chat/chat-session-context";
 import { ChatList } from "@/components/shared/chat/chat-list";
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { EmptyScreen } from "@/components/shared/chat/empty-screen";
@@ -57,7 +57,7 @@ export function Chat({ id, className }: ChatProps) {
                 content={
                   <>
                     <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
-                      Naive RAG Agent 👶
+                      Naive RAG Chat 👶
                     </h1>
                   </>
                 }

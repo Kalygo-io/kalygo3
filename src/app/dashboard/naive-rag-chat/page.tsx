@@ -1,6 +1,5 @@
-"use server";
-
 import { redirect } from "next/navigation";
+import { NaiveRagChatUiContainer } from "./ui-container";
 import { protectedPageGuard } from "@/components/shared/utils/validate-token";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 
@@ -9,12 +8,10 @@ export default async function Page() {
     await protectedPageGuard();
     return (
       <DashboardLayout>
-        <div className="text-white text-center">
-          Multimodal Embeddings DEMO...
-        </div>
+        <NaiveRagChatUiContainer />
       </DashboardLayout>
     );
   } catch (error) {
-    return redirect("/");
+    return <h1 className="text-white">Oops!</h1>;
   }
 }

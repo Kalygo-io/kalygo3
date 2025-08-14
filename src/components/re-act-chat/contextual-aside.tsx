@@ -40,12 +40,8 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">
-              Re-act Chat Context
-            </h2>
+            <h2 className="text-lg font-semibold text-white">Re-Act Agent</h2>
             <div className="flex items-center space-x-2">
-              <LightBulbIcon className="w-5 h-5 text-blue-400" />
-              <span className="text-sm text-gray-400">Level 1</span>
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
@@ -85,13 +81,15 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-white mb-2">
-                    What is Re-act Chat?
+                    What is a Re-Act Agent?
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Re-act Chat adds memory and reasoning capabilities to LLMs
-                    through the ReAct (Reasoning + Acting) framework. It enables
-                    step-by-step reasoning and maintains conversation context
-                    across interactions.
+                    A Re-Act Agent provides the illusion of reasoning
+                    capabilities to LLMs through the ReAct (Reasoning + Acting)
+                    framework. It enables step-by-step reasoning and maintains
+                    conversation context across interactions. When you boil it
+                    down it&apos;s a combination of a for loop with some clever
+                    Prompt Engineering.
                   </p>
                 </div>
 
@@ -106,7 +104,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Step-by-step reasoning and problem solving</span>
+                      <span>Capable of multi-step problem solving</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
@@ -114,7 +112,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Improved accuracy through structured thinking</span>
+                      <span>
+                        Capable of multi-step responses and tool calls.
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -123,16 +123,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
             {activeTab === "flowchart" && (
               <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Re-act Chat Flow Chart
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    A visual representation of how Re-act Chat processes input
-                    with reasoning and maintains conversation context.
-                  </p>
-                </div>
-
                 <div className="bg-gray-800 rounded-lg p-8 text-center">
                   <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-white text-lg font-medium">Coming Soon</p>

@@ -41,7 +41,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold text-white">
-              RAG Agent Context
+              Similarity Search
             </h2>
             <div className="flex items-center space-x-2">
               <button
@@ -82,14 +82,14 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
             {activeTab === "overview" && (
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    What is RAG + Reranking?
+                  <h3 className="text-lg font-semibold text-blue-400 mb-2">
+                    Semantic Similarity Search
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    RAG with reranking enhances retrieval quality by using a
-                    second-stage reranker to improve the relevance of retrieved
-                    documents. This significantly improves the accuracy of RAG
-                    systems.
+                    Similarity search uses vector embeddings to find the most
+                    semantically similar content to your query. It converts text
+                    into high-dimensional vectors and finds the closest matches
+                    based on cosine similarity or other distance metrics.
                   </p>
                 </div>
 
@@ -100,37 +100,42 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                   <ul className="space-y-2 text-sm text-white">
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Two-stage retrieval: retrieval + reranking</span>
+                      <span>Uses vector embeddings for semantic matching</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Improved document relevance and quality</span>
+                      <span>Returns similarity scores (0-100%)</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Better context for LLM generation</span>
+                      <span>Finds conceptually similar content</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Reduced hallucination and improved accuracy</span>
+                      <span>No external tools or agents</span>
                     </li>
                   </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-md font-semibold text-white">
+                    How it works:
+                  </h4>
+                  <ol className="space-y-2 text-sm text-white list-decimal list-inside">
+                    <li>Query text is converted to vector embedding</li>
+                    <li>Vector is compared against stored embeddings</li>
+                    <li>
+                      Similarity scores are calculated (cosine similarity)
+                    </li>
+                    <li>Results are ranked by similarity score</li>
+                    <li>Top matches are returned with scores</li>
+                  </ol>
                 </div>
               </div>
             )}
 
             {activeTab === "flowchart" && (
               <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    RAG + Reranking Flow Chart
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    A visual representation of the two-stage retrieval and
-                    reranking process.
-                  </p>
-                </div>
-
                 <div className="bg-gray-800 rounded-lg p-8 text-center">
                   <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-white text-lg font-medium">Coming Soon</p>

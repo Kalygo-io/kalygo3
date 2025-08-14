@@ -9,9 +9,7 @@ export default async function Page() {
     await protectedPageGuard();
     return (
       <DashboardLayout>
-        <div className="text-white text-center">
-          Multimodal Embeddings DEMO...
-        </div>
+        <div className="text-white text-center">BM25 DEMO...</div>
       </DashboardLayout>
     );
   } catch (error) {
