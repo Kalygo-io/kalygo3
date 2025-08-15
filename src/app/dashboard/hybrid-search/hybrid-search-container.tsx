@@ -222,6 +222,13 @@ export function HybridSearchContainer() {
     ? performSearch(searchQuery, selectedStrategy)
     : [];
 
+  // Function to get color based on score percentage
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-green-400";
+    if (score >= 60) return "text-yellow-400";
+    return "text-red-400";
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
       {/* Header */}
@@ -498,13 +505,31 @@ export function HybridSearchContainer() {
                           {result.title}
                         </h4>
                         <div className="text-right">
-                          <div className="text-sm text-blue-400">
+                          <div
+                            className={`text-sm ${getScoreColor(
+                              result.score * 100
+                            )}`}
+                          >
                             Score: {(result.score * 100).toFixed(1)}%
                           </div>
                           {selectedStrategy === "hybrid" && (
                             <div className="text-xs text-gray-400">
-                              S: {(result.semanticScore * 100).toFixed(0)}% | K:{" "}
-                              {(result.keywordScore * 100).toFixed(0)}%
+                              S:{" "}
+                              <span
+                                className={getScoreColor(
+                                  result.semanticScore * 100
+                                )}
+                              >
+                                {(result.semanticScore * 100).toFixed(0)}%
+                              </span>{" "}
+                              | K:{" "}
+                              <span
+                                className={getScoreColor(
+                                  result.keywordScore * 100
+                                )}
+                              >
+                                {(result.keywordScore * 100).toFixed(0)}%
+                              </span>
                             </div>
                           )}
                         </div>
@@ -568,102 +593,232 @@ export function HybridSearchContainer() {
 
               <div className="grid md:grid-cols-3 gap-6 mb-6">
                 <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h3 className="text-lg font-semibold text-white mb-3">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     Semantic Search
                   </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Accuracy:</span>
-                      <span className="text-green-400">85%</span>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Accuracy:
+                      </span>
+                      <span
+                        className="!text-green-300 font-bold text-xl"
+                        style={{ color: "#86efac" }}
+                      >
+                        85%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Recall:</span>
-                      <span className="text-green-400">78%</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Recall:
+                      </span>
+                      <span
+                        className="!text-yellow-400 font-bold text-xl"
+                        style={{ color: "#facc15" }}
+                      >
+                        78%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Speed:</span>
-                      <span className="text-yellow-400">Medium</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Speed:
+                      </span>
+                      <span className="text-white font-bold text-lg">
+                        Medium
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                  <h3 className="text-lg font-semibold text-white mb-3">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     Keyword Search
                   </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Accuracy:</span>
-                      <span className="text-yellow-400">72%</span>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Accuracy:
+                      </span>
+                      <span
+                        className="!text-yellow-400 font-bold text-xl"
+                        style={{ color: "#facc15" }}
+                      >
+                        72%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Recall:</span>
-                      <span className="text-red-400">65%</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Recall:
+                      </span>
+                      <span
+                        className="!text-orange-400 font-bold text-xl"
+                        style={{ color: "#fb923c" }}
+                      >
+                        65%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Speed:</span>
-                      <span className="text-green-400">Fast</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Speed:
+                      </span>
+                      <span className="text-white font-bold text-lg">Fast</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-gray-800/50 rounded-lg p-4 border border-blue-500">
-                  <h3 className="text-lg font-semibold text-white mb-3">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     Hybrid Search
                   </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Accuracy:</span>
-                      <span className="text-green-400">92%</span>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Accuracy:
+                      </span>
+                      <span
+                        className="!text-green-400 font-bold text-xl"
+                        style={{ color: "#4ade80" }}
+                      >
+                        92%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Recall:</span>
-                      <span className="text-green-400">88%</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Recall:
+                      </span>
+                      <span
+                        className="!text-green-400 font-bold text-xl"
+                        style={{ color: "#4ade80" }}
+                      >
+                        88%
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-300">Speed:</span>
-                      <span className="text-yellow-400">Medium</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-white font-semibold text-base">
+                        Speed:
+                      </span>
+                      <span className="text-white font-bold text-lg">
+                        Medium
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-gray-800/50 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">
+                <h3 className="text-xl font-bold text-white mb-6">
                   When to Use Each Strategy
                 </h3>
-                <div className="grid md:grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-3 gap-8">
                   <div>
-                    <h4 className="text-md font-semibold text-blue-400 mb-2">
+                    <h4 className="text-lg font-bold text-white mb-4">
                       Semantic Search
                     </h4>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• Complex, conceptual queries</li>
-                      <li>• When synonyms matter</li>
-                      <li>• Content recommendation</li>
-                      <li>• Research and discovery</li>
+                    <ul className="text-white space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          Complex, conceptual queries
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          When synonyms matter
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          Content recommendation
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          Research and discovery
+                        </span>
+                      </li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-md font-semibold text-green-400 mb-2">
+                    <h4 className="text-lg font-bold text-white mb-4">
                       Keyword Search
                     </h4>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• Exact term matching</li>
-                      <li>• Fast, simple queries</li>
-                      <li>• Technical documentation</li>
-                      <li>• When speed is critical</li>
+                    <ul className="text-white space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">Exact term matching</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          Fast, simple queries
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          Technical documentation
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          When speed is critical
+                        </span>
+                      </li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-md font-semibold text-purple-400 mb-2">
+                    <h4 className="text-lg font-bold text-white mb-4">
                       Hybrid Search
                     </h4>
-                    <ul className="text-sm text-gray-300 space-y-1">
-                      <li>• General-purpose search</li>
-                      <li>• Mixed query types</li>
-                      <li>• High-accuracy requirements</li>
-                      <li>• Production systems</li>
+                    <ul className="text-white space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          General-purpose search
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">Mixed query types</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">
+                          High-accuracy requirements
+                        </span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 font-bold text-lg">
+                          •
+                        </span>
+                        <span className="font-medium">Production systems</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
