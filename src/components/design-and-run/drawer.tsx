@@ -10,7 +10,7 @@ interface P {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Drawer(P: P) {
+export function Drawer(P: P) {
   return (
     <Dialog
       open={P.open}

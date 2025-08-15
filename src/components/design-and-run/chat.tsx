@@ -75,8 +75,12 @@ export function Chat({ className }: ChatProps) {
           </div>
         </div>
       </div>
-      <Aside />
-      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen} />
+      <Aside topNavHeight={topNavElClientHeight} />
+      <Drawer
+        open={drawerOpen}
+        setOpen={setDrawerOpen}
+        topNavHeight={topNavElClientHeight}
+      />
     </>
   );
 }

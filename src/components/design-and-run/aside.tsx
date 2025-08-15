@@ -8,7 +8,7 @@ interface P {
   topNavHeight: number;
 }
 
-export default function CustomizeSwarmAside(P: P) {
+export function Aside(P: P) {
   return (
     <div>
       <div className="absolute inset-0 overflow-hidden pt-16">

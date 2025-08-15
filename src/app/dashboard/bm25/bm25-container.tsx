@@ -42,47 +42,53 @@ export function BM25DemoContainer() {
     {
       id: "doc1",
       title: "Machine Learning Basics",
-      content: "Machine learning is a subset of artificial intelligence that enables computers to learn and make decisions without being explicitly programmed. It uses algorithms to identify patterns in data and make predictions.",
+      content:
+        "Machine learning is a subset of artificial intelligence that enables computers to learn and make decisions without being explicitly programmed. It uses algorithms to identify patterns in data and make predictions.",
       length: 25,
-      wordCount: 25
+      wordCount: 25,
     },
     {
-      id: "doc2", 
+      id: "doc2",
       title: "Deep Learning Fundamentals",
-      content: "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model complex patterns. It has revolutionized computer vision and natural language processing.",
+      content:
+        "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model complex patterns. It has revolutionized computer vision and natural language processing.",
       length: 28,
-      wordCount: 28
+      wordCount: 28,
     },
     {
       id: "doc3",
       title: "Information Retrieval Systems",
-      content: "Information retrieval systems help users find relevant documents from large collections. They use various ranking algorithms like BM25 to score and rank documents based on relevance to user queries.",
+      content:
+        "Information retrieval systems help users find relevant documents from large collections. They use various ranking algorithms like BM25 to score and rank documents based on relevance to user queries.",
       length: 30,
-      wordCount: 30
+      wordCount: 30,
     },
     {
       id: "doc4",
       title: "Search Engine Optimization",
-      content: "Search engine optimization involves optimizing websites to rank higher in search engine results. It includes keyword research, content optimization, and technical improvements.",
+      content:
+        "Search engine optimization involves optimizing websites to rank higher in search engine results. It includes keyword research, content optimization, and technical improvements.",
       length: 22,
-      wordCount: 22
+      wordCount: 22,
     },
     {
       id: "doc5",
       title: "Natural Language Processing",
-      content: "Natural language processing is a field of artificial intelligence that focuses on enabling computers to understand, interpret, and generate human language. It combines linguistics and machine learning.",
+      content:
+        "Natural language processing is a field of artificial intelligence that focuses on enabling computers to understand, interpret, and generate human language. It combines linguistics and machine learning.",
       length: 26,
-      wordCount: 26
-    }
+      wordCount: 26,
+    },
   ];
 
   // Calculate average document length
-  const avgdl = documents.reduce((sum, doc) => sum + doc.wordCount, 0) / documents.length;
+  const avgdl =
+    documents.reduce((sum, doc) => sum + doc.wordCount, 0) / documents.length;
 
   // Calculate IDF for a term
   const calculateIDF = (term: string): number => {
     const N = documents.length;
-    const n = documents.filter(doc => 
+    const n = documents.filter((doc) =>
       doc.content.toLowerCase().includes(term.toLowerCase())
     ).length;
     return Math.log((N - n + 0.5) / (n + 0.5) + 1);
@@ -91,24 +97,35 @@ export function BM25DemoContainer() {
   // Calculate term frequency in a document
   const calculateTF = (term: string, document: Document): number => {
     const words = document.content.toLowerCase().split(/\s+/);
-    return words.filter(word => word === term.toLowerCase()).length;
+    return words.filter((word) => word === term.toLowerCase()).length;
   };
 
   // Calculate BM25 score for a document
-  const calculateBM25Score = (query: string, document: Document): SearchResult => {
-    const terms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0);
+  const calculateBM25Score = (
+    query: string,
+    document: Document
+  ): SearchResult => {
+    const terms = query
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((term) => term.length > 0);
     let totalScore = 0;
-    const breakdown: { term: string; tf: number; idf: number; score: number }[] = [];
+    const breakdown: {
+      term: string;
+      tf: number;
+      idf: number;
+      score: number;
+    }[] = [];
 
-    terms.forEach(term => {
+    terms.forEach((term) => {
       const tf = calculateTF(term, document);
       const idf = calculateIDF(term);
-      
+
       // BM25 formula
       const numerator = tf * (k1 + 1);
       const denominator = tf + k1 * (1 - b + b * (document.wordCount / avgdl));
       const termScore = idf * (numerator / denominator);
-      
+
       totalScore += termScore;
       breakdown.push({ term, tf, idf, score: termScore });
     });
@@ -119,17 +136,17 @@ export function BM25DemoContainer() {
       tf: terms.reduce((sum, term) => sum + calculateTF(term, document), 0),
       idf: terms.reduce((sum, term) => sum + calculateIDF(term), 0),
       bm25Score: totalScore,
-      breakdown
+      breakdown,
     };
   };
 
   // Get search results
   const getSearchResults = (): SearchResult[] => {
     if (!searchQuery.trim()) return [];
-    
+
     return documents
-      .map(doc => calculateBM25Score(searchQuery, doc))
-      .filter(result => result.score > 0)
+      .map((doc) => calculateBM25Score(searchQuery, doc))
+      .filter((result) => result.score > 0)
       .sort((a, b) => b.score - a.score);
   };
 
@@ -143,7 +160,8 @@ export function BM25DemoContainer() {
           BM25 Information Retrieval
         </h1>
         <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-          Explore the Okapi BM25 ranking function used by search engines to estimate document relevance
+          Explore the Okapi BM25 ranking function used by search engines to
+          estimate document relevance
         </p>
       </div>
 
@@ -183,8 +201,11 @@ export function BM25DemoContainer() {
                 What is BM25?
               </h2>
               <p className="text-gray-300 leading-relaxed mb-4">
-                BM25 (Best Matching 25) is a ranking function used by search engines to estimate the relevance of documents to a given search query. 
-                It's based on the probabilistic retrieval framework developed by Stephen E. Robertson, Karen Spärck Jones, and others.
+                BM25 (Best Matching 25) is a ranking function used by search
+                engines to estimate the relevance of documents to a given search
+                query. It&quot;s based on the probabilistic retrieval framework
+                developed by Stephen E. Robertson, Karen Spärck Jones, and
+                others.
               </p>
               <div className="grid md:grid-cols-2 gap-4 mt-6">
                 <div className="bg-gray-800/50 rounded-lg p-4">
@@ -192,10 +213,22 @@ export function BM25DemoContainer() {
                     Key Components
                   </h3>
                   <ul className="space-y-2 text-gray-300">
-                    <li>• <strong>Term Frequency (TF):</strong> How often a term appears in a document</li>
-                    <li>• <strong>Inverse Document Frequency (IDF):</strong> How rare a term is across all documents</li>
-                    <li>• <strong>Document Length Normalization:</strong> Accounts for document length bias</li>
-                    <li>• <strong>Parameter Tuning:</strong> k1 and b parameters for fine-tuning</li>
+                    <li>
+                      • <strong>Term Frequency (TF):</strong> How often a term
+                      appears in a document
+                    </li>
+                    <li>
+                      • <strong>Inverse Document Frequency (IDF):</strong> How
+                      rare a term is across all documents
+                    </li>
+                    <li>
+                      • <strong>Document Length Normalization:</strong> Accounts
+                      for document length bias
+                    </li>
+                    <li>
+                      • <strong>Parameter Tuning:</strong> k1 and b parameters
+                      for fine-tuning
+                    </li>
                   </ul>
                 </div>
                 <div className="bg-gray-800/50 rounded-lg p-4">
@@ -222,35 +255,52 @@ export function BM25DemoContainer() {
                 BM25 Formula
               </h2>
               <p className="text-gray-300 leading-relaxed mb-6">
-                The BM25 scoring function combines term frequency, inverse document frequency, and document length normalization.
+                The BM25 scoring function combines term frequency, inverse
+                document frequency, and document length normalization.
               </p>
-              
+
               <div className="bg-gray-800/50 rounded-lg p-6 mb-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Main Formula</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">
+                  Main Formula
+                </h3>
                 <div className="text-center">
                   <div className="text-gray-300 text-lg font-mono bg-gray-900 p-4 rounded-lg overflow-x-auto">
-                    score(D,Q) = Σ IDF(qi) × (f(qi,D) × (k1 + 1)) / (f(qi,D) + k1 × (1 - b + b × |D|/avgdl))
+                    score(D,Q) = Σ IDF(qi) × (f(qi,D) × (k1 + 1)) / (f(qi,D) +
+                    k1 × (1 - b + b × |D|/avgdl))
                   </div>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold text-white mb-3">IDF Component</h4>
+                  <h4 className="text-lg font-semibold text-white mb-3">
+                    IDF Component
+                  </h4>
                   <div className="text-gray-300 text-sm font-mono bg-gray-900 p-3 rounded mb-3">
                     IDF(qi) = ln((N - n(qi) + 0.5) / (n(qi) + 0.5) + 1)
                   </div>
                   <p className="text-gray-400 text-sm">
-                    Where N is total documents, n(qi) is documents containing term qi
+                    Where N is total documents, n(qi) is documents containing
+                    term qi
                   </p>
                 </div>
                 <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold text-white mb-3">Parameters</h4>
+                  <h4 className="text-lg font-semibold text-white mb-3">
+                    Parameters
+                  </h4>
                   <ul className="space-y-2 text-gray-300 text-sm">
-                    <li>• <strong>k1:</strong> Term frequency saturation (1.2-2.0)</li>
-                    <li>• <strong>b:</strong> Length normalization (0.75 default)</li>
-                    <li>• <strong>|D|:</strong> Document length in words</li>
-                    <li>• <strong>avgdl:</strong> Average document length</li>
+                    <li>
+                      • <strong>k1:</strong> Term frequency saturation (1.2-2.0)
+                    </li>
+                    <li>
+                      • <strong>b:</strong> Length normalization (0.75 default)
+                    </li>
+                    <li>
+                      • <strong>|D|:</strong> Document length in words
+                    </li>
+                    <li>
+                      • <strong>avgdl:</strong> Average document length
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -266,9 +316,10 @@ export function BM25DemoContainer() {
                 Interactive BM25 Demo
               </h2>
               <p className="text-gray-300 leading-relaxed mb-6">
-                Search through a sample document collection and see how BM25 calculates relevance scores.
+                Search through a sample document collection and see how BM25
+                calculates relevance scores.
               </p>
-              
+
               {/* Search Input */}
               <div className="mb-6">
                 <div className="flex items-center space-x-3">
@@ -296,9 +347,12 @@ export function BM25DemoContainer() {
                       Avg document length: {avgdl.toFixed(1)} words
                     </div>
                   </div>
-                  
+
                   {searchResults.map((result, index) => (
-                    <div key={result.document.id} className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                    <div
+                      key={result.document.id}
+                      className="bg-gray-800/50 border border-gray-700 rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start mb-3">
                         <div>
                           <h4 className="text-lg font-semibold text-white mb-1">
@@ -315,19 +369,29 @@ export function BM25DemoContainer() {
                           <div className="text-2xl font-bold text-green-400">
                             {result.score.toFixed(3)}
                           </div>
-                          <div className="text-xs text-gray-400">BM25 Score</div>
+                          <div className="text-xs text-gray-400">
+                            BM25 Score
+                          </div>
                         </div>
                       </div>
-                      
+
                       {/* Score Breakdown */}
                       <div className="mt-4">
-                        <h5 className="text-sm font-semibold text-white mb-2">Score Breakdown:</h5>
+                        <h5 className="text-sm font-semibold text-white mb-2">
+                          Score Breakdown:
+                        </h5>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                           {result.breakdown.map((term, idx) => (
-                            <div key={idx} className="bg-gray-900 rounded p-2 text-xs">
-                              <div className="text-white font-medium">{term.term}</div>
+                            <div
+                              key={idx}
+                              className="bg-gray-900 rounded p-2 text-xs"
+                            >
+                              <div className="text-white font-medium">
+                                {term.term}
+                              </div>
                               <div className="text-gray-400">
-                                TF: {term.tf} | IDF: {term.idf.toFixed(3)} | Score: {term.score.toFixed(3)}
+                                TF: {term.tf} | IDF: {term.idf.toFixed(3)} |
+                                Score: {term.score.toFixed(3)}
                               </div>
                             </div>
                           ))}
@@ -335,7 +399,7 @@ export function BM25DemoContainer() {
                       </div>
                     </div>
                   ))}
-                  
+
                   {searchResults.length === 0 && (
                     <div className="text-center py-8 text-gray-400">
                       No documents match your search query.
@@ -355,12 +419,15 @@ export function BM25DemoContainer() {
                 BM25 Parameters
               </h2>
               <p className="text-gray-300 leading-relaxed mb-6">
-                Adjust the k1 and b parameters to see how they affect the BM25 scoring.
+                Adjust the k1 and b parameters to see how they affect the BM25
+                scoring.
               </p>
-              
+
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-3">k1 Parameter (Term Frequency Saturation)</h3>
+                  <h3 className="text-lg font-semibold text-white mb-3">
+                    k1 Parameter (Term Frequency Saturation)
+                  </h3>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       k1: {k1}
@@ -381,13 +448,16 @@ export function BM25DemoContainer() {
                     </div>
                   </div>
                   <p className="text-gray-400 text-sm">
-                    Controls how much additional weight is given to each additional occurrence of a term. 
-                    Higher values mean more weight for repeated terms.
+                    Controls how much additional weight is given to each
+                    additional occurrence of a term. Higher values mean more
+                    weight for repeated terms.
                   </p>
                 </div>
-                
+
                 <div className="bg-gray-800/50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-3">b Parameter (Length Normalization)</h3>
+                  <h3 className="text-lg font-semibold text-white mb-3">
+                    b Parameter (Length Normalization)
+                  </h3>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       b: {b}
@@ -408,16 +478,21 @@ export function BM25DemoContainer() {
                     </div>
                   </div>
                   <p className="text-gray-400 text-sm">
-                    Controls document length normalization. b=0 means no normalization, b=1 means full normalization.
+                    Controls document length normalization. b=0 means no
+                    normalization, b=1 means full normalization.
                   </p>
                 </div>
               </div>
 
               <div className="bg-gray-800/50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-3">Parameter Effects</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">
+                  Parameter Effects
+                </h3>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">
                   <div>
-                    <h4 className="font-semibold text-white mb-2">k1 Effects:</h4>
+                    <h4 className="font-semibold text-white mb-2">
+                      k1 Effects:
+                    </h4>
                     <ul className="text-gray-300 space-y-1">
                       <li>• Low k1: Less weight for repeated terms</li>
                       <li>• High k1: More weight for repeated terms</li>
@@ -425,7 +500,9 @@ export function BM25DemoContainer() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">b Effects:</h4>
+                    <h4 className="font-semibold text-white mb-2">
+                      b Effects:
+                    </h4>
                     <ul className="text-gray-300 space-y-1">
                       <li>• b=0: No length normalization</li>
                       <li>• b=1: Full length normalization</li>
@@ -433,7 +510,9 @@ export function BM25DemoContainer() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white mb-2">Special Cases:</h4>
+                    <h4 className="font-semibold text-white mb-2">
+                      Special Cases:
+                    </h4>
                     <ul className="text-gray-300 space-y-1">
                       <li>• b=0: BM15 algorithm</li>
                       <li>• b=1: BM11 algorithm</li>
@@ -448,4 +527,4 @@ export function BM25DemoContainer() {
       </div>
     </div>
   );
-} 
+}

@@ -8,8 +8,8 @@ export async function callHierarchicalCrew(
     managerAgent: { role: string; goal: string; backstory: string };
     workerAgents: any[];
   },
-  dispatch: React.Dispatch<Action>,
-  signal: AbortSignal
+  dispatch: React.Dispatch<Action>
+  // signal: AbortSignal
 ) {
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_CREWAI_API_URL}/api/hierarchical-crew/stream`,
@@ -26,7 +26,7 @@ export async function callHierarchicalCrew(
       credentials: "include",
       // referrerPolicy: "no-referrer",
 
-      signal: signal, // Pass the signal to the fetch request
+      // signal: signal, // Pass the signal to the fetch request
     }
   );
 

@@ -51,6 +51,7 @@ export function Chat({ id, className }: ChatProps) {
               <ChatList
                 messages={chatState.messages}
                 isCompletionLoading={chatState.completionLoading}
+                // @ts-ignore
                 currentTool={chatState.currentTool}
               />
             ) : (

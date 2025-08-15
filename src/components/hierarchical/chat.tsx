@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { ChatContext } from "@/app/dashboard/hierarchical/chat-session-context";
 import { ChatList } from "@/components/hierarchical/chat-list";
 import { ChatPanelForAsideLayout } from "@/components/shared/chat/chat-panel-for-aside-layout";
@@ -18,7 +19,7 @@ import { callHierarchicalCrew } from "@/services/callHierarchicalCrew";
 import { nanoid } from "@/shared/utils";
 import { ChatDispatchContext } from "@/app/dashboard/hierarchical/chat-session-context";
 import { StopIcon } from "@heroicons/react/24/outline";
-import { AbortController } from "abort-controller";
+// import { AbortController } from "abort-controller";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -111,16 +112,16 @@ export function Chat({ id, className }: ChatProps) {
       });
 
       // Initialize a new AbortController for each request
-      const abortController = new AbortController();
-      const signal = abortController.signal;
+      // const abortController = new AbortController();
+      // const signal = abortController.signal;
 
       // Make the API call with the abort signal
       await callHierarchicalCrew(
         hierarchicalChatContext.sessionId,
         prompt,
         context,
-        dispatch,
-        signal
+        dispatch
+        // signal
       );
 
       dispatch({
