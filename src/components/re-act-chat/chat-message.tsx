@@ -65,6 +65,27 @@ export const ChatMessage = memo(
                       </p>
                     );
                   },
+                  ul({ className, children, ...props }) {
+                    return (
+                      <ul className="text-gray-100 leading-relaxed list-disc list-inside space-y-1 my-4">
+                        {children}
+                      </ul>
+                    );
+                  },
+                  ol({ className, children, ...props }) {
+                    return (
+                      <ol className="text-gray-100 leading-relaxed list-decimal list-inside space-y-1 my-4">
+                        {children}
+                      </ol>
+                    );
+                  },
+                  li({ className, children, ...props }) {
+                    return (
+                      <li className="text-gray-100 leading-relaxed">
+                        {children}
+                      </li>
+                    );
+                  },
                   code({ className, children, ...props }) {
                     return (
                       <code className="bg-gray-800/50 px-2 py-1 rounded-md text-sm font-mono text-blue-300">

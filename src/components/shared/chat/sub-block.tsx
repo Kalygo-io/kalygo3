@@ -49,6 +49,27 @@ export const SubBlock = memo(
                       </p>
                     );
                   },
+                  ul({ className, children, ...props }) {
+                    return (
+                      <ul className="text-gray-200 leading-relaxed list-disc list-inside space-y-1 my-4">
+                        {children}
+                      </ul>
+                    );
+                  },
+                  ol({ className, children, ...props }) {
+                    return (
+                      <ol className="text-gray-200 leading-relaxed list-decimal list-inside space-y-1 my-4">
+                        {children}
+                      </ol>
+                    );
+                  },
+                  li({ className, children, ...props }) {
+                    return (
+                      <li className="text-gray-200 leading-relaxed">
+                        {children}
+                      </li>
+                    );
+                  },
                 }}
               >
                 {P.block.content}

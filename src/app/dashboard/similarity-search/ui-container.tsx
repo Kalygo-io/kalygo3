@@ -8,6 +8,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
+import Image from "next/image";
 
 export function SimilaritySearchDemoContainer() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -121,16 +122,26 @@ export function SimilaritySearchDemoContainer() {
           </p>
         </div>
 
-        {/* Loading State */}
-        {isPending && searchQuery.trim() && (
+        {/* Loading State - Single loader for all loading states */}
+        {(isPending || isFetching) && searchQuery.trim() && (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span className="ml-3 text-gray-400">Searching...</span>
+            <div className="flex flex-col items-center space-y-4">
+              <Image
+                src="/loader.svg"
+                alt="Loading..."
+                width={48}
+                height={48}
+                className="w-12 h-12"
+              />
+              <span className="text-gray-400">
+                {isPending ? "Searching..." : "Updating results..."}
+              </span>
+            </div>
           </div>
         )}
 
         {/* Results */}
-        {data?.recommendations && searchQuery.trim() && (
+        {data?.recommendations && searchQuery.trim() && !isPending && (
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-white mb-2">
@@ -308,16 +319,6 @@ export function SimilaritySearchDemoContainer() {
               </p>
             </div>
           )}
-
-        {/* Status */}
-        {isFetching && searchQuery.trim() && (
-          <div className="text-center mt-6">
-            <div className="inline-flex items-center text-sm text-gray-400">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-2"></div>
-              Updating results...
-            </div>
-          </div>
-        )}
       </div>
 
       <ContextualAside
