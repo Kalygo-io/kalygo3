@@ -5,7 +5,7 @@ import * as React from "react";
 import { ChatDispatchContext } from "@/app/dashboard/basic-memory/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callNoRagAgent } from "@/services/callNoRagAgent";
+import { callBasicMemoryChat } from "@/services/callBasicMemoryChat";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 
 export function PromptForm({
@@ -48,7 +48,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callNoRagAgent(sessionId, prompt, dispatch);
+          await callBasicMemoryChat(sessionId, prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",

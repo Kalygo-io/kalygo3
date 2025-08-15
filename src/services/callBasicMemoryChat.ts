@@ -3,7 +3,7 @@ import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callNoRagAgent(
+export async function callBasicMemoryChat(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>
@@ -35,7 +35,6 @@ export async function callNoRagAgent(
   };
 
   while (true) {
-    console.log("! reader !", reader);
     // @ts-ignore
     const { done, value } = await reader.read();
     if (done) break;
