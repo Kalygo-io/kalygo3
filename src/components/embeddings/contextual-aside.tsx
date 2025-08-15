@@ -5,8 +5,6 @@ import {
   InformationCircleIcon,
   LightBulbIcon,
   XMarkIcon,
-  ChartBarIcon,
-  BeakerIcon,
   AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 
@@ -21,8 +19,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
     { id: "math", name: "Mathematics", icon: AcademicCapIcon },
-    { id: "examples", name: "Examples", icon: BeakerIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
   ];
 
   return (
@@ -128,7 +124,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
             {activeTab === "math" && (
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-green-400 mb-2">
+                  <h3 className="text-lg font-semibold text-white mb-2">
                     Mathematical Foundation
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
@@ -176,98 +172,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                       </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "examples" && (
-              <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-purple-400 mb-2">
-                    Famous Examples
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    These classic examples demonstrate how vector embeddings
-                    capture semantic relationships through mathematical
-                    operations.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Word2Vec Examples:
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="text-white font-medium">
-                        Gender Relationships
-                      </div>
-                      <div className="text-gray-300 text-xs mt-1">
-                        king - man + woman ≈ queen
-                      </div>
-                      <div className="text-gray-300 text-xs">
-                        uncle - man + woman ≈ aunt
-                      </div>
-                    </div>
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="text-white font-medium">
-                        Geographic Relationships
-                      </div>
-                      <div className="text-gray-300 text-xs mt-1">
-                        paris - france + italy ≈ rome
-                      </div>
-                      <div className="text-gray-300 text-xs">
-                        tokyo - japan + china ≈ beijing
-                      </div>
-                    </div>
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="text-white font-medium">
-                        Semantic Similarity
-                      </div>
-                      <div className="text-gray-300 text-xs mt-1">
-                        happy ≈ joyful, delighted, pleased
-                      </div>
-                      <div className="text-gray-300 text-xs">
-                        sad ≈ unhappy, depressed, gloomy
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "flowchart" && (
-              <div className="space-y-4">
-                <div className="bg-orange-900/20 border border-orange-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-orange-400 mb-2">
-                    Embedding Process Flow
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    The journey from raw text to meaningful vector
-                    representations.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Processing Steps:
-                  </h4>
-                  <ol className="space-y-2 text-sm text-white list-decimal list-inside">
-                    <li>Text preprocessing and tokenization</li>
-                    <li>Context window analysis</li>
-                    <li>Neural network training</li>
-                    <li>Vector space mapping</li>
-                    <li>Similarity calculation</li>
-                    <li>Application-specific usage</li>
-                  </ol>
-                </div>
-
-                <div className="bg-gray-800 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg font-medium">
-                    Interactive Flow Chart
-                  </p>
-                  <p className="text-gray-400 text-sm mt-2">Coming Soon</p>
                 </div>
               </div>
             )}
