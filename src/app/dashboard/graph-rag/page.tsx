@@ -3,13 +3,14 @@
 import { redirect } from "next/navigation";
 import { protectedPageGuard } from "@/components/shared/utils/validate-token";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
+import { GraphRAGDemoContainer } from "./graph-rag-container";
 
 export default async function Page() {
   try {
     await protectedPageGuard();
     return (
       <DashboardLayout>
-        <div className="text-white text-center">Graph RAG DEMO...</div>
+        <GraphRAGDemoContainer />
       </DashboardLayout>
     );
   } catch (error) {
