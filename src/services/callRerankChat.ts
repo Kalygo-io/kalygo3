@@ -76,12 +76,41 @@ export async function callRerankChat(
 }
 
 function dispatchEventToState(
-  parsedChunk: Record<string, string>,
+  parsedChunk: Record<string, any>,
   dispatch: React.Dispatch<Action>,
   aiMessageId: string,
   accMessage: { content: string }
 ) {
   if (parsedChunk["event"] === "on_chat_model_start") {
+    console.log("Received on_chat_model_start event:", parsedChunk);
+    console.log("Reranked chunks data:", parsedChunk["reranked_chunks"]);
+
+    // Handle both possible field names and ensure we have the right data structure
+    let rerankedData =
+      parsedChunk["reranked_chunks"] || parsedChunk["reranked_matches"] || [];
+
+    // Log all possible fields to debug
+    console.log("All parsedChunk fields:", Object.keys(parsedChunk));
+    console.log("Raw reranked_chunks:", parsedChunk["reranked_chunks"]);
+    console.log("Raw reranked_matches:", parsedChunk["reranked_matches"]);
+
+    // Ensure rerankedData is an array and has the expected structure
+    if (!Array.isArray(rerankedData)) {
+      console.warn("Reranked data is not an array:", rerankedData);
+      rerankedData = [];
+    } else {
+      // Validate the structure of each item
+      rerankedData = rerankedData.filter((item) => {
+        if (!item || typeof item !== "object") {
+          console.warn("Invalid reranked item:", item);
+          return false;
+        }
+        return true;
+      });
+    }
+
+    console.log("Processed reranked data:", rerankedData);
+
     dispatch({
       type: "ADD_MESSAGE",
       payload: {
@@ -89,6 +118,7 @@ function dispatchEventToState(
         content: "",
         role: "ai",
         error: null,
+        rerankedMatches: rerankedData,
       },
     });
   } else if (parsedChunk["event"] === "on_chat_model_stream") {
@@ -98,6 +128,7 @@ function dispatchEventToState(
       payload: {
         id: aiMessageId,
         content: accMessage.content,
+        // Don't override rerankedMatches during streaming
       },
     });
   } else if (parsedChunk["event"] === "on_chat_model_end") {
