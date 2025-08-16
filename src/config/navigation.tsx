@@ -30,6 +30,16 @@ export const navigation = [
     enabled: true,
   },
   {
+    name: "Reranking Demo",
+    href: "/dashboard/reranking-demo",
+    enabled: true,
+  },
+  {
+    name: "Reranking Chat",
+    href: "/dashboard/reranking-chat",
+    enabled: true,
+  },
+  {
     name: "Re-Act Agent",
     href: "/dashboard/re-act",
     enabled: true,
