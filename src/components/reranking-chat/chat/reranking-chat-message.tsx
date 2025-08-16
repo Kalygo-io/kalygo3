@@ -57,15 +57,12 @@ export const RerankingChatMessage = memo(
               )}
             >
               <ReactMarkdown
+                remarkPlugins={[]}
+                rehypePlugins={[]}
                 components={{
                   p({ className, children, ...props }) {
                     return (
-                      <p
-                        className="text-gray-100 leading-relaxed"
-                        style={{
-                          whiteSpace: "pre-wrap",
-                        }}
-                      >
+                      <p className="text-gray-100 leading-relaxed">
                         {children}
                       </p>
                     );
@@ -79,14 +76,20 @@ export const RerankingChatMessage = memo(
                   },
                   ol({ className, children, ...props }) {
                     return (
-                      <ol className="text-gray-100 leading-relaxed list-decimal list-inside space-y-1 my-4">
+                      <ol
+                        className="text-gray-100 leading-relaxed list-decimal list-inside space-y-1 my-4"
+                        style={{ listStyleType: "decimal" }}
+                      >
                         {children}
                       </ol>
                     );
                   },
                   li({ className, children, ...props }) {
                     return (
-                      <li className="text-gray-100 leading-relaxed">
+                      <li
+                        className="text-gray-100 leading-relaxed"
+                        style={{ display: "list-item" }}
+                      >
                         {children}
                       </li>
                     );
