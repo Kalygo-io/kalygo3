@@ -1,10 +1,10 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/reranking-chat/chat-session-context";
-import { ChatList } from "@/components/reranking-chat/chat/chat-list";
-import { ChatPanel } from "@/components/reranking-chat/chat/chat-panel";
-import { EmptyScreen } from "@/components/reranking-chat/chat/empty-screen";
-import { PromptForm } from "@/components/reranking-chat/prompt-form";
+import { ChatContext } from "@/app/dashboard/chat-with-txt/chat-session-context";
+import { ChatList } from "@/components/chat-with-txt/chat/chat-list";
+import { ChatPanel } from "@/components/chat-with-txt/chat/chat-panel";
+import { EmptyScreen } from "@/components/chat-with-txt/chat/empty-screen";
+import { PromptForm } from "@/components/chat-with-txt/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
@@ -64,7 +64,7 @@ export function Chat({ id, className }: ChatProps) {
                   content={
                     <>
                       <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
-                        Reranking Chat 🥇🥈🥉
+                        Chat with TXT 📃
                       </h1>
                     </>
                   }

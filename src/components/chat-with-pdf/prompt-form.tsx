@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/reranking-chat/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/chat-with-pdf/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { callRerankChat } from "@/services/callRerankChat";

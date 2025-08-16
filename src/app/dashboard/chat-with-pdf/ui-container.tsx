@@ -3,12 +3,12 @@
 import {
   ChatContext,
   ChatDispatchContext,
-} from "@/app/dashboard/reranking-chat/chat-session-context";
+} from "@/app/dashboard/chat-with-pdf/chat-session-context";
 import {
   chatReducer,
   initialState,
-} from "@/app/dashboard/reranking-chat/chat-session-reducer";
-import { Chat as RerankingChat } from "@/components/reranking-chat/chat";
+} from "@/app/dashboard/chat-with-pdf/chat-session-reducer";
+import { Chat as RerankingChat } from "@/components/chat-with-pdf/chat";
 import { useReducer } from "react";
 
 export function RerankingChatUiContainer() {

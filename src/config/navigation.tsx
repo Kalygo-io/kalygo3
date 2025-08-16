@@ -1,5 +1,10 @@
 export const navigation = [
   {
+    name: "Tokenizers",
+    href: "/dashboard/tokenizers",
+    enabled: true,
+  },
+  {
     name: "Raw LLM",
     href: "/dashboard/raw-llm",
     enabled: true,
@@ -10,8 +15,13 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Embeddings",
-    href: "/dashboard/embeddings",
+    name: "Embedding Models",
+    href: "/dashboard/embedding-models",
+    enabled: true,
+  },
+  {
+    name: "Vectors",
+    href: "/dashboard/vectors",
     enabled: true,
   },
   {
@@ -30,13 +40,18 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Reranking Demo",
-    href: "/dashboard/reranking-demo",
+    name: "Reranking DEMO #1",
+    href: "/dashboard/chat-with-txt",
     enabled: true,
   },
   {
-    name: "Reranking Chat",
-    href: "/dashboard/reranking-chat",
+    name: "Reranking DEMO #2",
+    href: "/dashboard/chat-with-pdf",
+    enabled: true,
+  },
+  {
+    name: "Tools",
+    href: "/dashboard/tools",
     enabled: true,
   },
   {
