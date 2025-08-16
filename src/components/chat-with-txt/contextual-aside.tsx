@@ -39,7 +39,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Reranking Chat</h2>
+            <h2 className="text-lg font-semibold text-white">Chat with TXT</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}

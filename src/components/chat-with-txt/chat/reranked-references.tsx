@@ -75,7 +75,10 @@ export function RerankedReferences({
                     </div>
                   </div>
                 </div>
-                <div className="text-sm text-gray-300 leading-relaxed">
+                <div
+                  className="text-sm text-gray-300 leading-relaxed font-mono bg-gray-900/50 p-3 rounded border border-gray-600/30 overflow-x-auto"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
                   {match.content}
                 </div>
               </div>
