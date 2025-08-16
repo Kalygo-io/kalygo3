@@ -26,72 +26,96 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
     {
       name: "GPT-4o",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://platform.openai.com/docs/models/gpt-4o",
       provider: "OpenAI",
     },
     {
       name: "GPT-4o Mini",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://platform.openai.com/docs/models/gpt-4o-mini",
       provider: "OpenAI",
     },
     {
       name: "Claude 3.5 Sonnet",
       contextLimit: "200K tokens",
+      wordEstimate: "~150K words",
+      pageEstimate: "~600 pages",
       link: "https://docs.anthropic.com/en/docs/models-overview",
       provider: "Anthropic",
     },
     {
       name: "Claude 3.5 Haiku",
       contextLimit: "200K tokens",
+      wordEstimate: "~150K words",
+      pageEstimate: "~600 pages",
       link: "https://docs.anthropic.com/en/docs/models-overview",
       provider: "Anthropic",
     },
     {
       name: "Gemini 1.5 Pro",
       contextLimit: "1M tokens",
+      wordEstimate: "~750K words",
+      pageEstimate: "~3,000 pages",
       link: "https://ai.google.dev/models/gemini",
       provider: "Google",
     },
     {
       name: "Gemini 1.5 Flash",
       contextLimit: "1M tokens",
+      wordEstimate: "~750K words",
+      pageEstimate: "~3,000 pages",
       link: "https://ai.google.dev/models/gemini",
       provider: "Google",
     },
     {
       name: "Llama 3.1 405B",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://llama.meta.com/llama3/",
       provider: "Meta",
     },
     {
       name: "Llama 3.1 8B",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://llama.meta.com/llama3/",
       provider: "Meta",
     },
     {
       name: "Mistral Large",
       contextLimit: "32K tokens",
+      wordEstimate: "~24K words",
+      pageEstimate: "~96 pages",
       link: "https://docs.mistral.ai/models/",
       provider: "Mistral AI",
     },
     {
       name: "Mistral Medium",
       contextLimit: "32K tokens",
+      wordEstimate: "~24K words",
+      pageEstimate: "~96 pages",
       link: "https://docs.mistral.ai/models/",
       provider: "Mistral AI",
     },
     {
       name: "Cohere Command R+",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://docs.cohere.com/docs/models",
       provider: "Cohere",
     },
     {
       name: "Cohere Command R",
       contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
       link: "https://docs.cohere.com/docs/models",
       provider: "Cohere",
     },
@@ -233,7 +257,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                             {model.provider}
                           </span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mb-1">
                           <span className="text-xs text-blue-300 font-medium">
                             {model.contextLimit}
                           </span>
@@ -245,6 +269,14 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                           >
                             Official Docs →
                           </a>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <span className="text-xs text-gray-400">
+                            {model.wordEstimate}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {model.pageEstimate}
+                          </span>
                         </div>
                       </div>
                     ))}
