@@ -12,5 +12,7 @@ export interface RerankedMatch {
   chunk_id: string;
   total_chunks: number;
   score: number;
+  relevance_score: number;
+  similarity_score: number;
   content: string;
 }

@@ -7,6 +7,8 @@ const testRerankedMatches: RerankedMatch[] = [
     chunk_id: "doc1_chunk2",
     total_chunks: 5,
     score: 0.95,
+    relevance_score: 0.95,
+    similarity_score: 0.87,
     content:
       "This is a test chunk content that should be displayed in the references section. It contains information about the topic being discussed.",
   },
@@ -14,6 +16,8 @@ const testRerankedMatches: RerankedMatch[] = [
     chunk_id: "doc2_chunk1",
     total_chunks: 3,
     score: 0.87,
+    relevance_score: 0.87,
+    similarity_score: 0.82,
     content:
       "Another test chunk with different content. This helps verify that multiple references can be displayed correctly.",
   },
@@ -21,6 +25,8 @@ const testRerankedMatches: RerankedMatch[] = [
     chunk_id: "doc3_chunk4",
     total_chunks: 7,
     score: 0.72,
+    relevance_score: 0.72,
+    similarity_score: 0.65,
     content:
       "A third test chunk with lower relevance score. This demonstrates the score display functionality.",
   },
@@ -50,8 +56,8 @@ export function TestRerankedReferences() {
             from the backend.
           </p>
           <p>
-            If you can see the "References (3)" button above, the component is
-            working correctly.
+            If you can see the &quot;References (3)&quot; button above, the
+            component is working correctly.
           </p>
         </div>
       </div>

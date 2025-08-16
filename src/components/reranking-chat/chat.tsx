@@ -70,9 +70,9 @@ export function Chat({ id, className }: ChatProps) {
                   }
                 />
                 {/* Temporary test component to verify reranked references work */}
-                <div className="mt-8">
+                {/* <div className="mt-8">
                   <TestRerankedReferences />
-                </div>
+                </div> */}
               </>
             )}
           </div>

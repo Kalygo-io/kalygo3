@@ -13,11 +13,13 @@ The backend sends reranked matches data in the `on_chat_model_start` event with 
 ```json
 {
   "event": "on_chat_model_start",
-  "reranked_matches": [
+  "reranked_chunks": [
     {
       "chunk_id": "doc1_chunk2",
       "total_chunks": 5,
       "score": 0.95,
+      "relevance_score": 0.95,
+      "similarity_score": 0.87,
       "content": "This is a preview of the chunk content..."
     }
   ]
@@ -40,6 +42,8 @@ export interface RerankedMatch {
   chunk_id: string;
   total_chunks: number;
   score: number;
+  relevance_score: number;
+  similarity_score: number;
   content: string;
 }
 ```
@@ -61,10 +65,11 @@ Modified `dispatchEventToState` to extract and store reranked matches from the `
 ### Features
 
 1. **Collapsible Interface**: References are hidden by default and can be expanded by clicking the "References (N)" button
-2. **Rich Information Display**: Shows chunk ID, total chunks, relevance score, and content preview
+2. **Rich Information Display**: Shows chunk ID, total chunks, relevance score, similarity score, and content preview
 3. **Visual Hierarchy**: Clear separation between message content and references
-4. **Score Visualization**: Relevance scores are displayed as percentages with color coding
-5. **Responsive Design**: Works well on different screen sizes
+4. **Score Visualization**: Both relevance and similarity scores are displayed as percentages with color coding (green for relevance, blue for similarity)
+5. **Score Explanation**: Clear explanation of what each score represents
+6. **Responsive Design**: Works well on different screen sizes
 
 ### User Experience
 
@@ -77,6 +82,7 @@ Modified `dispatchEventToState` to extract and store reranked matches from the `
 
 1. **Transparency**: Users can see exactly what information the model used
 2. **Source Exploration**: Users can explore the source documents referenced
-3. **Confidence Indicators**: Relevance scores help users understand the quality of sources
-4. **Debugging**: Developers can verify that the correct sources are being used
-5. **Trust Building**: Clear reference display builds user trust in the system 
+3. **Confidence Indicators**: Both relevance and similarity scores help users understand the quality and relevance of sources
+4. **Score Understanding**: Clear explanation of what each score represents (Cohere's reranking vs Pinecone's similarity)
+5. **Debugging**: Developers can verify that the correct sources are being used
+6. **Trust Building**: Clear reference display builds user trust in the system 

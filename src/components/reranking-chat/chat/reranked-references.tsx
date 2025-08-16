@@ -36,11 +36,13 @@ export function RerankedReferences({
             References ({rerankedMatches.length})
           </span>
         </div>
-        {isExpanded ? (
-          <ChevronDownIcon className="w-4 h-4 text-gray-400" />
-        ) : (
-          <ChevronRightIcon className="w-4 h-4 text-gray-400" />
-        )}
+        <div className="flex items-center space-x-4">
+          {isExpanded ? (
+            <ChevronDownIcon className="w-4 h-4 text-gray-400" />
+          ) : (
+            <ChevronRightIcon className="w-4 h-4 text-gray-400" />
+          )}
+        </div>
       </button>
 
       {isExpanded && (
@@ -55,14 +57,22 @@ export function RerankedReferences({
                   <div className="flex items-center space-x-2">
                     <span className="text-xs text-gray-500">{index + 1})</span>
                     <span className="text-xs font-mono text-gray-400 bg-gray-700/50 px-2 py-1 rounded">
-                      Chunk ID:{match.chunk_id}
+                      Chunk ID: {match.chunk_id}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs text-gray-400">Relevance:</span>
-                    <span className="text-xs font-medium text-gray-400">
-                      {(match.score * 100).toFixed(1)}%
-                    </span>
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-1">
+                      <span className="text-xs text-gray-400">Relevance:</span>
+                      <span className="text-xs font-medium text-white">
+                        {(match.relevance_score * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-xs text-gray-400">Similarity:</span>
+                      <span className="text-xs font-medium text-blue-400">
+                        {(match.similarity_score * 100).toFixed(1)}%
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="text-sm text-gray-300 leading-relaxed">
