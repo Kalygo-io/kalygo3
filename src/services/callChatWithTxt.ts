@@ -3,13 +3,13 @@ import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callRerankChat(
+export async function callChatWithTxt(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking-chat/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/completion`,
     {
       method: "POST",
       headers: {

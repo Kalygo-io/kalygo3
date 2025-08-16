@@ -5,7 +5,7 @@ import * as React from "react";
 import { ChatDispatchContext } from "@/app/dashboard/chat-with-pdf/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callRerankChat } from "@/services/callRerankChat";
+import { callChatWithPdf } from "@/services/callChatWithPdf";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 
 export function PromptForm({
@@ -48,7 +48,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callRerankChat(sessionId, prompt, dispatch);
+          await callChatWithPdf(sessionId, prompt, dispatch);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
