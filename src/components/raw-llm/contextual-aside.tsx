@@ -6,6 +6,7 @@ import {
   LightBulbIcon,
   XMarkIcon,
   ChartBarIcon,
+  CpuChipIcon,
 } from "@heroicons/react/24/outline";
 
 interface ContextualAsideProps {
@@ -18,7 +19,82 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
+    { id: "popular-llms", name: "Popular LLMs", icon: CpuChipIcon },
+  ];
+
+  const popularLLMs = [
+    {
+      name: "GPT-4o",
+      contextLimit: "128K tokens",
+      link: "https://platform.openai.com/docs/models/gpt-4o",
+      provider: "OpenAI",
+    },
+    {
+      name: "GPT-4o Mini",
+      contextLimit: "128K tokens",
+      link: "https://platform.openai.com/docs/models/gpt-4o-mini",
+      provider: "OpenAI",
+    },
+    {
+      name: "Claude 3.5 Sonnet",
+      contextLimit: "200K tokens",
+      link: "https://docs.anthropic.com/en/docs/models-overview",
+      provider: "Anthropic",
+    },
+    {
+      name: "Claude 3.5 Haiku",
+      contextLimit: "200K tokens",
+      link: "https://docs.anthropic.com/en/docs/models-overview",
+      provider: "Anthropic",
+    },
+    {
+      name: "Gemini 1.5 Pro",
+      contextLimit: "1M tokens",
+      link: "https://ai.google.dev/models/gemini",
+      provider: "Google",
+    },
+    {
+      name: "Gemini 1.5 Flash",
+      contextLimit: "1M tokens",
+      link: "https://ai.google.dev/models/gemini",
+      provider: "Google",
+    },
+    {
+      name: "Llama 3.1 405B",
+      contextLimit: "128K tokens",
+      link: "https://llama.meta.com/llama3/",
+      provider: "Meta",
+    },
+    {
+      name: "Llama 3.1 8B",
+      contextLimit: "128K tokens",
+      link: "https://llama.meta.com/llama3/",
+      provider: "Meta",
+    },
+    {
+      name: "Mistral Large",
+      contextLimit: "32K tokens",
+      link: "https://docs.mistral.ai/models/",
+      provider: "Mistral AI",
+    },
+    {
+      name: "Mistral Medium",
+      contextLimit: "32K tokens",
+      link: "https://docs.mistral.ai/models/",
+      provider: "Mistral AI",
+    },
+    {
+      name: "Cohere Command R+",
+      contextLimit: "128K tokens",
+      link: "https://docs.cohere.com/docs/models",
+      provider: "Cohere",
+    },
+    {
+      name: "Cohere Command R",
+      contextLimit: "128K tokens",
+      link: "https://docs.cohere.com/docs/models",
+      provider: "Cohere",
+    },
   ];
 
   return (
@@ -40,14 +116,14 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Raw LLM</h2>
+            <h2 className="text-lg font-semibold text-gray-100">Raw LLM</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
                 title="Close panel"
               >
-                <XMarkIcon className="w-5 h-5 text-gray-400" />
+                <XMarkIcon className="w-5 h-5 text-gray-300" />
               </button>
             </div>
           </div>
@@ -63,8 +139,8 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center justify-center space-x-2 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                       activeTab === tab.id
-                        ? "text-blue-400 border-b-2 border-blue-400 bg-gray-800"
-                        : "text-gray-400 hover:text-gray-300 hover:bg-gray-800"
+                        ? "text-blue-300 border-b-2 border-blue-300 bg-gray-800"
+                        : "text-gray-300 hover:text-gray-100 hover:bg-gray-800"
                     }`}
                   >
                     <Icon className="w-4 h-4 flex-shrink-0" />
@@ -122,6 +198,65 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                 <div className="bg-gray-800 rounded-lg p-8 text-center">
                   <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-white text-lg font-medium">Coming Soon</p>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "popular-llms" && (
+              <div className="space-y-4">
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-gray-300 mb-2">
+                    Popular LLM Models
+                  </h3>
+                  <p className="text-gray-100 text-sm leading-relaxed">
+                    Here are some of the most popular Large Language Models
+                    currently available, along with their context limits and
+                    links to official documentation.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-md font-semibold text-gray-100">
+                    Model Comparison:
+                  </h4>
+                  <div className="space-y-3">
+                    {popularLLMs.map((model, index) => (
+                      <div
+                        key={index}
+                        className="bg-gray-800 rounded-lg p-3 border border-gray-600"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <h5 className="text-gray-100 font-medium text-sm">
+                            {model.name}
+                          </h5>
+                          <span className="text-xs text-gray-300 bg-gray-600 px-2 py-1 rounded">
+                            {model.provider}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-blue-300 font-medium">
+                            {model.contextLimit}
+                          </span>
+                          <a
+                            href={model.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-gray-300 hover:text-green-200 underline transition-colors"
+                          >
+                            Official Docs →
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-lg p-3">
+                  <p className="text-yellow-100 text-xs leading-relaxed">
+                    <strong>Note:</strong> Context limits and model availability
+                    may change over time. Always refer to the official
+                    documentation for the most up-to-date information.
+                  </p>
                 </div>
               </div>
             )}
