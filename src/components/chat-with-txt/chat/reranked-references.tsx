@@ -13,10 +13,11 @@ interface RerankedReferencesProps {
 export function RerankedReferences({
   rerankedMatches,
 }: RerankedReferencesProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [expandedChunks, setExpandedChunks] = useState<Set<number>>(new Set());
 
   console.log("RerankedReferences component received:", rerankedMatches);
+  console.log("expandedChunks state:", expandedChunks);
 
   if (!rerankedMatches || rerankedMatches.length === 0) {
     console.log("No reranked matches to display");
@@ -26,11 +27,14 @@ export function RerankedReferences({
   const toggleExpanded = () => setIsExpanded(!isExpanded);
 
   const toggleChunkExpanded = (index: number) => {
+    console.log("Toggling chunk", index, "current expanded:", expandedChunks);
     const newExpanded = new Set(expandedChunks);
     if (newExpanded.has(index)) {
       newExpanded.delete(index);
+      console.log("Collapsing chunk", index);
     } else {
       newExpanded.add(index);
+      console.log("Expanding chunk", index);
     }
     setExpandedChunks(newExpanded);
   };
@@ -45,12 +49,27 @@ export function RerankedReferences({
     }
   };
 
-  const getPreviewContent = (content: string, maxLines: number = 2) => {
-    const lines = content.split("\n");
-    if (lines.length <= maxLines) {
+  const getPreviewContent = (content: string, maxChars: number = 200) => {
+    if (!content) return "";
+
+    if (content.length <= maxChars) {
       return content;
     }
-    return lines.slice(0, maxLines).join("\n") + "\n...";
+
+    // Find the last complete sentence within the character limit
+    const truncated = content.substring(0, maxChars);
+    const lastPeriod = truncated.lastIndexOf(".");
+    const lastExclamation = truncated.lastIndexOf("!");
+    const lastQuestion = truncated.lastIndexOf("?");
+
+    const lastSentenceEnd = Math.max(lastPeriod, lastExclamation, lastQuestion);
+
+    if (lastSentenceEnd > maxChars * 0.7) {
+      // If we have a reasonable sentence ending
+      return truncated.substring(0, lastSentenceEnd + 1) + "...";
+    } else {
+      return truncated + "...";
+    }
   };
 
   return (
@@ -108,9 +127,21 @@ export function RerankedReferences({
                   className="text-sm text-gray-300 leading-relaxed font-mono bg-gray-900/50 p-3 rounded border border-gray-600/30 overflow-x-auto"
                   style={{ whiteSpace: "pre-wrap" }}
                 >
-                  {expandedChunks.has(index)
-                    ? match.content
-                    : getPreviewContent(match.content)}
+                  {expandedChunks.has(index) ? (
+                    <div>
+                      <div className="text-xs text-gray-500 mb-2">
+                        [EXPANDED]
+                      </div>
+                      {match.content}
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="text-xs text-gray-500 mb-2">
+                        [PREVIEW]
+                      </div>
+                      {getPreviewContent(match.content)}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <button
