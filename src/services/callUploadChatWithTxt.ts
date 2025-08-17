@@ -13,8 +13,20 @@ export async function callUploadChatWithTxt(
   file: File
 ): Promise<UploadResponse> {
   try {
+    // Validate file type before uploading
+    const validExtensions = [".txt", ".md"];
+    const fileExtension = file.name
+      .toLowerCase()
+      .substring(file.name.lastIndexOf("."));
+
+    if (!validExtensions.includes(fileExtension)) {
+      throw new Error(
+        `Unsupported file type: ${fileExtension}. Only .txt and .md files are supported.`
+      );
+    }
+
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("files", file);
 
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/upload`,
@@ -26,14 +38,30 @@ export async function callUploadChatWithTxt(
     );
 
     if (!resp.ok) {
-      const errorData = await resp.json().catch(() => ({}));
-      throw new Error(errorData.detail || `HTTP error! status: ${resp.status}`);
+      let errorMessage = `HTTP error! status: ${resp.status}`;
+      try {
+        const errorData = await resp.json();
+        errorMessage =
+          errorData.detail ||
+          errorData.message ||
+          errorData.error ||
+          errorMessage;
+      } catch (parseError) {
+        // If we can't parse the error response, use the status text
+        errorMessage = resp.statusText || errorMessage;
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await resp.json();
     return data;
   } catch (error) {
     console.error("Error uploading file:", error);
-    throw error;
+    // Ensure we always throw a proper Error object with a message
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error(`Upload failed: ${String(error)}`);
+    }
   }
 }

@@ -6,6 +6,7 @@ export interface Message {
   parallelGroupId?: string;
   blocks?: Message[];
   rerankedMatches?: RerankedMatch[];
+  kb_search_query?: string;
 }
 
 export interface RerankedMatch {
@@ -16,4 +17,5 @@ export interface RerankedMatch {
   similarity_score: number;
   content: string;
   filename?: string;
+  kb_search_query?: string;
 }

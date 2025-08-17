@@ -75,9 +75,7 @@ export function ContextualAside({
       const response = await callDeleteVectorsInNamespace(kbStats.namespace);
       if (response.success) {
         successToast(
-          `Successfully deleted ${
-            response.deleted_count || 0
-          } vectors from namespace "${kbStats.namespace}"`
+          `Successfully deleted vectors from namespace "${kbStats.namespace}"`
         );
         // Refresh the stats after deletion
         await fetchKbStats();

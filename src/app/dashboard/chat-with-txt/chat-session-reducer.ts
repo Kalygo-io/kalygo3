@@ -18,6 +18,7 @@ export type Action =
         content?: string;
         error?: any;
         rerankedMatches?: RerankedMatch[];
+        kb_search_query?: string;
       };
     };
 
@@ -43,6 +44,7 @@ export function chatReducer(
         role: action.payload.role,
         error: action.payload.error,
         rerankedMatches: action.payload.rerankedMatches,
+        kb_search_query: action.payload.kb_search_query,
       };
 
       console.log("New message object:", newMessage);

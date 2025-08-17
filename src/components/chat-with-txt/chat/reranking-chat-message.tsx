@@ -108,6 +108,18 @@ export const RerankingChatMessage = memo(
                       </pre>
                     );
                   },
+                  a({ className, children, href, ...props }) {
+                    return (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 underline decoration-blue-500/50 hover:decoration-blue-400 transition-colors duration-200"
+                      >
+                        {children}
+                      </a>
+                    );
+                  },
                 }}
               >
                 {P.message.content}
@@ -117,6 +129,7 @@ export const RerankingChatMessage = memo(
               {P.message.role === "ai" && P.message.rerankedMatches && (
                 <RerankedReferences
                   rerankedMatches={P.message.rerankedMatches}
+                  kb_search_query={P.message.kb_search_query}
                 />
               )}
             </div>

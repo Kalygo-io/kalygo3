@@ -37,7 +37,9 @@ export function ChooseFile(props: Props) {
     if (e.type === "dragenter" || e.type === "dragover") {
       const dataTransferFiles = e.dataTransfer?.files;
       for (let i = 0; i < dataTransferFiles.length; i++) {
-        if (!["text/plain"].includes(dataTransferFiles[i]?.type)) {
+        if (
+          !["text/plain", "text/markdown"].includes(dataTransferFiles[i]?.type)
+        ) {
           setDragActive(false);
           return;
         }
@@ -56,7 +58,7 @@ export function ChooseFile(props: Props) {
 
       if (e.dataTransfer.files) {
         const validFiles = Array.from(e.dataTransfer.files).filter((file) =>
-          ["text/plain"].includes(file.type)
+          ["text/plain", "text/markdown"].includes(file.type)
         );
         setFiles((prevFiles) =>
           prevFiles ? [...prevFiles, ...validFiles] : validFiles
@@ -114,9 +116,25 @@ export function ChooseFile(props: Props) {
             errorToast(`Failed to upload ${result.filename}: ${result.error}`);
           }
         } catch (error) {
-          const errorMessage =
-            error instanceof Error ? error.message : "Upload failed";
+          let errorMessage = "Upload failed";
+
+          if (error instanceof Error) {
+            errorMessage = error.message;
+          } else if (typeof error === "string") {
+            errorMessage = error;
+          } else {
+            errorMessage = `Upload failed: ${String(error)}`;
+          }
+
+          // Check if this is a .md file and provide a helpful message
+          if (file.name.toLowerCase().endsWith(".md")) {
+            errorMessage =
+              "Markdown (.md) files are not yet supported by the backend. Please use .txt files for now.";
+          }
+
+          console.error(`Failed to upload ${file.name}:`, error);
           errorToast(`Failed to upload ${file.name}: ${errorMessage}`);
+
           results.push({
             filename: file.name,
             total_chunks_created: 0,
@@ -182,21 +200,21 @@ export function ChooseFile(props: Props) {
                         inputRef.current?.click();
                       }}
                     >
-                      Select TXT Files
+                      Select Files
                       <input
                         ref={inputRef}
                         type="file"
                         id="input-file-upload"
                         multiple={true}
                         onChange={handleChange}
-                        accept=".txt"
+                        accept=".txt,.md"
                         className="sr-only"
                       />
                     </button>
                   </label>
                 </div>
                 <p className="text-xs leading-5 text-gray-400">
-                  <sup>*</sup>Supports multiple .txt files
+                  <sup>*</sup>Supports .txt and .md files
                 </p>
               </div>
             </div>

@@ -119,6 +119,7 @@ function dispatchEventToState(
         role: "ai",
         error: null,
         rerankedMatches: rerankedData,
+        kb_search_query: parsedChunk["kb_search_query"],
       },
     });
   } else if (parsedChunk["event"] === "on_chat_model_stream") {
@@ -133,6 +134,7 @@ function dispatchEventToState(
     });
   } else if (parsedChunk["event"] === "on_chat_model_end") {
   } else if (parsedChunk["event"] === "event_stream_error") {
+    debugger;
     errorToast("Error in text/event-stream");
   } else {
     console.error("Unknown event:", parsedChunk["event"]);

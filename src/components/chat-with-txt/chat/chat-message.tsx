@@ -100,6 +100,18 @@ export const ChatMessage = memo(
                       </pre>
                     );
                   },
+                  a({ className, children, href, ...props }) {
+                    return (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 underline decoration-blue-500/50 hover:decoration-blue-400 transition-colors duration-200"
+                      >
+                        {children}
+                      </a>
+                    );
+                  },
                 }}
               >
                 {P.message.content}

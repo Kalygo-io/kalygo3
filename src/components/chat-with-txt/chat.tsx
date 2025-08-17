@@ -10,7 +10,6 @@ import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
 import { ContextualAside } from "./contextual-aside";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { TestRerankedReferences } from "./chat/test-reranked-references";
 import { DebugMessages } from "./chat/debug-messages";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
@@ -22,7 +21,7 @@ export function Chat({ id, className }: ChatProps) {
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   useEffect(() => {
-    scrollToBottom();
+    // scrollToBottom();
   }, [chatState.messages, scrollToBottom]);
 
   const toggleDrawer = () => {
@@ -68,10 +67,6 @@ export function Chat({ id, className }: ChatProps) {
                     </>
                   }
                 />
-                {/* Temporary test component to verify reranked references work */}
-                {/* <div className="mt-8">
-                  <TestRerankedReferences />
-                </div> */}
               </>
             )}
           </div>
