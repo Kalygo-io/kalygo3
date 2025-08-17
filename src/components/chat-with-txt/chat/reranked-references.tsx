@@ -82,7 +82,7 @@ export function RerankedReferences({
         <div className="flex items-center space-x-2">
           <DocumentTextIcon className="w-4 h-4 text-blue-400" />
           <span className="text-sm font-medium text-gray-200">
-            References ({rerankedMatches.length})
+            Chunks ({rerankedMatches.length})
           </span>
         </div>
         <div className="flex items-center space-x-4">
