@@ -130,9 +130,9 @@ export function TokenizersContainer() {
               <p className="text-gray-300 leading-relaxed mb-4">
                 Tokenizers are the first step in processing text for AI models.
                 They break down human-readable text into smaller, manageable
-                pieces called "tokens" that machines can understand and process.
-                Think of them as the bridge between human language and machine
-                language.
+                pieces called &quot;tokens&quot; that machines can understand
+                and process. Think of them as the bridge between human language
+                and machine language.
               </p>
               <p className="text-gray-300 leading-relaxed">
                 In the context of reranking, tokenization is crucial because it
@@ -168,7 +168,9 @@ export function TokenizersContainer() {
                         : "border-gray-600 bg-gray-700 text-gray-300 hover:border-gray-500"
                     }`}
                   >
-                    <div className="font-medium">"{example.text}"</div>
+                    <div className="font-medium">
+                      &quot;{example.text}&quot;
+                    </div>
                     <div className="text-sm opacity-75">
                       {example.tokenCount} tokens
                     </div>
@@ -186,7 +188,7 @@ export function TokenizersContainer() {
                 <div>
                   <span className="text-gray-400 text-sm">Original text:</span>
                   <div className="text-white font-mono bg-gray-800 p-2 rounded mt-1">
-                    "{tokenExamples[activeExample].text}"
+                    &quot;{tokenExamples[activeExample].text}&quot;
                   </div>
                 </div>
 
@@ -403,8 +405,8 @@ export function TokenizersContainer() {
                 Try It Yourself
               </h2>
               <p className="text-gray-300 text-sm">
-                Experiment with different tokenization strategies using OpenAI's
-                interactive tokenizer playground.
+                Experiment with different tokenization strategies using
+                OpenAI&quot;s interactive tokenizer playground.
               </p>
             </div>
             <a
