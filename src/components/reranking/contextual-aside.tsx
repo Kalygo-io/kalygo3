@@ -6,7 +6,9 @@ import {
   LightBulbIcon,
   XMarkIcon,
   ChartBarIcon,
+  DocumentArrowUpIcon,
 } from "@heroicons/react/24/outline";
+import { ChooseFile } from "../chat-with-txt/choose-file";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -15,10 +17,12 @@ interface ContextualAsideProps {
 
 export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   const [activeTab, setActiveTab] = useState("overview");
+  const [files, setFiles] = useState<File[] | null>(null);
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
     { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
+    { id: "upload", name: "Upload Data", icon: DocumentArrowUpIcon },
   ];
 
   return (
@@ -135,6 +139,22 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                   <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-white text-lg font-medium">Coming Soon</p>
                 </div>
+              </div>
+            )}
+
+            {activeTab === "upload" && (
+              <div className="space-y-4">
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Upload Training Data
+                  </h3>
+                  <p className="text-white text-sm leading-relaxed">
+                    Upload CSV files to train and improve the reranking model.
+                    Files should contain filename and text columns.
+                  </p>
+                </div>
+
+                <ChooseFile files={files} setFiles={setFiles} />
               </div>
             )}
           </div>

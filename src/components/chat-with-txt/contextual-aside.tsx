@@ -8,12 +8,18 @@ import {
   DocumentTextIcon,
   CogIcon,
   ArrowPathIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
+import { ChooseFile } from "./choose-file";
 import {
   callGetChatWithTxtKbStats,
   KbStats,
 } from "@/services/callGetChatWithTxtKbStats";
-import { errorToast } from "@/shared/toasts";
+import {
+  callDeleteVectorsInNamespace,
+  DeleteVectorsResponse,
+} from "@/services/callDeleteVectorsInNamespace";
+import { errorToast, successToast } from "@/shared/toasts";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -25,6 +31,8 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   const [kbStats, setKbStats] = useState<KbStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [files, setFiles] = useState<File[] | null>(null);
 
   const fetchKbStats = async () => {
     setLoading(true);
@@ -39,6 +47,47 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
       errorToast(errorMessage);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteVectors = async () => {
+    if (!kbStats?.namespace) {
+      errorToast("No namespace available for deletion");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete all vectors in namespace "${kbStats.namespace}"? This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeleting(true);
+    setError(null);
+    try {
+      const response = await callDeleteVectorsInNamespace(kbStats.namespace);
+      if (response.success) {
+        successToast(
+          `Successfully deleted ${
+            response.deleted_count || 0
+          } vectors from namespace "${kbStats.namespace}"`
+        );
+        // Refresh the stats after deletion
+        await fetchKbStats();
+      } else {
+        const errorMessage = response.error || "Failed to delete vectors";
+        setError(errorMessage);
+        errorToast(errorMessage);
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete vectors";
+      setError(errorMessage);
+      errorToast(errorMessage);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -214,6 +263,32 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                           </span>
                         </div>
                       </div>
+
+                      {/* Delete Vectors Button */}
+                      {kbStats.namespace_vector_count > 0 && (
+                        <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <span className="text-sm text-red-300 font-medium">
+                                Delete All Vectors
+                              </span>
+                              <p className="text-xs text-red-400 mt-1">
+                                This will permanently delete all vectors in
+                                namespace &quot;{kbStats.namespace}&quot;
+                              </p>
+                            </div>
+                            <button
+                              onClick={handleDeleteVectors}
+                              disabled={deleting}
+                              className="flex items-center space-x-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white text-xs font-medium rounded transition-colors"
+                              title="Delete all vectors in this namespace"
+                            >
+                              <TrashIcon className="w-3 h-3" />
+                              <span>{deleting ? "Deleting..." : "Delete"}</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -227,93 +302,16 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     Update Knowledge Base
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Add new documents or update existing content in your
-                    knowledge base.
+                    Upload new data into your knowledge base.
                   </p>
                 </div>
 
                 <div className="space-y-3">
                   <h4 className="text-md font-semibold text-white">
-                    Upload New Documents:
+                    Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
-                    <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center hover:border-gray-500 transition-colors cursor-pointer">
-                      <DocumentTextIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm text-gray-300">
-                        Click to upload or drag files here
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Supports TXT, PDF, DOCX
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Processing Options:
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-300">
-                          Chunk Size
-                        </span>
-                        <select className="text-sm bg-gray-700 text-white px-2 py-1 rounded border border-gray-600">
-                          <option>512 tokens</option>
-                          <option>1024 tokens</option>
-                          <option>2048 tokens</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-300">Overlap</span>
-                        <select className="text-sm bg-gray-700 text-white px-2 py-1 rounded border border-gray-600">
-                          <option>10%</option>
-                          <option>20%</option>
-                          <option>30%</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Recent Updates:
-                  </h4>
-                  <div className="space-y-2">
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="text-sm text-white">
-                            nutrition_guide_2024.pdf
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            Added 2 hours ago
-                          </p>
-                        </div>
-                        <span className="text-xs text-green-400">
-                          ✓ Processed
-                        </span>
-                      </div>
-                    </div>
-                    <div className="bg-gray-800/50 rounded-lg p-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="text-sm text-white">
-                            cooking_basics.txt
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            Updated 1 day ago
-                          </p>
-                        </div>
-                        <span className="text-xs text-green-400">
-                          ✓ Processed
-                        </span>
-                      </div>
-                    </div>
+                    <ChooseFile files={files} setFiles={setFiles} />
                   </div>
                 </div>
               </div>
