@@ -62,14 +62,14 @@ export const RerankingChatMessage = memo(
                 components={{
                   p({ className, children, ...props }) {
                     return (
-                      <p className="text-gray-100 leading-relaxed">
+                      <p className="text-gray-100 leading-relaxed mb-4">
                         {children}
                       </p>
                     );
                   },
                   ul({ className, children, ...props }) {
                     return (
-                      <ul className="text-gray-100 leading-relaxed list-disc list-inside space-y-1 my-4">
+                      <ul className="text-gray-100 leading-relaxed list-disc list-inside my-4 ml-6">
                         {children}
                       </ul>
                     );
@@ -77,7 +77,7 @@ export const RerankingChatMessage = memo(
                   ol({ className, children, ...props }) {
                     return (
                       <ol
-                        className="text-gray-100 leading-relaxed list-decimal list-inside space-y-1 my-4"
+                        className="text-gray-100 leading-relaxed list-decimal my-4 ml-6"
                         style={{ listStyleType: "decimal" }}
                       >
                         {children}
@@ -87,7 +87,7 @@ export const RerankingChatMessage = memo(
                   li({ className, children, ...props }) {
                     return (
                       <li
-                        className="text-gray-100 leading-relaxed"
+                        className="text-gray-100 leading-relaxed mb-2"
                         style={{ display: "list-item" }}
                       >
                         {children}

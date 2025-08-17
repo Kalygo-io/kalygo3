@@ -56,7 +56,7 @@ export const ChatMessage = memo(
                   p({ className, children, ...props }) {
                     return (
                       <p
-                        className="text-gray-100 leading-relaxed"
+                        className="text-gray-100 leading-relaxed mb-4"
                         style={{
                           whiteSpace: "pre-wrap",
                         }}
@@ -67,21 +67,21 @@ export const ChatMessage = memo(
                   },
                   ul({ className, children, ...props }) {
                     return (
-                      <ul className="text-gray-100 leading-relaxed list-disc list-inside space-y-1 my-4">
+                      <ul className="text-gray-100 leading-relaxed list-disc list-inside my-4 ml-6">
                         {children}
                       </ul>
                     );
                   },
                   ol({ className, children, ...props }) {
                     return (
-                      <ol className="text-gray-100 leading-relaxed list-decimal list-inside space-y-1 my-4">
+                      <ol className="text-gray-100 leading-relaxed list-decimal my-4 ml-6">
                         {children}
                       </ol>
                     );
                   },
                   li({ className, children, ...props }) {
                     return (
-                      <li className="text-gray-100 leading-relaxed">
+                      <li className="text-gray-100 leading-relaxed mb-2">
                         {children}
                       </li>
                     );
