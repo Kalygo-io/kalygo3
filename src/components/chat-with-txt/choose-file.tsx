@@ -54,10 +54,6 @@ export function ChooseFile(props: Props) {
       e.stopPropagation();
       setDragActive(false);
 
-      if (files && files.length >= 1) {
-        return;
-      }
-
       if (e.dataTransfer.files) {
         const validFiles = Array.from(e.dataTransfer.files).filter((file) =>
           ["text/plain"].includes(file.type)
@@ -74,10 +70,6 @@ export function ChooseFile(props: Props) {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       e.preventDefault();
-
-      if (files && files.length >= 1) {
-        return;
-      }
 
       if (e.target.files) {
         setFiles((prevFiles) =>
@@ -190,7 +182,7 @@ export function ChooseFile(props: Props) {
                         inputRef.current?.click();
                       }}
                     >
-                      Select TXT file
+                      Select TXT Files
                       <input
                         ref={inputRef}
                         type="file"
@@ -204,7 +196,7 @@ export function ChooseFile(props: Props) {
                   </label>
                 </div>
                 <p className="text-xs leading-5 text-gray-400">
-                  <sup>*</sup>Supports .txt
+                  <sup>*</sup>Supports multiple .txt files
                 </p>
               </div>
             </div>
