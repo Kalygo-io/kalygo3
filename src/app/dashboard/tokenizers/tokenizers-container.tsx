@@ -8,6 +8,7 @@ import {
   MagnifyingGlassIcon,
   ArrowRightIcon,
   CodeBracketIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
 import { TokenizersContextualAside } from "@/components/tokenizers/contextual-aside";
 
@@ -284,53 +285,49 @@ export function TokenizersContainer() {
             Why Tokenization Matters for Reranking
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Similarity Matching
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Tokenization determines how text is compared. The same text
-                  tokenized differently can produce very different similarity
-                  scores, affecting which documents are retrieved.
-                </p>
-              </div>
-
-              <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Context Understanding
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Good tokenization preserves semantic meaning while breaking
-                  text into manageable pieces. This helps reranking models
-                  understand the true relevance of content.
-                </p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Similarity Matching
+              </h3>
+              <p className="text-gray-300 text-sm flex-1">
+                Tokenization determines how text is compared. The same text
+                tokenized differently can produce very different similarity
+                scores, affecting which documents are retrieved.
+              </p>
             </div>
 
-            <div className="space-y-4">
-              <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Computational Efficiency
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Tokenization affects processing speed and memory usage. More
-                  tokens mean more computation, but too few tokens can lose
-                  important information.
-                </p>
-              </div>
+            <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Context Understanding
+              </h3>
+              <p className="text-gray-300 text-sm flex-1">
+                Good tokenization preserves semantic meaning while breaking text
+                into manageable pieces. This helps reranking models understand
+                the true relevance of content.
+              </p>
+            </div>
 
-              <div className="bg-orange-900/20 border border-orange-700/30 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Cross-Language Support
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Different languages require different tokenization strategies.
-                  Subword tokenizers are particularly effective for multilingual
-                  applications.
-                </p>
-              </div>
+            <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Computational Efficiency
+              </h3>
+              <p className="text-gray-300 text-sm flex-1">
+                Tokenization affects processing speed and memory usage. More
+                tokens mean more computation, but too few tokens can lose
+                important information.
+              </p>
+            </div>
+
+            <div className="bg-orange-900/20 border border-orange-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                Cross-Language Support
+              </h3>
+              <p className="text-gray-300 text-sm flex-1">
+                Different languages require different tokenization strategies.
+                Subword tokenizers are particularly effective for multilingual
+                applications.
+              </p>
             </div>
           </div>
         </div>
@@ -395,6 +392,30 @@ export function TokenizersContainer() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* OpenAI Tokenizer Playground Link */}
+        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mt-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-white mb-2">
+                Try It Yourself
+              </h2>
+              <p className="text-gray-300 text-sm">
+                Experiment with different tokenization strategies using OpenAI's
+                interactive tokenizer playground.
+              </p>
+            </div>
+            <a
+              href="https://platform.openai.com/tokenizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              <span>OpenAI Tokenizer</span>
+              <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </div>

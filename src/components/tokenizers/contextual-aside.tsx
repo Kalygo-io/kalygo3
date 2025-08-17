@@ -48,8 +48,6 @@ export function TokenizersContextualAside({
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold text-white">Tokenizers</h2>
             <div className="flex items-center space-x-2">
-              <LightBulbIcon className="w-5 h-5 text-blue-400" />
-              <span className="text-sm text-gray-400">Level 1</span>
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
