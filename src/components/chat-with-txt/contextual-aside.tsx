@@ -24,9 +24,14 @@ import { errorToast, successToast } from "@/shared/toasts";
 interface ContextualAsideProps {
   isOpen: boolean;
   onClose: () => void;
+  onUploadSuccess?: () => void;
 }
 
-export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
+export function ContextualAside({
+  isOpen,
+  onClose,
+  onUploadSuccess,
+}: ContextualAsideProps) {
   const [activeTab, setActiveTab] = useState("kb-stats");
   const [kbStats, setKbStats] = useState<KbStats | null>(null);
   const [loading, setLoading] = useState(false);
@@ -246,16 +251,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                       <div className="bg-gray-800/50 rounded-lg p-3">
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-gray-300">
-                            Total Vectors
-                          </span>
-                          <span className="text-sm font-medium text-white">
-                            {formatNumber(kbStats.total_vector_count || 0)}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="bg-gray-800/50 rounded-lg p-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-300">
                             Vectors in Namespace
                           </span>
                           <span className="text-sm font-medium text-white">
@@ -311,7 +306,17 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
-                    <ChooseFile files={files} setFiles={setFiles} />
+                    <ChooseFile
+                      files={files}
+                      setFiles={setFiles}
+                      onUploadSuccess={() => {
+                        if (onUploadSuccess) {
+                          onUploadSuccess();
+                        }
+                        // Refresh KB stats after upload
+                        fetchKbStats();
+                      }}
+                    />
                   </div>
                 </div>
               </div>

@@ -6,10 +6,16 @@ import {
   Square2StackIcon,
 } from "@heroicons/react/24/outline";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  callUploadChatWithTxt,
+  UploadResponse,
+} from "@/services/callUploadChatWithTxt";
+import { successToast, errorToast } from "@/shared/toasts";
 
 interface Props {
   files: File[] | null;
   setFiles: Dispatch<SetStateAction<File[] | null>>;
+  onUploadSuccess?: () => void;
 }
 
 export function ChooseFile(props: Props) {
@@ -17,6 +23,7 @@ export function ChooseFile(props: Props) {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadResults, setUploadResults] = useState<UploadResponse[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -93,23 +100,57 @@ export function ChooseFile(props: Props) {
 
     setUploading(true);
     setUploadProgress(0);
+    setUploadResults([]);
 
     try {
-      // Simulate upload progress
-      for (let i = 0; i <= 100; i += 10) {
-        setUploadProgress(i);
-        await new Promise((resolve) => setTimeout(resolve, 100));
+      const results: UploadResponse[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const progress = Math.round(((i + 1) / files.length) * 100);
+        setUploadProgress(progress);
+
+        try {
+          const result = await callUploadChatWithTxt(file);
+          results.push(result);
+
+          if (result.success) {
+            successToast(
+              `Successfully uploaded ${result.filename}: ${result.successful_uploads} chunks created`
+            );
+          } else {
+            errorToast(`Failed to upload ${result.filename}: ${result.error}`);
+          }
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error ? error.message : "Upload failed";
+          errorToast(`Failed to upload ${file.name}: ${errorMessage}`);
+          results.push({
+            filename: file.name,
+            total_chunks_created: 0,
+            successful_uploads: 0,
+            failed_uploads: 1,
+            namespace: "chat_with_txt",
+            file_size_bytes: file.size,
+            success: false,
+            error: errorMessage,
+          });
+        }
       }
 
-      // Here you would typically make an API call to upload the files
-      // For now, we'll just simulate success
-      console.log("Files uploaded:", files);
+      setUploadResults(results);
 
-      // Clear files after successful upload
+      // Clear files after upload attempt
       setFiles(null);
       if (inputRef.current) inputRef.current.value = "";
+
+      // Call onUploadSuccess callback if provided
+      if (props.onUploadSuccess) {
+        props.onUploadSuccess();
+      }
     } catch (e) {
       errorReporter(e);
+      errorToast("Upload failed. Please try again.");
     } finally {
       setUploading(false);
       setUploadProgress(0);
@@ -217,6 +258,45 @@ export function ChooseFile(props: Props) {
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
+            </div>
+          )}
+
+          {/* Upload Results */}
+          {!uploading && uploadResults.length > 0 && (
+            <div className="mt-4 space-y-3">
+              <h4 className="text-sm font-semibold text-white">
+                Upload Results:
+              </h4>
+              {uploadResults.map((result, index) => (
+                <div
+                  key={index}
+                  className={`p-3 rounded-lg border ${
+                    result.success
+                      ? "bg-green-900/20 border-green-700/30"
+                      : "bg-red-900/20 border-red-700/30"
+                  }`}
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-sm font-medium text-white">
+                        {result.filename}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {result.successful_uploads} chunks uploaded successfully
+                        {result.failed_uploads > 0 &&
+                          `, ${result.failed_uploads} failed`}
+                      </p>
+                    </div>
+                    <span
+                      className={`text-xs font-medium ${
+                        result.success ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
+                      {result.success ? "✓ Success" : "✗ Failed"}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
