@@ -88,7 +88,6 @@ export function SimilaritySearchDemoContainer() {
         className="fixed top-20 right-4 z-50 flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
       >
         <InformationCircleIcon className="w-4 h-4 text-blue-400" />
-        <span className="hidden sm:inline text-sm">Context</span>
       </button>
 
       <div className="w-full max-w-6xl mx-auto p-6">

@@ -37,7 +37,6 @@ export function Chat({ id, className }: ChatProps) {
         className="fixed top-20 right-4 z-50 flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
       >
         <InformationCircleIcon className="w-4 h-4 text-blue-400" />
-        <span className="hidden sm:inline text-sm">Context</span>
       </button>
 
       <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
