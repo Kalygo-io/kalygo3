@@ -13,11 +13,21 @@ interface RerankedReferencesProps {
 export function RerankedReferences({
   rerankedMatches,
 }: RerankedReferencesProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [expandedChunks, setExpandedChunks] = useState<Set<number>>(new Set());
 
   console.log("RerankedReferences component received:", rerankedMatches);
   console.log("expandedChunks state:", expandedChunks);
+
+  // Debug: Log each match to see what fields are available
+  rerankedMatches.forEach((match, index) => {
+    console.log(`Match ${index}:`, {
+      chunk_id: match.chunk_id,
+      filename: match.filename,
+      content: match.content?.substring(0, 100) + "...",
+      allKeys: Object.keys(match),
+    });
+  });
 
   if (!rerankedMatches || rerankedMatches.length === 0) {
     console.log("No reranked matches to display");
@@ -49,27 +59,18 @@ export function RerankedReferences({
     }
   };
 
-  const getPreviewContent = (content: string, maxChars: number = 200) => {
+  const getPreviewContent = (content: string) => {
     if (!content) return "";
 
-    if (content.length <= maxChars) {
-      return content;
+    // Get only the first line
+    const firstLine = content.split("\n")[0].trim();
+
+    // If the first line is longer than 150 characters, truncate it
+    if (firstLine.length > 150) {
+      return firstLine.substring(0, 150) + "...";
     }
 
-    // Find the last complete sentence within the character limit
-    const truncated = content.substring(0, maxChars);
-    const lastPeriod = truncated.lastIndexOf(".");
-    const lastExclamation = truncated.lastIndexOf("!");
-    const lastQuestion = truncated.lastIndexOf("?");
-
-    const lastSentenceEnd = Math.max(lastPeriod, lastExclamation, lastQuestion);
-
-    if (lastSentenceEnd > maxChars * 0.7) {
-      // If we have a reasonable sentence ending
-      return truncated.substring(0, lastSentenceEnd + 1) + "...";
-    } else {
-      return truncated + "...";
-    }
+    return firstLine;
   };
 
   return (
@@ -123,6 +124,17 @@ export function RerankedReferences({
                     </div>
                   </div>
                 </div>
+                {/* Filename Header */}
+                {(match.filename ||
+                  (match.chunk_id.includes("_") &&
+                    match.chunk_id.split("_")[0])) && (
+                  <div className="mb-2">
+                    <span className="text-sm font-medium text-blue-400 bg-blue-900/20 px-3 py-1 rounded-lg border border-blue-700/30">
+                      📃 {match.filename || match.chunk_id.split("_")[0]}
+                    </span>
+                  </div>
+                )}
+
                 <div
                   className="text-sm text-gray-300 leading-relaxed font-mono bg-gray-900/50 p-3 rounded border border-gray-600/30 overflow-x-auto"
                   style={{ whiteSpace: "pre-wrap" }}

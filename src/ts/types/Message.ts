@@ -15,4 +15,5 @@ export interface RerankedMatch {
   relevance_score: number;
   similarity_score: number;
   content: string;
+  filename?: string;
 }
