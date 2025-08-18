@@ -28,7 +28,6 @@ interface RerankingResult {
   };
   score: number;
   relevance_score?: number;
-  reranked_score?: number;
 }
 
 export function RerankingDemoContainer() {
@@ -137,6 +136,19 @@ export function RerankingDemoContainer() {
           : "✅ Reranking returned different order",
       });
 
+      // Debug reranked scores
+      console.log("Reranked Score Analysis:", {
+        sampleRerankedResults: rerankedResults
+          .slice(0, 3)
+          .map((r: RerankingResult) => ({
+            chunk_id: r.metadata.chunk_id,
+            similarity_score: r.score,
+            relevance_score: r.relevance_score,
+            hasRerankedScore:
+              r.relevance_score !== undefined && r.relevance_score !== null,
+          })),
+      });
+
       return {
         firstStage: firstStageResults,
         reranked: rerankedResults,
@@ -194,10 +206,18 @@ export function RerankingDemoContainer() {
     stage: "first" | "reranked";
   }) => {
     // Use different scores based on the stage
-    const scorePercentage =
-      stage === "first"
-        ? Math.round(result.score * 100) // Similarity score for first stage
-        : Math.round((result.reranked_score || result.score) * 100); // Relevance score for second stage
+    let scorePercentage;
+
+    if (stage === "first") {
+      scorePercentage = Math.round(result.score * 100);
+    } else if (
+      result.relevance_score !== undefined &&
+      result.relevance_score !== null
+    ) {
+      scorePercentage = Math.round(result.relevance_score * 100);
+    } else {
+      throw new Error("No score found");
+    }
 
     const scoreLabel = stage === "first" ? "similarity" : "relevance";
     // @ts-ignore
@@ -207,9 +227,8 @@ export function RerankingDemoContainer() {
       <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-gray-600 transition-colors">
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center space-x-2 flex-1">
-            <StarIcon className="w-4 h-4 text-yellow-400 flex-shrink-0" />
             <h3 className="text-md font-semibold text-white line-clamp-2">
-              Chunk {result.metadata.chunk_number}
+              {index + 1}) Chunk {result.metadata.chunk_number}
             </h3>
           </div>
           <div
@@ -288,13 +307,28 @@ export function RerankingDemoContainer() {
                   <span>{result.metadata.chunk_size_tokens} tokens</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="font-medium">Similarity Score:</span>
+                  <span className="font-medium">
+                    {stage === "first" ? "Similarity Score" : "Relevance Score"}
+                    :
+                  </span>
                   <span>{Math.round(result.score * 100)}%</span>
+                  {stage === "reranked" &&
+                    result.relevance_score === undefined && (
+                      <span className="text-xs text-yellow-400 ml-2">
+                        (⚠️ No reranked score from API)
+                      </span>
+                    )}
                 </div>
-                {stage === "reranked" && result.reranked_score && (
+                {stage === "reranked" && result.relevance_score && (
                   <div className="flex items-center space-x-2 mb-2">
                     <span className="font-medium">Relevance Score:</span>
-                    <span>{Math.round(result.reranked_score * 100)}%</span>
+                    <span>{Math.round(result.relevance_score * 100)}%</span>
+                    {Math.round(result.relevance_score * 100) ===
+                      Math.round(result.score * 100) && (
+                      <span className="text-xs text-red-400 ml-2">
+                        (⚠️ Same as similarity score)
+                      </span>
+                    )}
                   </div>
                 )}
                 <div className="flex items-center space-x-2">
