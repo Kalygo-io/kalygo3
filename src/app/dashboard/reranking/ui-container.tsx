@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
 import {
   MagnifyingGlassIcon,
@@ -26,8 +26,8 @@ interface RerankingResult {
     total_chunks: number;
     upload_timestamp: string;
   };
-  score: number;
-  relevance_score?: number;
+  similarity_score: number;
+  relevance_score: number;
 }
 
 export function RerankingDemoContainer() {
@@ -36,6 +36,7 @@ export function RerankingDemoContainer() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"first" | "second">("first");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const [topKForSimilarity, setTopKForSimilarity] = useState(10);
   const [topKForRerank, setTopKForRerank] = useState(5);
   const [similarityThreshold, setSimilarityThreshold] = useState(0.1);
@@ -136,19 +137,6 @@ export function RerankingDemoContainer() {
           : "✅ Reranking returned different order",
       });
 
-      // Debug reranked scores
-      console.log("Reranked Score Analysis:", {
-        sampleRerankedResults: rerankedResults
-          .slice(0, 3)
-          .map((r: RerankingResult) => ({
-            chunk_id: r.metadata.chunk_id,
-            similarity_score: r.score,
-            relevance_score: r.relevance_score,
-            hasRerankedScore:
-              r.relevance_score !== undefined && r.relevance_score !== null,
-          })),
-      });
-
       return {
         firstStage: firstStageResults,
         reranked: rerankedResults,
@@ -163,6 +151,14 @@ export function RerankingDemoContainer() {
     if (e.key === "Enter" && searchQuery.trim()) {
       // The query will automatically run when searchQuery changes
     }
+  };
+
+  const clearCache = () => {
+    // Clear all reranking queries
+    queryClient.invalidateQueries({ queryKey: ["reranking"] });
+    // Or clear all queries
+    // queryClient.clear();
+    console.log("Cache cleared for reranking queries");
   };
 
   const toggleDrawer = () => {
@@ -209,7 +205,7 @@ export function RerankingDemoContainer() {
     let scorePercentage;
 
     if (stage === "first") {
-      scorePercentage = Math.round(result.score * 100);
+      scorePercentage = Math.round(result.similarity_score * 100);
     } else if (
       result.relevance_score !== undefined &&
       result.relevance_score !== null
@@ -307,11 +303,8 @@ export function RerankingDemoContainer() {
                   <span>{result.metadata.chunk_size_tokens} tokens</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="font-medium">
-                    {stage === "first" ? "Similarity Score" : "Relevance Score"}
-                    :
-                  </span>
-                  <span>{Math.round(result.score * 100)}%</span>
+                  <span className="font-medium">Similarity Score:</span>
+                  <span>{Math.round(result.similarity_score * 100)}%</span>
                   {stage === "reranked" &&
                     result.relevance_score === undefined && (
                       <span className="text-xs text-yellow-400 ml-2">
@@ -324,7 +317,7 @@ export function RerankingDemoContainer() {
                     <span className="font-medium">Relevance Score:</span>
                     <span>{Math.round(result.relevance_score * 100)}%</span>
                     {Math.round(result.relevance_score * 100) ===
-                      Math.round(result.score * 100) && (
+                      Math.round(result.similarity_score * 100) && (
                       <span className="text-xs text-red-400 ml-2">
                         (⚠️ Same as similarity score)
                       </span>
@@ -512,20 +505,17 @@ export function RerankingDemoContainer() {
             </div>
           )}
 
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Press Enter to search
-          </p>
-        </div>
-
-        {/* Loading State */}
-        {isPending && searchQuery.trim() && (
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            <span className="ml-3 text-gray-400">
-              Searching and reranking...
-            </span>
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <p className="text-xs text-gray-500">Press Enter to search</p>
+            <button
+              onClick={clearCache}
+              className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              title="Clear query cache"
+            >
+              🗑️ Clear Cache
+            </button>
           </div>
-        )}
+        </div>
 
         {/* Results - Two Column Layout */}
         {data && (data.firstStage.length > 0 || data.reranked.length > 0) && (
@@ -718,11 +708,11 @@ export function RerankingDemoContainer() {
                             className="text-xs font-bold ml-2 flex-shrink-0"
                             style={{
                               color: getScoreColor(
-                                Math.round(result.score * 100)
+                                Math.round(result.similarity_score * 100)
                               ),
                             }}
                           >
-                            {Math.round(result.score * 100)}%
+                            {Math.round(result.similarity_score * 100)}%
                           </span>
                         </div>
                         <p className="text-gray-400 text-xs line-clamp-2">
