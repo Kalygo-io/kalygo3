@@ -9,7 +9,7 @@ export interface UploadResponse {
   error?: string;
 }
 
-export async function callUploadSimilaritySearch(
+export async function callUploadKnowledgeForSimilaritySearch(
   file: File
 ): Promise<UploadResponse> {
   try {
@@ -17,7 +17,7 @@ export async function callUploadSimilaritySearch(
     formData.append("file", file);
 
     const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/similarity-search/upload`,
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/similarity-search/upload-single`,
       {
         method: "POST",
         body: formData,

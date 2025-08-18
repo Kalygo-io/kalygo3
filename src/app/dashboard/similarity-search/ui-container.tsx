@@ -20,14 +20,14 @@ export function SimilaritySearchDemoContainer() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["recommendations/workouts", searchQuery],
+    queryKey: ["similarity-search", searchQuery],
     queryFn: async () => {
       if (!searchQuery.trim()) {
-        return { recommendations: [] };
+        return { results: [] };
       }
 
       const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/recommendations/workouts`,
+        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/similarity-search/search`,
         {
           method: "POST",
           credentials: "include",
@@ -35,7 +35,7 @@ export function SimilaritySearchDemoContainer() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            text: searchQuery,
+            query: searchQuery,
           }),
         }
       );
@@ -144,17 +144,17 @@ export function SimilaritySearchDemoContainer() {
         )}
 
         {/* Results */}
-        {data?.recommendations && searchQuery.trim() && !isPending && (
+        {data?.results && searchQuery.trim() && !isPending && (
           <div className="space-y-3">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-white mb-2">
-                Found {data.recommendations.length} recommendations
+                Found {data.results.length} similar results
               </h2>
             </div>
 
             {/* Compact Vertical List Layout */}
             <div className="space-y-2">
-              {data.recommendations.map(
+              {data.results.map(
                 (
                   workout: {
                     metadata: {
@@ -257,7 +257,7 @@ export function SimilaritySearchDemoContainer() {
                               {scorePercentage}%
                             </span>
                             <span className="text-xs text-gray-300 font-medium">
-                              match
+                              similarity
                             </span>
                           </div>
                         </div>
@@ -285,7 +285,7 @@ export function SimilaritySearchDemoContainer() {
                                 <div className="space-y-1">
                                   <div className="flex justify-between">
                                     <span className="text-gray-400 font-medium">
-                                      Score:
+                                      Similarity:
                                     </span>
                                     <span className={`font-bold ${scoreColor}`}>
                                       {scorePercentage}%
@@ -314,7 +314,7 @@ export function SimilaritySearchDemoContainer() {
                                       Total:
                                     </span>
                                     <span className="text-white">
-                                      {data.recommendations.length}
+                                      {data.results.length}
                                     </span>
                                   </div>
                                 </div>
@@ -339,7 +339,7 @@ export function SimilaritySearchDemoContainer() {
                           <span className="font-medium">
                             Result {index + 1}
                           </span>{" "}
-                          of {data.recommendations.length}
+                          of {data.results.length}
                         </div>
                         <button
                           onClick={() => toggleCardExpansion(index)}
@@ -379,8 +379,8 @@ export function SimilaritySearchDemoContainer() {
         )}
 
         {/* No Results */}
-        {data?.recommendations &&
-          data.recommendations.length === 0 &&
+        {data?.results &&
+          data.results.length === 0 &&
           searchQuery.trim() &&
           !isPending && (
             <div className="flex flex-col items-center justify-center py-16">

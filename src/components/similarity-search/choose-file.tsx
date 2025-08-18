@@ -7,9 +7,9 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  callUploadSimilaritySearch,
+  callUploadKnowledgeForSimilaritySearch,
   UploadResponse,
-} from "@/services/callUploadSimilaritySearch";
+} from "@/services/callUploadKnowledgeForSimilaritySearch";
 import { successToast, errorToast } from "@/shared/toasts";
 
 interface Props {
@@ -37,9 +37,15 @@ export function ChooseFile(props: Props) {
     if (e.type === "dragenter" || e.type === "dragover") {
       const dataTransferFiles = e.dataTransfer?.files;
       for (let i = 0; i < dataTransferFiles.length; i++) {
-        if (
-          !["text/plain", "text/markdown"].includes(dataTransferFiles[i]?.type)
-        ) {
+        const file = dataTransferFiles[i];
+        // Check for CSV files by extension and MIME type
+        const isValidFile =
+          file.type === "text/csv" ||
+          file.type === "text/plain" ||
+          file.type === "text/markdown" ||
+          file.name.toLowerCase().endsWith(".csv");
+
+        if (!isValidFile) {
           setDragActive(false);
           return;
         }
@@ -57,9 +63,15 @@ export function ChooseFile(props: Props) {
       setDragActive(false);
 
       if (e.dataTransfer.files) {
-        const validFiles = Array.from(e.dataTransfer.files).filter((file) =>
-          ["text/plain", "text/markdown"].includes(file.type)
-        );
+        const validFiles = Array.from(e.dataTransfer.files).filter((file) => {
+          // Check for CSV files by extension and MIME type
+          return (
+            file.type === "text/csv" ||
+            file.type === "text/plain" ||
+            file.type === "text/markdown" ||
+            file.name.toLowerCase().endsWith(".csv")
+          );
+        });
         setFiles((prevFiles) =>
           prevFiles ? [...prevFiles, ...validFiles] : validFiles
         );
@@ -105,7 +117,7 @@ export function ChooseFile(props: Props) {
         setUploadProgress(progress);
 
         try {
-          const result = await callUploadSimilaritySearch(file);
+          const result = await callUploadKnowledgeForSimilaritySearch(file);
           results.push(result);
 
           if (result.success) {
@@ -124,12 +136,6 @@ export function ChooseFile(props: Props) {
             errorMessage = error;
           } else {
             errorMessage = `Upload failed: ${String(error)}`;
-          }
-
-          // Check if this is a .md file and provide a helpful message
-          if (file.name.toLowerCase().endsWith(".md")) {
-            errorMessage =
-              "Markdown (.md) files are not yet supported by the backend. Please use .txt files for now.";
           }
 
           console.error(`Failed to upload ${file.name}:`, error);
