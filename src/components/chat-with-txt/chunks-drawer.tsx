@@ -99,8 +99,6 @@ export function ChunksDrawer({
               </h2>
             </div>
             <div className="flex items-center space-x-2">
-              <LightBulbIcon className="w-5 h-5 text-yellow-400" />
-              <span className="text-sm text-gray-400">RAG Context</span>
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
@@ -208,49 +206,21 @@ export function ChunksDrawer({
                     </div>
                   )}
 
-                  {/* Content */}
-                  <div className="bg-gray-900/50 p-3 rounded border border-gray-600/30 overflow-x-auto">
-                    {expandedChunks.has(index) ? (
-                      <div>
-                        <div className="text-xs text-gray-500 mb-2 flex items-center">
-                          <ChevronDownIcon className="w-3 h-3 mr-1" />
-                          Full Content
-                        </div>
-                        <div
-                          className="text-sm text-gray-300 leading-relaxed font-mono"
-                          style={{ whiteSpace: "pre-wrap" }}
-                        >
-                          {match.content}
-                        </div>
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="text-xs text-gray-500 mb-2 flex items-center">
-                          <ChevronRightIcon className="w-3 h-3 mr-1" />
-                          Preview
-                        </div>
-                        <div className="text-sm text-gray-300 leading-relaxed font-mono">
-                          {getPreviewContent(match.content)}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
                   {/* Actions */}
                   <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-600/30">
                     <button
                       onClick={() => toggleChunkExpanded(index)}
-                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center"
+                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center"
                     >
                       {expandedChunks.has(index) ? (
                         <>
-                          <ChevronUpIcon className="w-3 h-3 mr-1" />
-                          Show Less
+                          <ChevronUpIcon className="w-4 h-4 mr-1" />
+                          Hide Chunk
                         </>
                       ) : (
                         <>
-                          <ChevronDownIcon className="w-3 h-3 mr-1" />
-                          Show More
+                          <ChevronDownIcon className="w-4 h-4 mr-1" />
+                          Show Chunk
                         </>
                       )}
                     </button>
@@ -274,6 +244,22 @@ export function ChunksDrawer({
                       <span>Copy</span>
                     </button>
                   </div>
+
+                  {/* Content - Only shown when expanded */}
+                  {expandedChunks.has(index) && (
+                    <div className="mt-3 bg-gray-900/50 p-3 rounded border border-gray-600/30 overflow-x-auto">
+                      <div className="text-xs text-gray-500 mb-2 flex items-center">
+                        <ChevronDownIcon className="w-3 h-3 mr-1" />
+                        Full Content
+                      </div>
+                      <div
+                        className="text-sm text-gray-300 leading-relaxed font-mono"
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
+                        {match.content}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
