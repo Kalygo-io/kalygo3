@@ -297,7 +297,8 @@ export function ContextualAside({
                     Update Knowledge Base
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Upload new data into your knowledge base.
+                    Upload new data into your knowledge base. This tools
+                    supports .csv files with 2 columns: q,a
                   </p>
                 </div>
 

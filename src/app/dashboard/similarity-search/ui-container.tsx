@@ -6,6 +6,10 @@ import { useState } from "react";
 import {
   MagnifyingGlassIcon,
   InformationCircleIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  UserIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
@@ -90,19 +94,19 @@ export function SimilaritySearchDemoContainer() {
         <InformationCircleIcon className="w-4 h-4 text-blue-400" />
       </button>
 
-      <div className="w-full max-w-6xl mx-auto p-6">
+      <div className="w-full max-w-4xl mx-auto p-6">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">
             Similarity Search
           </h1>
           <p className="text-gray-400">
-            Search through workout recommendations using semantic similarity
+            Search through FAQs using semantic similarity
           </p>
         </div>
 
         {/* Search Input */}
-        <div className="w-full max-w-2xl mx-auto mb-8">
+        <div className="w-full max-w-2xl mx-auto mb-6">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
@@ -141,14 +145,15 @@ export function SimilaritySearchDemoContainer() {
 
         {/* Results */}
         {data?.recommendations && searchQuery.trim() && !isPending && (
-          <div className="space-y-6">
+          <div className="space-y-3">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-white mb-2">
                 Found {data.recommendations.length} recommendations
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Compact Vertical List Layout */}
+            <div className="space-y-2">
               {data.recommendations.map(
                 (
                   workout: {
@@ -163,24 +168,52 @@ export function SimilaritySearchDemoContainer() {
                 ) => {
                   const scorePercentage = Math.round(workout.score * 100);
 
-                  // More explicit color mapping with fallback
+                  // Enhanced color mapping with better contrast for legibility
                   let scoreColor;
+                  let scoreBgColor;
+                  let scoreBorderColor;
+                  let scoreTextColor;
+
                   if (scorePercentage >= 90) {
-                    scoreColor = "text-green-500";
-                  } else if (scorePercentage >= 80) {
                     scoreColor = "text-green-400";
-                  } else if (scorePercentage >= 70) {
+                    scoreBgColor = "bg-green-900/30";
+                    scoreBorderColor = "border-green-600/40";
+                    scoreTextColor = "text-green-100";
+                  } else if (scorePercentage >= 80) {
                     scoreColor = "text-green-300";
+                    scoreBgColor = "bg-green-900/25";
+                    scoreBorderColor = "border-green-600/35";
+                    scoreTextColor = "text-green-100";
+                  } else if (scorePercentage >= 70) {
+                    scoreColor = "text-green-200";
+                    scoreBgColor = "bg-green-900/20";
+                    scoreBorderColor = "border-green-600/30";
+                    scoreTextColor = "text-green-50";
                   } else if (scorePercentage >= 60) {
-                    scoreColor = "text-yellow-400";
+                    scoreColor = "text-yellow-300";
+                    scoreBgColor = "bg-yellow-900/25";
+                    scoreBorderColor = "border-yellow-600/35";
+                    scoreTextColor = "text-yellow-100";
                   } else if (scorePercentage >= 50) {
-                    scoreColor = "text-orange-400";
+                    scoreColor = "text-orange-300";
+                    scoreBgColor = "bg-orange-900/25";
+                    scoreBorderColor = "border-orange-600/35";
+                    scoreTextColor = "text-orange-100";
                   } else if (scorePercentage >= 40) {
-                    scoreColor = "text-orange-500";
+                    scoreColor = "text-orange-400";
+                    scoreBgColor = "bg-orange-900/30";
+                    scoreBorderColor = "border-orange-600/40";
+                    scoreTextColor = "text-orange-100";
                   } else if (scorePercentage >= 30) {
-                    scoreColor = "text-red-400";
+                    scoreColor = "text-red-300";
+                    scoreBgColor = "bg-red-900/25";
+                    scoreBorderColor = "border-red-600/35";
+                    scoreTextColor = "text-red-100";
                   } else {
-                    scoreColor = "text-red-500";
+                    scoreColor = "text-red-400";
+                    scoreBgColor = "bg-red-900/30";
+                    scoreBorderColor = "border-red-600/40";
+                    scoreTextColor = "text-red-100";
                   }
 
                   const isExpanded = expandedCards.has(index);
@@ -188,93 +221,138 @@ export function SimilaritySearchDemoContainer() {
                   return (
                     <div
                       key={index}
-                      className="bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-gray-600 transition-colors"
+                      className={`bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-gray-600/70 hover:bg-gray-800/70 transition-all duration-200 group ${
+                        isExpanded ? "ring-2 ring-blue-500/20" : ""
+                      }`}
                     >
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-white line-clamp-2">
-                          {workout.metadata.title}
-                        </h3>
-                        <span
-                          className={`text-sm font-bold ${scoreColor} ml-2 flex-shrink-0 !important`}
-                          style={{
-                            color:
-                              scorePercentage >= 90
-                                ? "#10b981" // green-500
-                                : scorePercentage >= 80
-                                ? "#34d399" // green-400
-                                : scorePercentage >= 70
-                                ? "#6ee7b7" // green-300
-                                : scorePercentage >= 60
-                                ? "#fbbf24" // yellow-400
-                                : scorePercentage >= 50
-                                ? "#fb923c" // orange-400
-                                : scorePercentage >= 40
-                                ? "#f97316" // orange-500
-                                : scorePercentage >= 30
-                                ? "#f87171" // red-400
-                                : "#ef4444", // red-500
-                          }}
+                      {/* Compact Header Row */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <div className="flex-shrink-0">
+                              <div className="w-6 h-6 bg-blue-600/20 rounded-md flex items-center justify-center">
+                                <StarIcon className="w-3 h-3 text-blue-400" />
+                              </div>
+                            </div>
+                            <h3 className="text-base font-semibold text-white line-clamp-1 group-hover:text-blue-100 transition-colors">
+                              {workout.metadata.title}
+                            </h3>
+                          </div>
+
+                          {/* Compact Author Info */}
+                          <div className="flex items-center space-x-1 text-xs text-gray-400 ml-8">
+                            <UserIcon className="w-3 h-3" />
+                            <span>{workout.metadata.created_by}</span>
+                          </div>
+                        </div>
+
+                        {/* Enhanced Score Badge with better legibility */}
+                        <div
+                          className={`flex-shrink-0 ml-3 ${scoreBgColor} ${scoreBorderColor} border rounded-md px-2.5 py-1 shadow-sm`}
                         >
-                          {scorePercentage}%
-                        </span>
+                          <div className="flex items-center space-x-1">
+                            <span
+                              className={`text-sm font-bold ${scoreTextColor}`}
+                            >
+                              {scorePercentage}%
+                            </span>
+                            <span className="text-xs text-gray-300 font-medium">
+                              match
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="space-y-3">
+                      {/* Compact Description */}
+                      <div className="space-y-2 ml-8">
                         <p
-                          className={`text-gray-300 text-sm ${
-                            isExpanded ? "" : "line-clamp-3"
+                          className={`text-gray-300 text-sm leading-relaxed ${
+                            isExpanded ? "" : "line-clamp-2"
                           }`}
                         >
                           {workout.metadata.description}
                         </p>
 
+                        {/* Expanded Details - More compact */}
                         {isExpanded && (
-                          <div className="space-y-2 text-sm text-gray-300">
-                            <div className="border-t border-gray-700 pt-3">
-                              <h4 className="font-semibold text-white mb-2">
-                                Workout Details:
+                          <div className="space-y-3 pt-3 border-t border-gray-700/50">
+                            <div className="bg-gray-900/30 rounded-md p-3">
+                              <h4 className="font-semibold text-white mb-2 flex items-center space-x-2 text-sm">
+                                <div className="w-1 h-3 bg-blue-500 rounded-full"></div>
+                                <span>Details</span>
                               </h4>
-                              <div className="space-y-1">
-                                <div>
-                                  <span className="font-medium">Title:</span>{" "}
-                                  {workout.metadata.title}
+                              <div className="grid grid-cols-2 gap-3 text-xs">
+                                <div className="space-y-1">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-400 font-medium">
+                                      Score:
+                                    </span>
+                                    <span className={`font-bold ${scoreColor}`}>
+                                      {scorePercentage}%
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-400 font-medium">
+                                      Result:
+                                    </span>
+                                    <span className="text-white">
+                                      {index + 1}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div>
-                                  <span className="font-medium">
-                                    Similarity Score:
-                                  </span>{" "}
-                                  {scorePercentage}%
+                                <div className="space-y-1">
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-400 font-medium">
+                                      Author:
+                                    </span>
+                                    <span className="text-white truncate">
+                                      {workout.metadata.created_by}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span className="text-gray-400 font-medium">
+                                      Total:
+                                    </span>
+                                    <span className="text-white">
+                                      {data.recommendations.length}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div>
-                                  <span className="font-medium">
-                                    Created by:
-                                  </span>{" "}
-                                  {workout.metadata.created_by}
-                                </div>
-                                <div>
-                                  <span className="font-medium">
-                                    Full Description:
-                                  </span>
-                                </div>
-                                <p className="text-gray-300 text-sm leading-relaxed">
-                                  {workout.metadata.description}
-                                </p>
                               </div>
+                            </div>
+
+                            <div className="bg-gray-900/20 rounded-md p-3">
+                              <h5 className="font-medium text-white mb-2 text-sm">
+                                Full Description:
+                              </h5>
+                              <p className="text-gray-300 text-sm leading-relaxed">
+                                {workout.metadata.description}
+                              </p>
                             </div>
                           </div>
                         )}
                       </div>
 
-                      <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-700">
+                      {/* Compact Action Bar */}
+                      <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-700/50 ml-8">
                         <div className="text-xs text-gray-500">
-                          <span className="font-medium">Created by:</span>{" "}
-                          {workout.metadata.created_by}
+                          <span className="font-medium">
+                            Result {index + 1}
+                          </span>{" "}
+                          of {data.recommendations.length}
                         </div>
                         <button
                           onClick={() => toggleCardExpansion(index)}
-                          className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                          className="flex items-center space-x-1 text-blue-400 hover:text-blue-300 text-xs font-medium transition-colors px-2 py-1 rounded-md hover:bg-blue-500/10"
                         >
-                          {isExpanded ? "See less..." : "See more..."}
+                          <span>
+                            {isExpanded ? "Show less" : "Show details"}
+                          </span>
+                          {isExpanded ? (
+                            <ChevronUpIcon className="w-3 h-3" />
+                          ) : (
+                            <ChevronDownIcon className="w-3 h-3" />
+                          )}
                         </button>
                       </div>
                     </div>
@@ -295,8 +373,7 @@ export function SimilaritySearchDemoContainer() {
               Ready to search
             </h3>
             <p className="text-gray-400 text-center max-w-md">
-              Enter a search query above to find workout recommendations using
-              similarity search
+              Enter a search query above to find results using similarity search
             </p>
           </div>
         )}

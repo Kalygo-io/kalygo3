@@ -207,14 +207,14 @@ export function ChooseFile(props: Props) {
                         id="input-file-upload"
                         multiple={true}
                         onChange={handleChange}
-                        accept=".txt,.md"
+                        accept=".csv"
                         className="sr-only"
                       />
                     </button>
                   </label>
                 </div>
                 <p className="text-xs leading-5 text-gray-400">
-                  <sup>*</sup>Supports .txt and .md files
+                  <sup>*</sup>Supports .csv files
                 </p>
               </div>
             </div>
