@@ -80,10 +80,9 @@ export function EmbeddingModelsContent({
         <span className="text-sm">Resources</span>
       </button>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <div className="min-h-screen bg-black">
         {/* Header */}
         <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
           <div className="relative px-6 py-12 sm:px-8 lg:px-12">
             <div className="mx-auto max-w-7xl">
               <div className="text-center">
@@ -229,7 +228,7 @@ export function EmbeddingModelsContent({
 
               {/* Key Concepts */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-gradient-to-br from-blue-600/10 to-blue-800/10 rounded-xl p-6 border border-blue-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                     <CubeIcon className="w-6 h-6 text-blue-400" />
                   </div>
@@ -243,7 +242,7 @@ export function EmbeddingModelsContent({
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-600/10 to-purple-800/10 rounded-xl p-6 border border-purple-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
                     <ChartBarIcon className="w-6 h-6 text-purple-400" />
                   </div>
@@ -257,7 +256,7 @@ export function EmbeddingModelsContent({
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-600/10 to-green-800/10 rounded-xl p-6 border border-green-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
                     <LightBulbIcon className="w-6 h-6 text-green-400" />
                   </div>
@@ -439,7 +438,7 @@ export function EmbeddingModelsContent({
               <SimilarityDemo />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-gradient-to-br from-blue-600/10 to-blue-800/10 rounded-xl p-6 border border-blue-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <h3 className="text-xl font-bold text-white mb-4">
                     Semantic Search
                   </h3>
@@ -454,7 +453,7 @@ export function EmbeddingModelsContent({
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-600/10 to-purple-800/10 rounded-xl p-6 border border-purple-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <h3 className="text-xl font-bold text-white mb-4">
                     Recommendation Systems
                   </h3>
@@ -469,7 +468,7 @@ export function EmbeddingModelsContent({
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-green-600/10 to-green-800/10 rounded-xl p-6 border border-green-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <h3 className="text-xl font-bold text-white mb-4">
                     Content Moderation
                   </h3>
@@ -484,7 +483,7 @@ export function EmbeddingModelsContent({
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-orange-600/10 to-orange-800/10 rounded-xl p-6 border border-orange-500/20">
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <h3 className="text-xl font-bold text-white mb-4">
                     Chatbots & Assistants
                   </h3>
