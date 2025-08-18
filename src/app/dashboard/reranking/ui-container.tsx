@@ -779,6 +779,10 @@ export function RerankingDemoContainer() {
       <ContextualAside
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+        onUploadSuccess={() => {
+          // Optionally refresh search results after upload
+          // This could trigger a refetch of the current search
+        }}
       />
     </>
   );
