@@ -1,24 +1,110 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   InformationCircleIcon,
-  LightBulbIcon,
   XMarkIcon,
   ChartBarIcon,
+  DocumentTextIcon,
+  CogIcon,
+  ArrowPathIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
+import { ChooseFile } from "./choose-file";
+import {
+  callGetSimilaritySearchKbStats,
+  KbStats,
+} from "@/services/callGetSimilaritySearchKbStats";
+import {
+  callDeleteSimilaritySearchVectorsInNamespace,
+  DeleteVectorsResponse,
+} from "@/services/callDeleteSimilaritySearchVectorsInNamespace";
+import { errorToast, successToast } from "@/shared/toasts";
 
 interface ContextualAsideProps {
   isOpen: boolean;
   onClose: () => void;
+  onUploadSuccess?: () => void;
 }
 
-export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
-  const [activeTab, setActiveTab] = useState("overview");
+export function ContextualAside({
+  isOpen,
+  onClose,
+  onUploadSuccess,
+}: ContextualAsideProps) {
+  const [activeTab, setActiveTab] = useState("kb-stats");
+  const [kbStats, setKbStats] = useState<KbStats | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [files, setFiles] = useState<File[] | null>(null);
+
+  const fetchKbStats = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const stats = await callGetSimilaritySearchKbStats();
+      setKbStats(stats);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch KB stats";
+      setError(errorMessage);
+      errorToast(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteVectors = async () => {
+    if (!kbStats?.namespace) {
+      errorToast("No namespace available for deletion");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete all vectors in namespace "${kbStats.namespace}"? This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeleting(true);
+    setError(null);
+    try {
+      const response = await callDeleteSimilaritySearchVectorsInNamespace(
+        kbStats.namespace
+      );
+      if (response.success) {
+        successToast(
+          `Successfully deleted vectors from namespace "${kbStats.namespace}"`
+        );
+        // Refresh the stats after deletion
+        await fetchKbStats();
+      } else {
+        const errorMessage = response.error || "Failed to delete vectors";
+        setError(errorMessage);
+        errorToast(errorMessage);
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete vectors";
+      setError(errorMessage);
+      errorToast(errorMessage);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && activeTab === "kb-stats") {
+      fetchKbStats();
+    }
+  }, [isOpen, activeTab]);
 
   const tabs = [
-    { id: "overview", name: "Overview", icon: InformationCircleIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
+    { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
+    { id: "update-kb", name: "Update KB", icon: CogIcon },
   ];
 
   return (
@@ -79,66 +165,159 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-4">
-            {activeTab === "overview" && (
+            {activeTab === "kb-stats" && (
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">
-                    Semantic Similarity Search
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-semibold text-white">
+                      Knowledge Base Statistics
+                    </h3>
+                    <button
+                      onClick={fetchKbStats}
+                      disabled={loading}
+                      className="p-1 hover:bg-blue-700/30 rounded transition-colors disabled:opacity-50"
+                      title="Refresh stats"
+                    >
+                      <ArrowPathIcon
+                        className={`w-4 h-4 text-blue-400 ${
+                          loading ? "animate-spin" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  <p className="text-white text-sm leading-relaxed">
+                    Overview of your current knowledge base content and
+                    performance metrics.
+                  </p>
+                </div>
+
+                {loading && (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+                    <span className="ml-2 text-gray-300">Loading stats...</span>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
+                    <p className="text-red-300 text-sm">{error}</p>
+                    <button
+                      onClick={fetchKbStats}
+                      className="mt-2 text-red-300 hover:text-red-200 text-sm underline"
+                    >
+                      Try again
+                    </button>
+                  </div>
+                )}
+
+                {!loading && !error && kbStats && (
+                  <div className="space-y-3">
+                    <h4 className="text-md font-semibold text-white">
+                      Index Information:
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Index Name
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.index_name || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Dimensions
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.index_dimension || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Namespace
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.namespace || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Vectors in Namespace
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {new Intl.NumberFormat().format(
+                              kbStats.namespace_vector_count || 0
+                            )}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Delete Vectors Button */}
+                      {kbStats.namespace_vector_count > 0 && (
+                        <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <span className="text-sm text-red-300 font-medium">
+                                Delete All Vectors
+                              </span>
+                              <p className="text-xs text-red-400 mt-1">
+                                This will permanently delete all vectors in
+                                namespace &quot;{kbStats.namespace}&quot;
+                              </p>
+                            </div>
+                            <button
+                              onClick={handleDeleteVectors}
+                              disabled={deleting}
+                              className="flex items-center space-x-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white text-xs font-medium rounded transition-colors"
+                              title="Delete all vectors in this namespace"
+                            >
+                              <TrashIcon className="w-3 h-3" />
+                              <span>{deleting ? "Deleting..." : "Delete"}</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "update-kb" && (
+              <div className="space-y-4">
+                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Update Knowledge Base
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Similarity search uses vector embeddings to find the most
-                    semantically similar content to your query. It converts text
-                    into high-dimensional vectors and finds the closest matches
-                    based on cosine similarity or other distance metrics.
+                    Upload new data into your knowledge base.
                   </p>
                 </div>
 
                 <div className="space-y-3">
                   <h4 className="text-md font-semibold text-white">
-                    Key Characteristics:
+                    Provide Knowledge:
                   </h4>
-                  <ul className="space-y-2 text-sm text-white">
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Uses vector embeddings for semantic matching</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Returns similarity scores (0-100%)</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Finds conceptually similar content</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>No external tools or agents</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    How it works:
-                  </h4>
-                  <ol className="space-y-2 text-sm text-white list-decimal list-inside">
-                    <li>Query text is converted to vector embedding</li>
-                    <li>Vector is compared against stored embeddings</li>
-                    <li>
-                      Similarity scores are calculated (cosine similarity)
-                    </li>
-                    <li>Results are ranked by similarity score</li>
-                    <li>Top matches are returned with scores</li>
-                  </ol>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "flowchart" && (
-              <div className="space-y-4">
-                <div className="bg-gray-800 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg font-medium">Coming Soon</p>
+                  <div className="space-y-3">
+                    <ChooseFile
+                      files={files}
+                      setFiles={setFiles}
+                      onUploadSuccess={() => {
+                        if (onUploadSuccess) {
+                          onUploadSuccess();
+                        }
+                        // Refresh KB stats after upload
+                        fetchKbStats();
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             )}
