@@ -50,13 +50,13 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Tools",
-    href: "/dashboard/tools",
+    name: "Re-Act Agent",
+    href: "/dashboard/re-act",
     enabled: true,
   },
   {
-    name: "Re-Act Agent",
-    href: "/dashboard/re-act",
+    name: "Tools",
+    href: "/dashboard/tools",
     enabled: true,
   },
   {
