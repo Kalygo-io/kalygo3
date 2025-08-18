@@ -9,14 +9,19 @@ import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";
 import { ContextualAside } from "./contextual-aside";
+import { ChunksDrawer } from "./chunks-drawer";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { DebugMessages } from "./chat/debug-messages";
+import { RerankedMatch } from "@/ts/types/Message";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
 export function Chat({ id, className }: ChatProps) {
   const [input, setInput] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isChunksDrawerOpen, setIsChunksDrawerOpen] = useState(false);
+  const [currentChunks, setCurrentChunks] = useState<RerankedMatch[]>([]);
+  const [currentKbQuery, setCurrentKbQuery] = useState<string>("");
   const chatState = useContext(ChatContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
@@ -26,6 +31,15 @@ export function Chat({ id, className }: ChatProps) {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const handleShowChunks = (
+    rerankedMatches: RerankedMatch[],
+    kb_search_query?: string
+  ) => {
+    setCurrentChunks(rerankedMatches);
+    setCurrentKbQuery(kb_search_query || "");
+    setIsChunksDrawerOpen(true);
   };
 
   return (
@@ -52,6 +66,7 @@ export function Chat({ id, className }: ChatProps) {
                 <ChatList
                   messages={chatState.messages}
                   isCompletionLoading={chatState.completionLoading}
+                  onShowChunks={handleShowChunks}
                 />
                 {/* Debug component to show message state */}
                 {/* <DebugMessages messages={chatState.messages} /> */}
@@ -81,6 +96,12 @@ export function Chat({ id, className }: ChatProps) {
       <ContextualAside
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+      />
+      <ChunksDrawer
+        isOpen={isChunksDrawerOpen}
+        onClose={() => setIsChunksDrawerOpen(false)}
+        rerankedMatches={currentChunks}
+        kb_search_query={currentKbQuery}
       />
     </>
   );

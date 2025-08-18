@@ -5,11 +5,15 @@ import { GiArtificialIntelligence } from "react-icons/gi";
 import { Separator } from "@/components/shared/separator";
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
-import { RerankedReferences } from "./reranked-references";
+import {
+  DocumentTextIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 
 interface P {
   index: number;
   message: Message;
+  onShowChunks?: (rerankedMatches: any[], kb_search_query?: string) => void;
 }
 
 export const RerankingChatMessage = memo(
@@ -125,13 +129,28 @@ export const RerankingChatMessage = memo(
                 {P.message.content}
               </ReactMarkdown>
 
-              {/* Display reranked references for AI messages */}
-              {P.message.role === "ai" && P.message.rerankedMatches && (
-                <RerankedReferences
-                  rerankedMatches={P.message.rerankedMatches}
-                  kb_search_query={P.message.kb_search_query}
-                />
-              )}
+              {/* Display chunks button for AI messages */}
+              {P.message.role === "ai" &&
+                P.message.rerankedMatches &&
+                P.message.rerankedMatches.length > 0 && (
+                  <div className="mt-4">
+                    <button
+                      onClick={() =>
+                        P.onShowChunks?.(
+                          P.message.rerankedMatches || [],
+                          P.message.kb_search_query
+                        )
+                      }
+                      className="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-600/50 rounded-lg transition-colors text-white"
+                    >
+                      <DocumentTextIcon className="w-4 h-4 text-blue-400" />
+                      <span className="text-sm font-medium">
+                        Chunks ({P.message.rerankedMatches.length})
+                      </span>
+                      <ChevronRightIcon className="w-4 h-4 text-gray-400" />
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
           <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />

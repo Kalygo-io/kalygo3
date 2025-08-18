@@ -4,6 +4,7 @@ import { Message } from "@/ts/types/Message";
 export interface P {
   isCompletionLoading: boolean;
   messages: Message[];
+  onShowChunks?: (rerankedMatches: any[], kb_search_query?: string) => void;
 }
 
 export function ChatList(P: P) {
@@ -19,6 +20,7 @@ export function ChatList(P: P) {
             key={message.id}
             index={index}
             message={message}
+            onShowChunks={P.onShowChunks}
           />
         );
       })}
