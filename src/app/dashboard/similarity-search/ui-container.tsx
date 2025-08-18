@@ -10,6 +10,7 @@ import {
   ChevronUpIcon,
   UserIcon,
   StarIcon,
+  DocumentIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
@@ -156,19 +157,22 @@ export function SimilaritySearchDemoContainer() {
             <div className="space-y-2">
               {data.results.map(
                 (
-                  workout: {
+                  result: {
                     metadata: {
-                      title: string;
-                      description: string;
-                      created_by: string;
+                      q: string;
+                      a: string;
+                      content: string;
+                      filename: string;
+                      row_number: number;
+                      upload_timestamp: string;
                     };
                     score: number;
                   },
                   index: number
                 ) => {
-                  const scorePercentage = Math.round(workout.score * 100);
+                  const scorePercentage = Math.round(result.score * 100);
 
-                  // Enhanced color mapping with better contrast for legibility
+                  // Enhanced color mapping with better contrast and vibrancy
                   let scoreColor;
                   let scoreBgColor;
                   let scoreBorderColor;
@@ -176,44 +180,55 @@ export function SimilaritySearchDemoContainer() {
 
                   if (scorePercentage >= 90) {
                     scoreColor = "text-green-400";
-                    scoreBgColor = "bg-green-900/30";
-                    scoreBorderColor = "border-green-600/40";
+                    scoreBgColor = "bg-green-600/20";
+                    scoreBorderColor = "border-green-500/40";
                     scoreTextColor = "text-green-100";
                   } else if (scorePercentage >= 80) {
-                    scoreColor = "text-green-300";
-                    scoreBgColor = "bg-green-900/25";
-                    scoreBorderColor = "border-green-600/35";
+                    scoreColor = "text-green-400";
+                    scoreBgColor = "bg-green-600/15";
+                    scoreBorderColor = "border-green-500/35";
                     scoreTextColor = "text-green-100";
                   } else if (scorePercentage >= 70) {
-                    scoreColor = "text-green-200";
-                    scoreBgColor = "bg-green-900/20";
-                    scoreBorderColor = "border-green-600/30";
+                    scoreColor = "text-green-300";
+                    scoreBgColor = "bg-green-600/15";
+                    scoreBorderColor = "border-green-500/30";
                     scoreTextColor = "text-green-50";
                   } else if (scorePercentage >= 60) {
                     scoreColor = "text-yellow-300";
-                    scoreBgColor = "bg-yellow-900/25";
-                    scoreBorderColor = "border-yellow-600/35";
-                    scoreTextColor = "text-yellow-100";
+                    scoreBgColor = "bg-yellow-600/20";
+                    scoreBorderColor = "border-yellow-500/40";
+                    scoreTextColor = "text-yellow-50";
                   } else if (scorePercentage >= 50) {
                     scoreColor = "text-orange-300";
-                    scoreBgColor = "bg-orange-900/25";
-                    scoreBorderColor = "border-orange-600/35";
-                    scoreTextColor = "text-orange-100";
+                    scoreBgColor = "bg-orange-600/20";
+                    scoreBorderColor = "border-orange-500/40";
+                    scoreTextColor = "text-orange-50";
                   } else if (scorePercentage >= 40) {
                     scoreColor = "text-orange-400";
-                    scoreBgColor = "bg-orange-900/30";
-                    scoreBorderColor = "border-orange-600/40";
-                    scoreTextColor = "text-orange-100";
+                    scoreBgColor = "bg-orange-600/25";
+                    scoreBorderColor = "border-orange-500/50";
+                    scoreTextColor = "text-orange-50";
                   } else if (scorePercentage >= 30) {
                     scoreColor = "text-red-300";
-                    scoreBgColor = "bg-red-900/25";
-                    scoreBorderColor = "border-red-600/35";
-                    scoreTextColor = "text-red-100";
-                  } else {
+                    scoreBgColor = "bg-red-600/20";
+                    scoreBorderColor = "border-red-500/40";
+                    scoreTextColor = "text-red-50";
+                  } else if (scorePercentage >= 20) {
                     scoreColor = "text-red-400";
-                    scoreBgColor = "bg-red-900/30";
-                    scoreBorderColor = "border-red-600/40";
-                    scoreTextColor = "text-red-100";
+                    scoreBgColor = "bg-red-600/25";
+                    scoreBorderColor = "border-red-500/50";
+                    scoreTextColor = "text-red-50";
+                  } else if (scorePercentage >= 10) {
+                    scoreColor = "text-red-500";
+                    scoreBgColor = "bg-red-600/30";
+                    scoreBorderColor = "border-red-500/60";
+                    scoreTextColor = "text-red-50";
+                  } else {
+                    // For very low scores (0-9%), use a distinct gray color to ensure visibility
+                    scoreColor = "text-gray-300";
+                    scoreBgColor = "bg-gray-600/20";
+                    scoreBorderColor = "border-gray-500/40";
+                    scoreTextColor = "text-gray-50";
                   }
 
                   const isExpanded = expandedCards.has(index);
@@ -235,24 +250,61 @@ export function SimilaritySearchDemoContainer() {
                               </div>
                             </div>
                             <h3 className="text-base font-semibold text-white line-clamp-1 group-hover:text-blue-100 transition-colors">
-                              {workout.metadata.title}
+                              {result.metadata.q}
                             </h3>
                           </div>
 
-                          {/* Compact Author Info */}
+                          {/* Compact File Info */}
                           <div className="flex items-center space-x-1 text-xs text-gray-400 ml-8">
-                            <UserIcon className="w-3 h-3" />
-                            <span>{workout.metadata.created_by}</span>
+                            <DocumentIcon className="w-3 h-3" />
+                            <span>
+                              {result.metadata.filename} (Row{" "}
+                              {result.metadata.row_number})
+                            </span>
                           </div>
                         </div>
 
                         {/* Enhanced Score Badge with better legibility */}
                         <div
-                          className={`flex-shrink-0 ml-3 ${scoreBgColor} ${scoreBorderColor} border rounded-md px-2.5 py-1 shadow-sm`}
+                          className="flex-shrink-0 ml-3 border rounded-md px-2.5 py-1 shadow-sm"
+                          style={{
+                            backgroundColor:
+                              scorePercentage >= 70
+                                ? "rgba(34, 197, 94, 0.2)"
+                                : scorePercentage >= 60
+                                ? "rgba(234, 179, 8, 0.2)"
+                                : scorePercentage >= 50
+                                ? "rgba(249, 115, 22, 0.2)"
+                                : scorePercentage >= 40
+                                ? "rgba(239, 68, 68, 0.2)"
+                                : "rgba(107, 114, 128, 0.2)",
+                            borderColor:
+                              scorePercentage >= 70
+                                ? "rgba(34, 197, 94, 0.4)"
+                                : scorePercentage >= 60
+                                ? "rgba(234, 179, 8, 0.4)"
+                                : scorePercentage >= 50
+                                ? "rgba(249, 115, 22, 0.4)"
+                                : scorePercentage >= 40
+                                ? "rgba(239, 68, 68, 0.4)"
+                                : "rgba(107, 114, 128, 0.4)",
+                          }}
                         >
                           <div className="flex items-center space-x-1">
                             <span
-                              className={`text-sm font-bold ${scoreTextColor}`}
+                              className="text-sm font-bold"
+                              style={{
+                                color:
+                                  scorePercentage >= 70
+                                    ? "#4ade80"
+                                    : scorePercentage >= 60
+                                    ? "#facc15"
+                                    : scorePercentage >= 50
+                                    ? "#fb923c"
+                                    : scorePercentage >= 40
+                                    ? "#f87171"
+                                    : "#9ca3af",
+                              }}
                             >
                               {scorePercentage}%
                             </span>
@@ -270,63 +322,18 @@ export function SimilaritySearchDemoContainer() {
                             isExpanded ? "" : "line-clamp-2"
                           }`}
                         >
-                          {workout.metadata.description}
+                          {result.metadata.a}
                         </p>
 
                         {/* Expanded Details - More compact */}
                         {isExpanded && (
                           <div className="space-y-3 pt-3 border-t border-gray-700/50">
-                            <div className="bg-gray-900/30 rounded-md p-3">
-                              <h4 className="font-semibold text-white mb-2 flex items-center space-x-2 text-sm">
-                                <div className="w-1 h-3 bg-blue-500 rounded-full"></div>
-                                <span>Details</span>
-                              </h4>
-                              <div className="grid grid-cols-2 gap-3 text-xs">
-                                <div className="space-y-1">
-                                  <div className="flex justify-between">
-                                    <span className="text-gray-400 font-medium">
-                                      Similarity:
-                                    </span>
-                                    <span className={`font-bold ${scoreColor}`}>
-                                      {scorePercentage}%
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-gray-400 font-medium">
-                                      Result:
-                                    </span>
-                                    <span className="text-white">
-                                      {index + 1}
-                                    </span>
-                                  </div>
-                                </div>
-                                <div className="space-y-1">
-                                  <div className="flex justify-between">
-                                    <span className="text-gray-400 font-medium">
-                                      Author:
-                                    </span>
-                                    <span className="text-white truncate">
-                                      {workout.metadata.created_by}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-gray-400 font-medium">
-                                      Total:
-                                    </span>
-                                    <span className="text-white">
-                                      {data.results.length}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
                             <div className="bg-gray-900/20 rounded-md p-3">
                               <h5 className="font-medium text-white mb-2 text-sm">
                                 Full Description:
                               </h5>
                               <p className="text-gray-300 text-sm leading-relaxed">
-                                {workout.metadata.description}
+                                {result.metadata.a}
                               </p>
                             </div>
                           </div>
