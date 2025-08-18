@@ -29,6 +29,11 @@ export const navigation = [
     href: "/dashboard/similarity-search",
     enabled: true,
   },
+  {
+    name: "Chunking",
+    href: "/dashboard/chunking",
+    enabled: true,
+  },
   // {
   //   name: "Naive RAG Chat",
   //   href: "/dashboard/naive-rag-chat",
