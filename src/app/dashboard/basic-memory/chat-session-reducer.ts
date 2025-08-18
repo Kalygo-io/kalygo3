@@ -18,6 +18,10 @@ export type Action =
         content?: string;
         error?: any;
       };
+    }
+  | {
+      type: "SET_MESSAGES";
+      payload: Message[];
     };
 
 export function chatReducer(
@@ -62,6 +66,12 @@ export function chatReducer(
       return {
         ...state,
         completionLoading: action.payload,
+      };
+    }
+    case "SET_MESSAGES": {
+      return {
+        ...state,
+        messages: action.payload,
       };
     }
     default: {
