@@ -21,7 +21,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
     { id: "upload", name: "Upload Data", icon: DocumentArrowUpIcon },
   ];
 
@@ -117,25 +116,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                       <span>Reduced hallucination and improved accuracy</span>
                     </li>
                   </ul>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "flowchart" && (
-              <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    RAG + Reranking Flow Chart
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    A visual representation of the two-stage retrieval and
-                    reranking process.
-                  </p>
-                </div>
-
-                <div className="bg-gray-800 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg font-medium">Coming Soon</p>
                 </div>
               </div>
             )}

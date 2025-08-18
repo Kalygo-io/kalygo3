@@ -29,11 +29,11 @@ export const navigation = [
     href: "/dashboard/similarity-search",
     enabled: true,
   },
-  {
-    name: "Naive RAG Chat",
-    href: "/dashboard/naive-rag-chat",
-    enabled: true,
-  },
+  // {
+  //   name: "Naive RAG Chat",
+  //   href: "/dashboard/naive-rag-chat",
+  //   enabled: true,
+  // },
   {
     name: "Reranking",
     href: "/dashboard/reranking",
