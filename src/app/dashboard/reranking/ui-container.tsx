@@ -18,14 +18,17 @@ import { ContextualAside } from "@/components/reranking/contextual-aside";
 
 interface RerankingResult {
   metadata: {
-    q: string;
-    a: string;
+    chunk_id: number;
+    chunk_number: number;
+    chunk_size_tokens: number;
     content: string;
     filename: string;
-    row_number: number;
+    total_chunks: number;
     upload_timestamp: string;
   };
   score: number;
+  relevance_score?: number;
+  reranked_score?: number;
 }
 
 export function RerankingDemoContainer() {
@@ -34,9 +37,11 @@ export function RerankingDemoContainer() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"first" | "second">("first");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [topK, setTopK] = useState(5);
+  const [topKForSimilarity, setTopKForSimilarity] = useState(10);
+  const [topKForRerank, setTopKForRerank] = useState(5);
   const [similarityThreshold, setSimilarityThreshold] = useState(0.1);
-  const [appliedTopK, setAppliedTopK] = useState(5);
+  const [appliedTopKForSimilarity, setAppliedTopKForSimilarity] = useState(10);
+  const [appliedTopKForRerank, setAppliedTopKForRerank] = useState(5);
   const [appliedSimilarityThreshold, setAppliedSimilarityThreshold] =
     useState(0.1);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -58,12 +63,13 @@ export function RerankingDemoContainer() {
     };
   }, []);
 
-  // Mock data for demonstration - in real implementation, this would be API calls
+  // Real API call for reranking search
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: [
       "reranking",
       searchQuery,
-      appliedTopK,
+      appliedTopKForSimilarity,
+      appliedTopKForRerank,
       appliedSimilarityThreshold,
     ],
     queryFn: async () => {
@@ -74,164 +80,66 @@ export function RerankingDemoContainer() {
         };
       }
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking/search`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: searchQuery,
+            top_k_for_similarity: appliedTopKForSimilarity,
+            top_k_for_rerank: appliedTopKForRerank,
+            similarity_threshold: appliedSimilarityThreshold,
+          }),
+        }
+      );
 
-      // Mock data - in real implementation, this would be actual API calls
-      const mockFirstStage: RerankingResult[] = [
-        {
-          metadata: {
-            q: "What is machine learning?",
-            a: "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed.",
-            content:
-              "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. It focuses on developing algorithms that can access data and use it to learn for themselves.",
-            filename: "ml_concepts.txt",
-            row_number: 1,
-            upload_timestamp: "2024-01-15T10:30:00Z",
-          },
-          score: 0.89,
-        },
-        {
-          metadata: {
-            q: "How does neural networks work?",
-            a: "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes.",
-            content:
-              "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes. They consist of layers of neurons that process input data and produce output based on learned patterns.",
-            filename: "neural_networks.md",
-            row_number: 3,
-            upload_timestamp: "2024-01-15T11:45:00Z",
-          },
-          score: 0.76,
-        },
-        {
-          metadata: {
-            q: "What is deep learning?",
-            a: "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns.",
-            content:
-              "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns. It has been particularly successful in image recognition, natural language processing, and speech recognition.",
-            filename: "deep_learning.txt",
-            row_number: 2,
-            upload_timestamp: "2024-01-15T12:15:00Z",
-          },
-          score: 0.72,
-        },
-        {
-          metadata: {
-            q: "Explain supervised learning",
-            a: "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data.",
-            content:
-              "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data. The training data includes both input features and their corresponding correct outputs.",
-            filename: "supervised_learning.md",
-            row_number: 5,
-            upload_timestamp: "2024-01-15T13:20:00Z",
-          },
-          score: 0.68,
-        },
-        {
-          metadata: {
-            q: "What is unsupervised learning?",
-            a: "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques.",
-            content:
-              "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques. It's useful for discovering structure in data where the correct output is unknown.",
-            filename: "unsupervised_learning.txt",
-            row_number: 4,
-            upload_timestamp: "2024-01-15T14:10:00Z",
-          },
-          score: 0.65,
-        },
-        {
-          metadata: {
-            q: "How does reinforcement learning work?",
-            a: "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken.",
-            content:
-              "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken. The agent learns to maximize cumulative reward by exploring different strategies.",
-            filename: "reinforcement_learning.md",
-            row_number: 6,
-            upload_timestamp: "2024-01-15T15:30:00Z",
-          },
-          score: 0.62,
-        },
-      ];
+      if (!resp.ok) {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+      }
 
-      // Mock reranked results (different order and scores)
-      const mockReranked: RerankingResult[] = [
-        {
-          metadata: {
-            q: "What is machine learning?",
-            a: "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed.",
-            content:
-              "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. It focuses on developing algorithms that can access data and use it to learn for themselves.",
-            filename: "ml_concepts.txt",
-            row_number: 1,
-            upload_timestamp: "2024-01-15T10:30:00Z",
-          },
-          score: 0.94,
-        },
-        {
-          metadata: {
-            q: "What is deep learning?",
-            a: "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns.",
-            content:
-              "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns. It has been particularly successful in image recognition, natural language processing, and speech recognition.",
-            filename: "deep_learning.txt",
-            row_number: 2,
-            upload_timestamp: "2024-01-15T12:15:00Z",
-          },
-          score: 0.91,
-        },
-        {
-          metadata: {
-            q: "Explain supervised learning",
-            a: "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data.",
-            content:
-              "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data. The training data includes both input features and their corresponding correct outputs.",
-            filename: "supervised_learning.md",
-            row_number: 5,
-            upload_timestamp: "2024-01-15T13:20:00Z",
-          },
-          score: 0.87,
-        },
-        {
-          metadata: {
-            q: "How does neural networks work?",
-            a: "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes.",
-            content:
-              "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes. They consist of layers of neurons that process input data and produce output based on learned patterns.",
-            filename: "neural_networks.md",
-            row_number: 3,
-            upload_timestamp: "2024-01-15T11:45:00Z",
-          },
-          score: 0.82,
-        },
-        {
-          metadata: {
-            q: "What is unsupervised learning?",
-            a: "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques.",
-            content:
-              "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques. It's useful for discovering structure in data where the correct output is unknown.",
-            filename: "unsupervised_learning.txt",
-            row_number: 4,
-            upload_timestamp: "2024-01-15T14:10:00Z",
-          },
-          score: 0.78,
-        },
-        {
-          metadata: {
-            q: "How does reinforcement learning work?",
-            a: "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken.",
-            content:
-              "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken. The agent learns to maximize cumulative reward by exploring different strategies.",
-            filename: "reinforcement_learning.md",
-            row_number: 6,
-            upload_timestamp: "2024-01-15T15:30:00Z",
-          },
-          score: 0.75,
-        },
-      ];
+      const responseData = await resp.json();
+
+      // Transform the API response to match our expected format
+      // Ensure first stage shows more results than reranked stage
+      const firstStageResults = responseData.initial_similarity_results || [];
+      const rerankedResults = responseData.reranked_results || [];
+
+      console.log("API Response:", {
+        firstStageCount: firstStageResults.length,
+        rerankedCount: rerankedResults.length,
+        appliedTopKForSimilarity,
+        appliedTopKForRerank,
+        firstStageResults: firstStageResults.slice(0, 3), // Log first 3 for debugging
+        rerankedResults: rerankedResults.slice(0, 3), // Log first 3 for debugging
+      });
+
+      // Check if reranking actually reordered the results
+      const firstStageChunkIds = firstStageResults.map(
+        (r: RerankingResult) => r.metadata.chunk_id
+      );
+      const rerankedChunkIds = rerankedResults.map(
+        (r: RerankingResult) => r.metadata.chunk_id
+      );
+      const isReordered =
+        JSON.stringify(firstStageChunkIds.slice(0, 5)) !==
+        JSON.stringify(rerankedChunkIds.slice(0, 5));
+
+      console.log("Reranking Analysis:", {
+        firstStageChunkIds: firstStageChunkIds.slice(0, 5),
+        rerankedChunkIds: rerankedChunkIds.slice(0, 5),
+        isReordered,
+        sameOrder: !isReordered
+          ? "⚠️ Reranking returned same order - this may indicate a backend issue"
+          : "✅ Reranking returned different order",
+      });
 
       return {
-        firstStage: mockFirstStage,
-        reranked: mockReranked,
+        firstStage: firstStageResults,
+        reranked: rerankedResults,
       };
     },
     enabled: !!searchQuery.trim(),
@@ -285,7 +193,13 @@ export function RerankingDemoContainer() {
     index: number;
     stage: "first" | "reranked";
   }) => {
-    const scorePercentage = Math.round(result.score * 100);
+    // Use different scores based on the stage
+    const scorePercentage =
+      stage === "first"
+        ? Math.round(result.score * 100) // Similarity score for first stage
+        : Math.round((result.reranked_score || result.score) * 100); // Relevance score for second stage
+
+    const scoreLabel = stage === "first" ? "similarity" : "relevance";
     // @ts-ignore
     const isExpanded = expandedCards.has(`${stage}-${index}`);
 
@@ -295,7 +209,7 @@ export function RerankingDemoContainer() {
           <div className="flex items-center space-x-2 flex-1">
             <StarIcon className="w-4 h-4 text-yellow-400 flex-shrink-0" />
             <h3 className="text-md font-semibold text-white line-clamp-2">
-              {result.metadata.q}
+              Chunk {result.metadata.chunk_number}
             </h3>
           </div>
           <div
@@ -342,7 +256,7 @@ export function RerankingDemoContainer() {
                 {scorePercentage}%
               </span>
               <span className="text-xs text-gray-300 font-medium">
-                similarity
+                {scoreLabel}
               </span>
             </div>
           </div>
@@ -354,7 +268,7 @@ export function RerankingDemoContainer() {
               isExpanded ? "" : "line-clamp-2"
             }`}
           >
-            {result.metadata.a}
+            {result.metadata.content}
           </p>
 
           {isExpanded && (
@@ -366,14 +280,28 @@ export function RerankingDemoContainer() {
                   <span>{result.metadata.filename}</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="font-medium">Row:</span>
-                  <span>{result.metadata.row_number}</span>
+                  <span className="font-medium">Chunk ID:</span>
+                  <span>{result.metadata.chunk_id}</span>
                 </div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="font-medium">Chunk Size:</span>
+                  <span>{result.metadata.chunk_size_tokens} tokens</span>
+                </div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="font-medium">Similarity Score:</span>
+                  <span>{Math.round(result.score * 100)}%</span>
+                </div>
+                {stage === "reranked" && result.reranked_score && (
+                  <div className="flex items-center space-x-2 mb-2">
+                    <span className="font-medium">Relevance Score:</span>
+                    <span>{Math.round(result.reranked_score * 100)}%</span>
+                  </div>
+                )}
                 <div className="flex items-center space-x-2">
                   <span className="font-medium">Uploaded:</span>
                   <span>
                     {new Date(
-                      result.metadata.upload_timestamp
+                      parseInt(result.metadata.upload_timestamp)
                     ).toLocaleDateString()}
                   </span>
                 </div>
@@ -478,14 +406,34 @@ export function RerankingDemoContainer() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Top K Results: {topK}
+                    Top K for Similarity Search: {topKForSimilarity}
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="50"
+                    value={topKForSimilarity}
+                    onChange={(e) =>
+                      setTopKForSimilarity(parseInt(e.target.value))
+                    }
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>1</span>
+                    <span>50</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Top K for Reranking: {topKForRerank}
                   </label>
                   <input
                     type="range"
                     min="1"
                     max="20"
-                    value={topK}
-                    onChange={(e) => setTopK(parseInt(e.target.value))}
+                    value={topKForRerank}
+                    onChange={(e) => setTopKForRerank(parseInt(e.target.value))}
                     className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
                   />
                   <div className="flex justify-between text-xs text-gray-400 mt-1">
@@ -517,7 +465,8 @@ export function RerankingDemoContainer() {
 
                 <button
                   onClick={() => {
-                    setAppliedTopK(topK);
+                    setAppliedTopKForSimilarity(topKForSimilarity);
+                    setAppliedTopKForRerank(topKForRerank);
                     setAppliedSimilarityThreshold(similarityThreshold);
                     setIsSettingsOpen(false);
                   }}
@@ -551,6 +500,37 @@ export function RerankingDemoContainer() {
               <h2 className="text-xl font-semibold text-white mb-2">
                 Two-Stage Retrieval Results
               </h2>
+              {data.firstStage.length === data.reranked.length && (
+                <p className="text-sm text-yellow-400 mb-4">
+                  ⚠️ Both stages show the same number of results. The first
+                  stage should show {appliedTopKForSimilarity} results, and the
+                  second stage should show {appliedTopKForRerank} results.
+                </p>
+              )}
+
+              {/* Check if reranking actually reordered results */}
+              {(() => {
+                const firstStageChunkIds = data.firstStage.map(
+                  (r: RerankingResult) => r.metadata.chunk_id
+                );
+                const rerankedChunkIds = data.reranked.map(
+                  (r: RerankingResult) => r.metadata.chunk_id
+                );
+                const isReordered =
+                  JSON.stringify(firstStageChunkIds.slice(0, 5)) !==
+                  JSON.stringify(rerankedChunkIds.slice(0, 5));
+
+                if (!isReordered && data.firstStage.length > 0) {
+                  return (
+                    <p className="text-sm text-red-400 mb-4">
+                      🚨 Reranking returned same order as similarity search.
+                      This indicates the reranking algorithm may not be working
+                      properly.
+                    </p>
+                  );
+                }
+                return null;
+              })()}
             </div>
 
             {/* Mobile Tab Selector */}
@@ -588,19 +568,22 @@ export function RerankingDemoContainer() {
                     First Stage: Similarity Search
                   </h3>
                   <span className="text-sm text-gray-400">
-                    {data.firstStage.length} results
+                    {data.firstStage.length} results (Top{" "}
+                    {appliedTopKForSimilarity})
                   </span>
                 </div>
 
                 <div className="space-y-3">
-                  {data.firstStage.map((result, index) => (
-                    <RerankingCard
-                      key={`first-${index}`}
-                      result={result}
-                      index={index}
-                      stage="first"
-                    />
-                  ))}
+                  {data.firstStage.map(
+                    (result: RerankingResult, index: number) => (
+                      <RerankingCard
+                        key={`first-${index}`}
+                        result={result}
+                        index={index}
+                        stage="first"
+                      />
+                    )
+                  )}
                 </div>
               </div>
 
@@ -616,19 +599,21 @@ export function RerankingDemoContainer() {
                     Second Stage: Reranked Results
                   </h3>
                   <span className="text-sm text-gray-400">
-                    {data.reranked.length} results
+                    {data.reranked.length} results (Top {appliedTopKForRerank})
                   </span>
                 </div>
 
                 <div className="space-y-3">
-                  {data.reranked.map((result, index) => (
-                    <RerankingCard
-                      key={`reranked-${index}`}
-                      result={result}
-                      index={index}
-                      stage="reranked"
-                    />
-                  ))}
+                  {data.reranked.map(
+                    (result: RerankingResult, index: number) => (
+                      <RerankingCard
+                        key={`reranked-${index}`}
+                        result={result}
+                        index={index}
+                        stage="reranked"
+                      />
+                    )
+                  )}
                 </div>
               </div>
             </div>
@@ -655,7 +640,7 @@ export function RerankingDemoContainer() {
                   {(activeTab === "first"
                     ? data.firstStage
                     : data.reranked
-                  ).map((result, index) => (
+                  ).map((result: RerankingResult, index: number) => (
                     <RerankingCard
                       key={`${activeTab}-${index}`}
                       result={result}
@@ -686,28 +671,28 @@ export function RerankingDemoContainer() {
                 <div className="space-y-2">
                   {(activeTab === "first" ? data.reranked : data.firstStage)
                     .slice(0, 2)
-                    .map((workout, index) => (
+                    .map((result: RerankingResult, index: number) => (
                       <div
                         key={`preview-${index}`}
                         className="bg-gray-800/50 border border-gray-700 rounded-lg p-3"
                       >
                         <div className="flex justify-between items-start mb-1">
                           <h5 className="text-sm font-medium text-white line-clamp-1">
-                            {workout.metadata.q}
+                            Chunk {result.metadata.chunk_number}
                           </h5>
                           <span
                             className="text-xs font-bold ml-2 flex-shrink-0"
                             style={{
                               color: getScoreColor(
-                                Math.round(workout.score * 100)
+                                Math.round(result.score * 100)
                               ),
                             }}
                           >
-                            {Math.round(workout.score * 100)}%
+                            {Math.round(result.score * 100)}%
                           </span>
                         </div>
                         <p className="text-gray-400 text-xs line-clamp-2">
-                          {workout.metadata.a}
+                          {result.metadata.content}
                         </p>
                       </div>
                     ))}
