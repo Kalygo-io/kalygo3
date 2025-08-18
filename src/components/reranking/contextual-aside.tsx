@@ -8,7 +8,7 @@ import {
   ChartBarIcon,
   DocumentArrowUpIcon,
 } from "@heroicons/react/24/outline";
-import { ChooseFile } from "../chat-with-txt/choose-file";
+import { ChooseFile } from "./choose-file";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -127,8 +127,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     Upload Training Data
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Upload CSV files to train and improve the reranking model.
-                    Files should contain filename and text columns.
+                    Upload .txt and .md files to train and improve the reranking
+                    model. These files will be processed and added to the
+                    reranking database.
                   </p>
                 </div>
 

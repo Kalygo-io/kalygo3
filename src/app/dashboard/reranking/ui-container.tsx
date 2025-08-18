@@ -2,19 +2,28 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   MagnifyingGlassIcon,
   InformationCircleIcon,
   ArrowRightIcon,
+  Cog6ToothIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  UserIcon,
+  StarIcon,
+  DocumentIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/reranking/contextual-aside";
 
-interface WorkoutResult {
+interface RerankingResult {
   metadata: {
-    title: string;
-    description: string;
-    created_by: string;
+    q: string;
+    a: string;
+    content: string;
+    filename: string;
+    row_number: number;
+    upload_timestamp: string;
   };
   score: number;
 }
@@ -24,10 +33,39 @@ export function RerankingDemoContainer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [activeTab, setActiveTab] = useState<"first" | "second">("first");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [topK, setTopK] = useState(5);
+  const [similarityThreshold, setSimilarityThreshold] = useState(0.1);
+  const [appliedTopK, setAppliedTopK] = useState(5);
+  const [appliedSimilarityThreshold, setAppliedSimilarityThreshold] =
+    useState(0.1);
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close settings
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        settingsRef.current &&
+        !settingsRef.current.contains(event.target as Node)
+      ) {
+        setIsSettingsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Mock data for demonstration - in real implementation, this would be API calls
   const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["reranking/workouts", searchQuery],
+    queryKey: [
+      "reranking",
+      searchQuery,
+      appliedTopK,
+      appliedSimilarityThreshold,
+    ],
     queryFn: async () => {
       if (!searchQuery.trim()) {
         return {
@@ -40,116 +78,152 @@ export function RerankingDemoContainer() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Mock data - in real implementation, this would be actual API calls
-      const mockFirstStage: WorkoutResult[] = [
+      const mockFirstStage: RerankingResult[] = [
         {
           metadata: {
-            title: "Skaters",
-            description:
-              "A dynamic cardio exercise that involves lateral movement, improving agility and cardiovascular fitness. Great for warming up and building endurance.",
-            created_by: "arnold@fit.ai",
+            q: "What is machine learning?",
+            a: "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed.",
+            content:
+              "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. It focuses on developing algorithms that can access data and use it to learn for themselves.",
+            filename: "ml_concepts.txt",
+            row_number: 1,
+            upload_timestamp: "2024-01-15T10:30:00Z",
           },
           score: 0.89,
         },
         {
           metadata: {
-            title: "Supermans",
-            description:
-              "A back strengthening exercise that targets the lower back, glutes, and hamstrings. Helps improve posture and core stability.",
-            created_by: "arnold@fit.ai",
+            q: "How does neural networks work?",
+            a: "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes.",
+            content:
+              "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes. They consist of layers of neurons that process input data and produce output based on learned patterns.",
+            filename: "neural_networks.md",
+            row_number: 3,
+            upload_timestamp: "2024-01-15T11:45:00Z",
           },
           score: 0.76,
         },
         {
           metadata: {
-            title: "Jump Rope",
-            description:
-              "High-intensity cardio exercise that improves coordination, timing, and cardiovascular endurance. Excellent for burning calories.",
-            created_by: "arnold@fit.ai",
+            q: "What is deep learning?",
+            a: "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns.",
+            content:
+              "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns. It has been particularly successful in image recognition, natural language processing, and speech recognition.",
+            filename: "deep_learning.txt",
+            row_number: 2,
+            upload_timestamp: "2024-01-15T12:15:00Z",
           },
           score: 0.72,
         },
         {
           metadata: {
-            title: "High Knees",
-            description:
-              "A running exercise performed in place with exaggerated knee lifts. Great for cardio and leg strength development.",
-            created_by: "arnold@fit.ai",
+            q: "Explain supervised learning",
+            a: "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data.",
+            content:
+              "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data. The training data includes both input features and their corresponding correct outputs.",
+            filename: "supervised_learning.md",
+            row_number: 5,
+            upload_timestamp: "2024-01-15T13:20:00Z",
           },
           score: 0.68,
         },
         {
           metadata: {
-            title: "Mountain Climbers",
-            description:
-              "A full-body exercise that combines cardio with core strengthening. Improves coordination and overall fitness.",
-            created_by: "arnold@fit.ai",
+            q: "What is unsupervised learning?",
+            a: "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques.",
+            content:
+              "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques. It's useful for discovering structure in data where the correct output is unknown.",
+            filename: "unsupervised_learning.txt",
+            row_number: 4,
+            upload_timestamp: "2024-01-15T14:10:00Z",
           },
           score: 0.65,
         },
         {
           metadata: {
-            title: "Burpees",
-            description:
-              "A compound exercise that combines squat, push-up, and jump. Excellent for full-body conditioning and cardio.",
-            created_by: "arnold@fit.ai",
+            q: "How does reinforcement learning work?",
+            a: "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken.",
+            content:
+              "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken. The agent learns to maximize cumulative reward by exploring different strategies.",
+            filename: "reinforcement_learning.md",
+            row_number: 6,
+            upload_timestamp: "2024-01-15T15:30:00Z",
           },
           score: 0.62,
         },
       ];
 
       // Mock reranked results (different order and scores)
-      const mockReranked: WorkoutResult[] = [
+      const mockReranked: RerankingResult[] = [
         {
           metadata: {
-            title: "Skaters",
-            description:
-              "A dynamic cardio exercise that involves lateral movement, improving agility and cardiovascular fitness. Great for warming up and building endurance.",
-            created_by: "arnold@fit.ai",
+            q: "What is machine learning?",
+            a: "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed.",
+            content:
+              "Machine learning is a subset of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. It focuses on developing algorithms that can access data and use it to learn for themselves.",
+            filename: "ml_concepts.txt",
+            row_number: 1,
+            upload_timestamp: "2024-01-15T10:30:00Z",
           },
           score: 0.94,
         },
         {
           metadata: {
-            title: "Jump Rope",
-            description:
-              "High-intensity cardio exercise that improves coordination, timing, and cardiovascular endurance. Excellent for burning calories.",
-            created_by: "arnold@fit.ai",
+            q: "What is deep learning?",
+            a: "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns.",
+            content:
+              "Deep learning is a subset of machine learning that uses neural networks with multiple layers to model and understand complex patterns. It has been particularly successful in image recognition, natural language processing, and speech recognition.",
+            filename: "deep_learning.txt",
+            row_number: 2,
+            upload_timestamp: "2024-01-15T12:15:00Z",
           },
           score: 0.91,
         },
         {
           metadata: {
-            title: "High Knees",
-            description:
-              "A running exercise performed in place with exaggerated knee lifts. Great for cardio and leg strength development.",
-            created_by: "arnold@fit.ai",
+            q: "Explain supervised learning",
+            a: "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data.",
+            content:
+              "Supervised learning is a type of machine learning where the algorithm learns from labeled training data to make predictions on new, unseen data. The training data includes both input features and their corresponding correct outputs.",
+            filename: "supervised_learning.md",
+            row_number: 5,
+            upload_timestamp: "2024-01-15T13:20:00Z",
           },
           score: 0.87,
         },
         {
           metadata: {
-            title: "Supermans",
-            description:
-              "A back strengthening exercise that targets the lower back, glutes, and hamstrings. Helps improve posture and core stability.",
-            created_by: "arnold@fit.ai",
+            q: "How does neural networks work?",
+            a: "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes.",
+            content:
+              "Neural networks are computing systems inspired by biological neural networks that process information through interconnected nodes. They consist of layers of neurons that process input data and produce output based on learned patterns.",
+            filename: "neural_networks.md",
+            row_number: 3,
+            upload_timestamp: "2024-01-15T11:45:00Z",
           },
           score: 0.82,
         },
         {
           metadata: {
-            title: "Mountain Climbers",
-            description:
-              "A full-body exercise that combines cardio with core strengthening. Improves coordination and overall fitness.",
-            created_by: "arnold@fit.ai",
+            q: "What is unsupervised learning?",
+            a: "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques.",
+            content:
+              "Unsupervised learning finds hidden patterns in data without labeled outputs, using clustering and dimensionality reduction techniques. It's useful for discovering structure in data where the correct output is unknown.",
+            filename: "unsupervised_learning.txt",
+            row_number: 4,
+            upload_timestamp: "2024-01-15T14:10:00Z",
           },
           score: 0.78,
         },
         {
           metadata: {
-            title: "Burpees",
-            description:
-              "A compound exercise that combines squat, push-up, and jump. Excellent for full-body conditioning and cardio.",
-            created_by: "arnold@fit.ai",
+            q: "How does reinforcement learning work?",
+            a: "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken.",
+            content:
+              "Reinforcement learning is learning through interaction with an environment, receiving rewards or penalties for actions taken. The agent learns to maximize cumulative reward by exploring different strategies.",
+            filename: "reinforcement_learning.md",
+            row_number: 6,
+            upload_timestamp: "2024-01-15T15:30:00Z",
           },
           score: 0.75,
         },
@@ -202,51 +276,106 @@ export function RerankingDemoContainer() {
     return "#ef4444"; // red-500
   };
 
-  const WorkoutCard = ({
-    workout,
+  const RerankingCard = ({
+    result,
     index,
     stage,
   }: {
-    workout: WorkoutResult;
+    result: RerankingResult;
     index: number;
     stage: "first" | "reranked";
   }) => {
-    const scorePercentage = Math.round(workout.score * 100);
+    const scorePercentage = Math.round(result.score * 100);
     // @ts-ignore
     const isExpanded = expandedCards.has(`${stage}-${index}`);
 
     return (
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
+      <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-gray-600 transition-colors">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-md font-semibold text-white line-clamp-2">
-            {workout.metadata.title}
-          </h3>
-          <span
-            className="text-sm font-bold ml-2 flex-shrink-0"
-            style={{ color: getScoreColor(scorePercentage) }}
+          <div className="flex items-center space-x-2 flex-1">
+            <StarIcon className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+            <h3 className="text-md font-semibold text-white line-clamp-2">
+              {result.metadata.q}
+            </h3>
+          </div>
+          <div
+            className="flex-shrink-0 ml-3 border rounded-md px-2.5 py-1 shadow-sm"
+            style={{
+              backgroundColor:
+                scorePercentage >= 70
+                  ? "rgba(34, 197, 94, 0.2)"
+                  : scorePercentage >= 60
+                  ? "rgba(234, 179, 8, 0.2)"
+                  : scorePercentage >= 50
+                  ? "rgba(249, 115, 22, 0.2)"
+                  : scorePercentage >= 40
+                  ? "rgba(239, 68, 68, 0.2)"
+                  : "rgba(107, 114, 128, 0.2)",
+              borderColor:
+                scorePercentage >= 70
+                  ? "rgba(34, 197, 94, 0.4)"
+                  : scorePercentage >= 60
+                  ? "rgba(234, 179, 8, 0.4)"
+                  : scorePercentage >= 50
+                  ? "rgba(249, 115, 22, 0.4)"
+                  : scorePercentage >= 40
+                  ? "rgba(239, 68, 68, 0.4)"
+                  : "rgba(107, 114, 128, 0.4)",
+            }}
           >
-            {scorePercentage}%
-          </span>
+            <div className="flex items-center space-x-1">
+              <span
+                className="text-sm font-bold"
+                style={{
+                  color:
+                    scorePercentage >= 70
+                      ? "#4ade80"
+                      : scorePercentage >= 60
+                      ? "#facc15"
+                      : scorePercentage >= 50
+                      ? "#fb923c"
+                      : scorePercentage >= 40
+                      ? "#f87171"
+                      : "#9ca3af",
+                }}
+              >
+                {scorePercentage}%
+              </span>
+              <span className="text-xs text-gray-300 font-medium">
+                similarity
+              </span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
           <p
-            className={`text-gray-300 text-xs ${
+            className={`text-gray-300 text-sm ${
               isExpanded ? "" : "line-clamp-2"
             }`}
           >
-            {workout.metadata.description}
+            {result.metadata.a}
           </p>
 
           {isExpanded && (
-            <div className="space-y-1 text-xs text-gray-300">
+            <div className="space-y-2 text-xs text-gray-300">
               <div className="border-t border-gray-700 pt-2">
-                <div>
-                  <span className="font-medium">Score:</span> {scorePercentage}%
+                <div className="flex items-center space-x-2 mb-2">
+                  <DocumentIcon className="w-3 h-3 text-gray-400" />
+                  <span className="font-medium">File:</span>
+                  <span>{result.metadata.filename}</span>
                 </div>
-                <div>
-                  <span className="font-medium">Created by:</span>{" "}
-                  {workout.metadata.created_by}
+                <div className="flex items-center space-x-2 mb-2">
+                  <span className="font-medium">Row:</span>
+                  <span>{result.metadata.row_number}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium">Uploaded:</span>
+                  <span>
+                    {new Date(
+                      result.metadata.upload_timestamp
+                    ).toLocaleDateString()}
+                  </span>
                 </div>
               </div>
             </div>
@@ -255,14 +384,26 @@ export function RerankingDemoContainer() {
 
         <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-700">
           <div className="text-xs text-gray-500">
-            <span className="font-medium">Created by:</span>{" "}
-            {workout.metadata.created_by}
+            <span className="font-medium">
+              Result {index + 1} of{" "}
+              {stage === "first" ? "similarity" : "reranked"}
+            </span>
           </div>
           <button
             onClick={() => toggleCardExpansion(index, stage)}
             className="text-blue-400 hover:text-blue-300 text-xs font-medium transition-colors"
           >
-            {isExpanded ? "See less..." : "See more..."}
+            {isExpanded ? (
+              <>
+                <ChevronUpIcon className="w-3 h-3 inline mr-1" />
+                See less
+              </>
+            ) : (
+              <>
+                <ChevronDownIcon className="w-3 h-3 inline mr-1" />
+                See more
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -310,9 +451,84 @@ export function RerankingDemoContainer() {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="What are you looking for?"
-              className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="block w-full pl-10 pr-12 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <button
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                className="p-1 hover:bg-gray-700 rounded transition-colors"
+                title="Search settings"
+              >
+                <Cog6ToothIcon className="w-5 h-5 text-gray-400 hover:text-gray-300" />
+              </button>
+            </div>
           </div>
+
+          {/* Settings Dropdown */}
+          {isSettingsOpen && (
+            <div
+              ref={settingsRef}
+              className="absolute z-50 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4"
+              style={{ left: "50%", transform: "translateX(-50%)" }}
+            >
+              <h3 className="text-lg font-semibold text-white mb-4">
+                Search Settings
+              </h3>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Top K Results: {topK}
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="20"
+                    value={topK}
+                    onChange={(e) => setTopK(parseInt(e.target.value))}
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>1</span>
+                    <span>20</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Similarity Threshold: {similarityThreshold.toFixed(2)}
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={similarityThreshold}
+                    onChange={(e) =>
+                      setSimilarityThreshold(parseFloat(e.target.value))
+                    }
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>0.00</span>
+                    <span>1.00</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setAppliedTopK(topK);
+                    setAppliedSimilarityThreshold(similarityThreshold);
+                    setIsSettingsOpen(false);
+                  }}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                >
+                  Apply Settings
+                </button>
+              </div>
+            </div>
+          )}
+
           <p className="text-xs text-gray-500 mt-2 text-center">
             Press Enter to search
           </p>
@@ -377,10 +593,10 @@ export function RerankingDemoContainer() {
                 </div>
 
                 <div className="space-y-3">
-                  {data.firstStage.map((workout, index) => (
-                    <WorkoutCard
+                  {data.firstStage.map((result, index) => (
+                    <RerankingCard
                       key={`first-${index}`}
-                      workout={workout}
+                      result={result}
                       index={index}
                       stage="first"
                     />
@@ -405,10 +621,10 @@ export function RerankingDemoContainer() {
                 </div>
 
                 <div className="space-y-3">
-                  {data.reranked.map((workout, index) => (
-                    <WorkoutCard
+                  {data.reranked.map((result, index) => (
+                    <RerankingCard
                       key={`reranked-${index}`}
-                      workout={workout}
+                      result={result}
                       index={index}
                       stage="reranked"
                     />
@@ -439,10 +655,10 @@ export function RerankingDemoContainer() {
                   {(activeTab === "first"
                     ? data.firstStage
                     : data.reranked
-                  ).map((workout, index) => (
-                    <WorkoutCard
+                  ).map((result, index) => (
+                    <RerankingCard
                       key={`${activeTab}-${index}`}
-                      workout={workout}
+                      result={result}
                       index={index}
                       // @ts-ignore
                       stage={activeTab}
@@ -477,7 +693,7 @@ export function RerankingDemoContainer() {
                       >
                         <div className="flex justify-between items-start mb-1">
                           <h5 className="text-sm font-medium text-white line-clamp-1">
-                            {workout.metadata.title}
+                            {workout.metadata.q}
                           </h5>
                           <span
                             className="text-xs font-bold ml-2 flex-shrink-0"
@@ -491,7 +707,7 @@ export function RerankingDemoContainer() {
                           </span>
                         </div>
                         <p className="text-gray-400 text-xs line-clamp-2">
-                          {workout.metadata.description}
+                          {workout.metadata.a}
                         </p>
                       </div>
                     ))}
