@@ -68,8 +68,6 @@ export function Chat({ id, className }: ChatProps) {
                   isCompletionLoading={chatState.completionLoading}
                   onShowChunks={handleShowChunks}
                 />
-                {/* Debug component to show message state */}
-                {/* <DebugMessages messages={chatState.messages} /> */}
               </>
             ) : (
               <>

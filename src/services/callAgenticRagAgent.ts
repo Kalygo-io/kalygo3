@@ -33,6 +33,7 @@ export async function callAgenticRagAgent(
   let accMessage = {
     content: "",
   };
+  let retrievalCalls: any[] = [];
 
   while (true) {
     // @ts-ignore
@@ -42,7 +43,13 @@ export async function callAgenticRagAgent(
 
     try {
       const parsedChunk = JSON.parse(chunk);
-      dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
+      dispatchEventToState(
+        parsedChunk,
+        dispatch,
+        aiMessageId,
+        accMessage,
+        retrievalCalls
+      );
     } catch (e) {
       let multiChunkAcc = "";
 
@@ -57,7 +64,8 @@ export async function callAgenticRagAgent(
               parsedChunk,
               dispatch,
               aiMessageId,
-              accMessage
+              accMessage,
+              retrievalCalls
             );
 
             chunk = chunk.substring(idx + 1);
@@ -79,7 +87,8 @@ function dispatchEventToState(
   parsedChunk: Record<string, string>,
   dispatch: React.Dispatch<Action>,
   aiMessageId: string,
-  accMessage: { content: string }
+  accMessage: { content: string },
+  retrievalCalls: any[]
 ) {
   console.log("EVENT", parsedChunk["event"]);
 
@@ -123,15 +132,25 @@ function dispatchEventToState(
       },
     });
   } else if (parsedChunk["event"] === "on_chain_end") {
-    // dispatch({
-    //   type: "ADD_MESSAGE",
-    //   payload: {
-    //     id: aiMessageId,
-    //     content: parsedChunk["data"],
-    //     role: "ai",
-    //     error: null,
-    //   },
-    // });
+    // Update the message with retrieval calls if available
+    if (parsedChunk["retrieval_calls"]) {
+      try {
+        const retrievalCallsData =
+          typeof parsedChunk["retrieval_calls"] === "string"
+            ? JSON.parse(parsedChunk["retrieval_calls"])
+            : parsedChunk["retrieval_calls"];
+
+        dispatch({
+          type: "EDIT_MESSAGE",
+          payload: {
+            id: aiMessageId,
+            retrievalCalls: retrievalCallsData,
+          },
+        });
+      } catch (error) {
+        console.error("Error parsing retrieval calls:", error);
+      }
+    }
   } else if (parsedChunk["event"] === "on_tool_start") {
     dispatch({
       type: "SET_CURRENT_TOOL",

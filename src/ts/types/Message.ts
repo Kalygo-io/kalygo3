@@ -7,6 +7,15 @@ export interface Message {
   blocks?: Message[];
   rerankedMatches?: RerankedMatch[];
   kb_search_query?: string;
+  retrievalCalls?: RetrievalCall[];
+}
+
+export interface RetrievalCall {
+  query: string;
+  reranked_results: RerankedMatch[];
+  similarity_results: any[];
+  message: string;
+  namespace: string;
 }
 
 export interface RerankedMatch {
