@@ -5,7 +5,7 @@ import { GiArtificialIntelligence } from "react-icons/gi";
 
 import { Separator } from "@/components/shared/separator";
 import { memo } from "react";
-import ReactMarkdown from "react-markdown";
+import { ChatMarkdown } from "@/components/shared/markdown/chat-markdown";
 
 interface P {
   index: number;
@@ -51,71 +51,7 @@ export const ChatMessage = memo(
                 P.message.error && "text-red-400"
               )}
             >
-              <ReactMarkdown
-                components={{
-                  p({ className, children, ...props }) {
-                    return (
-                      <p
-                        className="text-gray-100 leading-relaxed mb-4"
-                        style={{
-                          whiteSpace: "pre-wrap",
-                        }}
-                      >
-                        {children}
-                      </p>
-                    );
-                  },
-                  ul({ className, children, ...props }) {
-                    return (
-                      <ul className="text-gray-100 leading-relaxed list-disc list-inside my-4 ml-6">
-                        {children}
-                      </ul>
-                    );
-                  },
-                  ol({ className, children, ...props }) {
-                    return (
-                      <ol className="text-gray-100 leading-relaxed list-decimal my-4 ml-6">
-                        {children}
-                      </ol>
-                    );
-                  },
-                  li({ className, children, ...props }) {
-                    return (
-                      <li className="text-gray-100 leading-relaxed mb-2">
-                        {children}
-                      </li>
-                    );
-                  },
-                  code({ className, children, ...props }) {
-                    return (
-                      <code className="bg-gray-800/50 px-2 py-1 rounded-md text-sm font-mono text-blue-300">
-                        {children}
-                      </code>
-                    );
-                  },
-                  pre({ className, children, ...props }) {
-                    return (
-                      <pre className="bg-gray-800/50 p-4 rounded-lg overflow-x-auto custom-scrollbar">
-                        {children}
-                      </pre>
-                    );
-                  },
-                  a({ className, children, href, ...props }) {
-                    return (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-400 hover:text-blue-300 underline decoration-blue-500/50 hover:decoration-blue-400 transition-colors duration-200"
-                      >
-                        {children}
-                      </a>
-                    );
-                  },
-                }}
-              >
-                {P.message.content}
-              </ReactMarkdown>
+              <ChatMarkdown content={P.message.content} />
             </div>
           </div>
           <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />
