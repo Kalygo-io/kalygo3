@@ -1,4 +1,5 @@
 import { Action } from "@/app/dashboard/re-act/chat-session-reducer";
+import { infoToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
@@ -136,6 +137,8 @@ function dispatchEventToState(
       type: "SET_CURRENT_TOOL",
       payload: parsedChunk["data"],
     });
+
+    infoToast(`${parsedChunk["data"]}`);
   } else if (parsedChunk["event"] === "on_tool_end") {
     dispatch({
       type: "EDIT_MESSAGE",
@@ -144,6 +147,7 @@ function dispatchEventToState(
         content: (accMessage.content += "\n"),
       },
     });
+
     dispatch({
       type: "SET_CURRENT_TOOL",
       payload: "",

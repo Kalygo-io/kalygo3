@@ -280,9 +280,9 @@ export function EmbeddingModelsContent({
                   Understanding Vector Representations
                 </h2>
                 <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-                  Vectors are the mathematical foundation of embeddings. Let's
-                  explore how they work and why they're so powerful for
-                  representing meaning.
+                  Vectors are the mathematical foundation of embeddings.
+                  Let&apos;s explore how they work and why they&apos;re so
+                  powerful for representing meaning.
                 </p>
               </div>
 
@@ -328,8 +328,8 @@ export function EmbeddingModelsContent({
                     </div>
                   </div>
                   <p className="mt-4 text-gray-400 text-sm">
-                    OpenAI's flagship embedding model, optimized for semantic
-                    search and text similarity tasks.
+                    OpenAI&apos;s flagship embedding model, optimized for
+                    semantic search and text similarity tasks.
                   </p>
                 </div>
 
