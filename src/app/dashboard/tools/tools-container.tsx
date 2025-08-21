@@ -52,7 +52,7 @@ export function ToolsContainer() {
             </h3>
             <p className="text-gray-300 text-sm leading-relaxed">
               Imagine an LLM agent as a brilliant consultant who can think and
-              reason, but can't access the internet, use a calculator, or
+              reason, but can&apos;t access the internet, use a calculator, or
               interact with databases. Tools are like giving this consultant a
               smartphone, calculator, and access to specialized software -
               suddenly they can do so much more!
@@ -102,7 +102,7 @@ export function ToolsContainer() {
                   3. Agent Responds
                 </h4>
                 <p className="text-gray-300 text-sm">
-                  The agent processes the tool's output and provides a
+                  The agent processes the tool&apos;s output and provides a
                   comprehensive response
                 </p>
               </div>
@@ -308,8 +308,8 @@ export function ToolsContainer() {
             <p className="text-gray-300 leading-relaxed">
               Imagine asking an AI agent:{" "}
               <strong className="text-white">
-                "What's the weather like in Tokyo, and should I pack an
-                umbrella?"
+                &quot;What&apos;s the weather like in Tokyo, and should I pack
+                an umbrella?&quot;
               </strong>
             </p>
             <div className="bg-indigo-900/20 border border-indigo-700/30 rounded-lg p-4">
@@ -414,7 +414,8 @@ export function ToolsContainer() {
           </div>
           <div className="space-y-3">
             <p className="text-gray-300 leading-relaxed">
-              Now that you understand the power of tools, you'll learn how to:
+              Now that you understand the power of tools, you&apos;ll learn how
+              to:
             </p>
             <ul className="text-gray-300 space-y-2 ml-4">
               <li>

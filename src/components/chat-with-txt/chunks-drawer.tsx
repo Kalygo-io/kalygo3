@@ -115,13 +115,13 @@ export function ChunksDrawer({
             <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 mb-6">
               <h3 className="text-lg font-semibold text-white mb-2 flex items-center">
                 <InformationCircleIcon className="w-5 h-5 text-blue-400 mr-2" />
-                What You're Looking At
+                What You&apos;re Looking At
               </h3>
               <p className="text-white text-sm leading-relaxed mb-3">
                 These are the knowledge base chunks that were retrieved and used
-                to generate the AI's response. Each chunk represents a piece of
-                information from your uploaded documents that was relevant to
-                your query.
+                to generate the AI&apos;s response. Each chunk represents a
+                piece of information from your uploaded documents that was
+                relevant to your query.
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">

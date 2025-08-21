@@ -55,7 +55,7 @@ export function ChunkingContainer() {
           </div>
           <div className="space-y-4">
             <p className="text-gray-300 leading-relaxed">
-              For this tutorial, we'll use a simple but effective approach:
+              For this tutorial, we&apos;ll use a simple but effective approach:
               breaking up our search data into chunks of approximately{" "}
               <strong className="text-white">200 consecutive tokens</strong>.
             </p>
@@ -389,7 +389,7 @@ export function ChunkingContainer() {
           <div className="space-y-3">
             <p className="text-gray-300 leading-relaxed">
               Now that you understand chunking across multiple data modalities,
-              you'll learn how to:
+              you&apos;ll learn how to:
             </p>
             <ul className="text-gray-300 space-y-2 ml-4">
               <li>

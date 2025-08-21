@@ -212,7 +212,9 @@ export function SimilarityDemo() {
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <p className="text-white text-sm mb-2">"{example.text}"</p>
+                <p className="text-white text-sm mb-2">
+                  &rsquo;{example.text}&rsquo;
+                </p>
                 <div className="flex items-center space-x-3">
                   <span
                     className={`text-xs px-2 py-1 rounded ${
