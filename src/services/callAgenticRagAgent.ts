@@ -1,31 +1,158 @@
+import { Action } from "@/app/dashboard/re-act/chat-session-reducer";
+import { infoToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
+import React from "react";
 
 export async function callAgenticRagAgent(
   sessionId: string,
   prompt: string,
-  dispatch: any
+  dispatch: React.Dispatch<Action>
 ) {
+  const resp = await fetch(
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/agentic-rag-agent/completion`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionId: sessionId,
+        content: prompt,
+      }),
+      credentials: "include",
+    }
+  );
+
+  if (!resp.ok) throw "Network response was not OK";
+
+  const reader = resp?.body?.getReader();
+
+  const decoder = new TextDecoder();
+
   const aiMessageId = nanoid();
-
-  dispatch({
-    type: "ADD_MESSAGE",
-    payload: {
-      id: aiMessageId,
-      content:
-        "I'm an Agentic RAG agent. I can help you with intelligent information retrieval and synthesis. This is a placeholder response - the actual agentic RAG functionality would be implemented here.",
-      role: "ai",
-      error: null,
-    },
-  });
-
-  // In a real implementation, this would:
-  // 1. Use an LLM agent to reason about the query
-  // 2. Generate and execute retrieval strategies
-  // 3. Synthesize information from multiple sources
-  // 4. Provide a comprehensive response
-
-  return {
-    success: true,
-    message: "Agentic RAG response generated",
+  let accMessage = {
+    content: "",
   };
+
+  while (true) {
+    // @ts-ignore
+    const { done, value } = await reader.read();
+    if (done) break;
+    let chunk = decoder.decode(value);
+
+    try {
+      const parsedChunk = JSON.parse(chunk);
+      dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
+    } catch (e) {
+      let multiChunkAcc = "";
+
+      let idx = 0;
+      while (0 < chunk.length) {
+        if (chunk[idx] === "}") {
+          try {
+            multiChunkAcc += chunk[idx];
+            const parsedChunk = JSON.parse(multiChunkAcc);
+
+            dispatchEventToState(
+              parsedChunk,
+              dispatch,
+              aiMessageId,
+              accMessage
+            );
+
+            chunk = chunk.substring(idx + 1);
+            idx = 0;
+            multiChunkAcc = "";
+          } catch (e) {
+            multiChunkAcc += chunk.substring(0, idx);
+          }
+        } else {
+          multiChunkAcc += chunk[idx];
+          idx++;
+        }
+      }
+    }
+  }
+}
+
+function dispatchEventToState(
+  parsedChunk: Record<string, string>,
+  dispatch: React.Dispatch<Action>,
+  aiMessageId: string,
+  accMessage: { content: string }
+) {
+  console.log("EVENT", parsedChunk["event"]);
+
+  if (parsedChunk["event"] === "on_chat_model_start") {
+    // dispatch({
+    //   type: "ADD_MESSAGE",
+    //   payload: {
+    //     id: aiMessageId,
+    //     content: "",
+    //     role: "ai",
+    //     error: null,
+    //   },
+    // });
+  } else if (parsedChunk["event"] === "on_chat_model_stream") {
+    accMessage.content += parsedChunk["data"];
+    dispatch({
+      type: "EDIT_MESSAGE",
+      payload: {
+        id: aiMessageId,
+        content: accMessage.content,
+      },
+    });
+  } else if (parsedChunk["event"] === "on_chat_model_end") {
+    // dispatch({
+    //   type: "ADD_MESSAGE",
+    //   payload: {
+    //     id: aiMessageId,
+    //     content: parsedChunk["data"],
+    //     role: "ai",
+    //     error: null,
+    //   },
+    // });
+  } else if (parsedChunk["event"] === "on_chain_start") {
+    dispatch({
+      type: "ADD_MESSAGE",
+      payload: {
+        id: aiMessageId,
+        content: "",
+        role: "ai",
+        error: null,
+      },
+    });
+  } else if (parsedChunk["event"] === "on_chain_end") {
+    // dispatch({
+    //   type: "ADD_MESSAGE",
+    //   payload: {
+    //     id: aiMessageId,
+    //     content: parsedChunk["data"],
+    //     role: "ai",
+    //     error: null,
+    //   },
+    // });
+  } else if (parsedChunk["event"] === "on_tool_start") {
+    dispatch({
+      type: "SET_CURRENT_TOOL",
+      payload: parsedChunk["data"],
+    });
+
+    infoToast(`${parsedChunk["data"]}`);
+  } else if (parsedChunk["event"] === "on_tool_end") {
+    dispatch({
+      type: "EDIT_MESSAGE",
+      payload: {
+        id: aiMessageId,
+        content: (accMessage.content += "\n"),
+      },
+    });
+
+    dispatch({
+      type: "SET_CURRENT_TOOL",
+      payload: "",
+    });
+  } else {
+    console.error("Unknown event:", parsedChunk["event"]);
+  }
 }
