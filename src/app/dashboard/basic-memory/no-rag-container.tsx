@@ -6,7 +6,6 @@ import { Chat as StreamingWithMemoryChat } from "@/components/basic-memory/chat"
 import { useReducer, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
-import { chatSessionService } from "@/services/chatSessionService";
 
 export function NoRagContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);

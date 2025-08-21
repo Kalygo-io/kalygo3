@@ -20,10 +20,8 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { navigation } from "@/config/navigation";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { logoutRequest } from "@/services/logoutRequest";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 import { ChatSession } from "@/services/chatSessionService";

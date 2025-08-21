@@ -12,7 +12,6 @@ import { Chat as ReActChat } from "@/components/re-act-chat/chat";
 import { useReducer, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
-import { chatSessionService } from "@/services/chatSessionService";
 
 export function ReActContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
