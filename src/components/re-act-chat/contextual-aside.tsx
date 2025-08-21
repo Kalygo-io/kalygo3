@@ -18,7 +18,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
   ];
 
   return (
@@ -117,15 +116,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                       </span>
                     </li>
                   </ul>
-                </div>
-              </div>
-            )}
-
-            {activeTab === "flowchart" && (
-              <div className="space-y-4">
-                <div className="bg-gray-800 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg font-medium">Coming Soon</p>
                 </div>
               </div>
             )}

@@ -38,13 +38,13 @@ export function EmbeddingModelsContent({
 
   const steps = [
     {
-      title: "Text Input",
-      description: "Raw text enters the embedding model",
+      title: "Input",
+      description: "Raw data enters the embedding model",
       content: "The cat sat on the mat",
     },
     {
       title: "Tokenization",
-      description: "Text is broken into tokens",
+      description: "Data is broken into tokens",
       content: "['The', 'cat', 'sat', 'on', 'the', 'mat']",
     },
     {
@@ -55,7 +55,7 @@ export function EmbeddingModelsContent({
     {
       title: "Vector Output",
       description: "Final embedding vector is generated",
-      content: "[0.2, -0.5, 0.8, ...] (384 dimensions)",
+      content: "[0.2, -0.5, 0.8, ...] (n dimensions)",
     },
   ];
 

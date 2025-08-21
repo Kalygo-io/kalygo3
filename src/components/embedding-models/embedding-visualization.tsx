@@ -23,7 +23,7 @@ export function EmbeddingVisualization({
         return (
           <div className="space-y-4">
             <div className="text-center">
-              <div className="text-sm text-gray-400 mb-2">Input Text</div>
+              <div className="text-sm text-gray-400 mb-2">Input</div>
               <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4">
                 <div className="text-white font-mono text-sm">
                   The cat sat on the mat
@@ -44,7 +44,7 @@ export function EmbeddingVisualization({
             </div>
 
             <div className="text-center text-xs text-gray-400">
-              Raw text enters the system
+              Raw data enters the system
             </div>
           </div>
         );
@@ -84,7 +84,7 @@ export function EmbeddingVisualization({
             </div>
 
             <div className="text-center text-xs text-gray-400">
-              Text broken into tokens
+              Data broken into tokens
             </div>
           </div>
         );
@@ -221,7 +221,7 @@ export function EmbeddingVisualization({
                   <div className="mb-2">[0.2, -0.5, 0.8, 0.1, -0.3, 0.7,</div>
                   <div className="mb-2"> 0.4, -0.2, 0.9, 0.0, -0.6, 0.3,</div>
                   <div className="mb-2"> 0.1, 0.8, -0.4, 0.5, -0.1, 0.2,</div>
-                  <div> ... 384 dimensions]</div>
+                  <div> ... n dimensions]</div>
                 </div>
               </div>
             </div>
