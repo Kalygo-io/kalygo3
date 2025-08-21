@@ -24,6 +24,9 @@ export function AgenticRagContainer() {
   useEffect(() => {
     console.log("Session loading effect triggered", { sessionId });
     if (sessionId) {
+      // Update the chat state with the actual session ID from URL
+      dispatch({ type: "SET_SESSION_ID", payload: sessionId });
+
       // Load existing session
       const session = getSession(sessionId);
       console.log("Retrieved session", { session });

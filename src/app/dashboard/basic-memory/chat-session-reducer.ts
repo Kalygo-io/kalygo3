@@ -22,6 +22,10 @@ export type Action =
   | {
       type: "SET_MESSAGES";
       payload: Message[];
+    }
+  | {
+      type: "SET_SESSION_ID";
+      payload: string;
     };
 
 export function chatReducer(
@@ -72,6 +76,12 @@ export function chatReducer(
       return {
         ...state,
         messages: action.payload,
+      };
+    }
+    case "SET_SESSION_ID": {
+      return {
+        ...state,
+        sessionId: action.payload,
       };
     }
     default: {

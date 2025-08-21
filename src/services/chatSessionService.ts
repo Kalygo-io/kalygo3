@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 export interface ChatSession {
   id: string;
   level: string;
@@ -101,7 +103,7 @@ class ChatSessionService {
   }
 
   private generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return uuid();
   }
 
   private generateTitle(levelName: string, messages: any[]): string {
