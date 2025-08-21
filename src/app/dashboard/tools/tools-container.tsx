@@ -33,7 +33,7 @@ export function ToolsContainer() {
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-              <WrenchScrewdriverIcon className="w-5 h-5 text-blue-400" />
+              <WrenchScrewdriverIcon className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-xl font-semibold text-white">
               What are Tools?
@@ -64,15 +64,18 @@ export function ToolsContainer() {
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-green-600/20 rounded-lg flex items-center justify-center">
-              <CogIcon className="w-5 h-5 text-green-400" />
+              <CogIcon className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-xl font-semibold text-white">How Tools Work</h2>
           </div>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-900/30 rounded-lg p-4 text-center">
-                <div className="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <SparklesIcon className="w-6 h-6 text-blue-400" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                  <SparklesIcon
+                    className="w-6 h-6 text-white"
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <h4 className="font-semibold text-white mb-2">
                   1. Agent Decides
@@ -83,8 +86,11 @@ export function ToolsContainer() {
                 </p>
               </div>
               <div className="bg-gray-900/30 rounded-lg p-4 text-center">
-                <div className="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <CommandLineIcon className="w-6 h-6 text-green-400" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                  <CommandLineIcon
+                    className="w-6 h-6 text-white"
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <h4 className="font-semibold text-white mb-2">
                   2. Tool Executes
@@ -95,8 +101,11 @@ export function ToolsContainer() {
                 </p>
               </div>
               <div className="bg-gray-900/30 rounded-lg p-4 text-center">
-                <div className="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <LightBulbIcon className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                  <LightBulbIcon
+                    className="w-6 h-6 text-white"
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <h4 className="font-semibold text-white mb-2">
                   3. Agent Responds
@@ -114,7 +123,7 @@ export function ToolsContainer() {
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-8 h-8 bg-purple-600/20 rounded-lg flex items-center justify-center">
-              <PuzzlePieceIcon className="w-5 h-5 text-purple-400" />
+              <PuzzlePieceIcon className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-xl font-semibold text-white">
               Common Tool Categories
@@ -126,7 +135,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                  <MagnifyingGlassIcon className="w-4 h-4 text-blue-400" />
+                  <MagnifyingGlassIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">🔍 Search Tools</h3>
               </div>
@@ -154,7 +163,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-green-600/20 rounded-lg flex items-center justify-center">
-                  <CalculatorIcon className="w-4 h-4 text-green-400" />
+                  <CalculatorIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">
                   🧮 Calculation Tools
@@ -184,7 +193,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-orange-600/20 rounded-lg flex items-center justify-center">
-                  <GlobeAltIcon className="w-4 h-4 text-orange-400" />
+                  <GlobeAltIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">
                   🌐 API Integration Tools
@@ -213,7 +222,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-purple-600/20 rounded-lg flex items-center justify-center">
-                  <DocumentTextIcon className="w-4 h-4 text-purple-400" />
+                  <DocumentTextIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">
                   📄 File & Document Tools
@@ -242,7 +251,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-red-600/20 rounded-lg flex items-center justify-center">
-                  <ChartBarIcon className="w-4 h-4 text-red-400" />
+                  <ChartBarIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">📊 Analysis Tools</h3>
               </div>
@@ -269,7 +278,7 @@ export function ToolsContainer() {
             <div className="bg-gray-900/30 rounded-lg p-4">
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-8 h-8 bg-yellow-600/20 rounded-lg flex items-center justify-center">
-                  <BeakerIcon className="w-4 h-4 text-yellow-400" />
+                  <BeakerIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="font-semibold text-white">🧪 Custom Tools</h3>
               </div>
