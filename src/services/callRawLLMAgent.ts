@@ -5,7 +5,8 @@ import React from "react";
 export async function callRawLLMAgent(
   sessionId: string,
   prompt: string,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  abortController?: AbortController
 ) {
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_AI_API_URL}/api/raw-llm/completion`,
@@ -19,6 +20,7 @@ export async function callRawLLMAgent(
         prompt,
       }),
       credentials: "include",
+      signal: abortController?.signal,
     }
   );
 
@@ -63,7 +65,8 @@ export async function callRawLLMAgent(
             idx = 0;
             multiChunkAcc = "";
           } catch (e) {
-            multiChunkAcc += chunk.substring(0, idx);
+            multiChunkAcc += chunk[idx];
+            idx++;
           }
         } else {
           multiChunkAcc += chunk[idx];

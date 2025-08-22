@@ -15,8 +15,6 @@ export default async function Page() {
     );
   } catch (error) {
     console.log("! error !", error);
-    debugger;
-
     return <h1 className="text-white">Oops!</h1>;
   }
 }

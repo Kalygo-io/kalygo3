@@ -67,6 +67,16 @@ export function RawLLMContainer() {
     }
   }, [chat.messages, sessionId, updateSession]);
 
+  // Cleanup effect to abort any in-flight requests when component unmounts
+  useEffect(() => {
+    return () => {
+      // Abort any in-flight request when navigating away
+      if (chat.currentRequest) {
+        dispatch({ type: "ABORT_CURRENT_REQUEST" });
+      }
+    };
+  }, [chat.currentRequest]);
+
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>

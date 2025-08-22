@@ -2,11 +2,15 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/raw-llm/chat-session-context";
+import {
+  ChatContext,
+  ChatDispatchContext,
+} from "@/app/dashboard/raw-llm/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { callRawLLMAgent } from "@/services/callRawLLMAgent";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
+import { StopIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
 export function PromptForm({
   input,
@@ -20,7 +24,22 @@ export function PromptForm({
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
 
+  const chatState = React.useContext(ChatContext);
   const dispatch = React.useContext(ChatDispatchContext);
+
+  const isRequestInFlight = chatState.completionLoading;
+
+  const handleStopRequest = () => {
+    dispatch({ type: "ABORT_CURRENT_REQUEST" });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Don't allow Enter submission if request is in flight
+    if (isRequestInFlight) {
+      return;
+    }
+    onKeyDown(event);
+  };
 
   return (
     <form
@@ -32,7 +51,7 @@ export function PromptForm({
           e.preventDefault();
 
           setInput("");
-          if (!prompt) return;
+          if (!prompt || isRequestInFlight) return;
 
           dispatch({
             type: "ADD_MESSAGE",
@@ -49,25 +68,43 @@ export function PromptForm({
             payload: true,
           });
 
-          await callRawLLMAgent(sessionId, prompt, dispatch);
+          // Create abort controller for this request
+          const abortController = new AbortController();
+          dispatch({
+            type: "SET_CURRENT_REQUEST",
+            payload: abortController,
+          });
+
+          await callRawLLMAgent(sessionId, prompt, dispatch, abortController);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: false,
           });
+          dispatch({
+            type: "SET_CURRENT_REQUEST",
+            payload: null,
+          });
         } catch (error) {
-          dispatch({
-            type: "SET_COMPLETION_LOADING",
-            payload: false,
-          });
-          dispatch({
-            type: "EDIT_MESSAGE",
-            payload: {
-              id: humanMessageId,
-              error: error,
-            },
-          });
-          console.error(error);
+          // Only handle errors if the request wasn't aborted
+          if (error instanceof Error && error.name !== "AbortError") {
+            dispatch({
+              type: "SET_COMPLETION_LOADING",
+              payload: false,
+            });
+            dispatch({
+              type: "SET_CURRENT_REQUEST",
+              payload: null,
+            });
+            dispatch({
+              type: "EDIT_MESSAGE",
+              payload: {
+                id: humanMessageId,
+                error: error,
+              },
+            });
+            console.error(error);
+          }
         }
       }}
     >
@@ -75,9 +112,9 @@ export function PromptForm({
         <ResizableTextarea
           ref={inputRef}
           tabIndex={0}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleKeyDown}
           placeholder="Send a message."
-          className="bg-slate-50 block w-full rounded-md border-0 py-1.5 text-gray-200 bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+          className="bg-slate-50 block w-full rounded-md border-0 py-1.5 text-gray-200 bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 pr-12"
           spellCheck={false}
           autoComplete="off"
           autoCorrect="off"
@@ -87,7 +124,29 @@ export function PromptForm({
           onChange={(e) => setInput(e.target.value)}
           minHeight={80}
           maxHeight={240}
+          disabled={isRequestInFlight}
         />
+        <div className="absolute bottom-2 right-2 flex items-center space-x-2">
+          {isRequestInFlight ? (
+            <button
+              type="button"
+              onClick={handleStopRequest}
+              className="flex items-center justify-center w-8 h-8 rounded-md bg-red-600 hover:bg-red-700 text-white transition-colors"
+              title="Stop request"
+            >
+              <StopIcon className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={!input.trim() || isRequestInFlight}
+              className="flex items-center justify-center w-8 h-8 rounded-md bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white transition-colors"
+              title="Send message"
+            >
+              <PaperAirplaneIcon className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
     </form>
   );
