@@ -228,13 +228,33 @@ export function RerankingDemoContainer() {
     // @ts-ignore
     const isExpanded = expandedCards.has(`${stage}-${index}`);
 
+    // Check if this result made it through to reranked results
+    const madeItThrough =
+      stage === "first" &&
+      data?.reranked.some(
+        (rerankedResult: RerankingResult) =>
+          rerankedResult.metadata.chunk_id === result.metadata.chunk_id
+      );
+
     return (
-      <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 hover:border-gray-600 transition-colors">
+      <div
+        className={`bg-gray-800/50 border rounded-lg p-4 hover:border-gray-600 transition-all duration-200 ${
+          madeItThrough
+            ? "border-amber-400/60 bg-amber-900/10 shadow-lg shadow-amber-500/10"
+            : "border-gray-700/50"
+        }`}
+      >
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center space-x-2 flex-1">
             <h3 className="text-md font-semibold text-white line-clamp-2">
               {index + 1}) Chunk {result.metadata.chunk_number}
             </h3>
+            {/* {madeItThrough && (
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-600/20 text-amber-300 border border-amber-500/40">
+                <StarIcon className="w-3 h-3 mr-1" />
+                Made Top {appliedTopKForRerank}
+              </span>
+            )} */}
           </div>
           <div
             className="flex-shrink-0 ml-3 border rounded-md px-2.5 py-1 shadow-sm"
@@ -524,101 +544,8 @@ export function RerankingDemoContainer() {
               >
                 <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 hover:text-gray-300" />
               </button>
-              <button
-                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                className="p-1 hover:bg-gray-700 rounded transition-colors"
-                title="Search settings"
-              >
-                <Cog6ToothIcon className="w-5 h-5 text-gray-400 hover:text-gray-300" />
-              </button>
             </div>
           </div>
-
-          {/* Settings Dropdown */}
-          {isSettingsOpen && (
-            <div
-              ref={settingsRef}
-              className="absolute z-50 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4"
-              style={{ left: "50%", transform: "translateX(-50%)" }}
-            >
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Search Settings
-              </h3>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Top K for Similarity Search: {topKForSimilarity}
-                  </label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="50"
-                    value={topKForSimilarity}
-                    onChange={(e) =>
-                      setTopKForSimilarity(parseInt(e.target.value))
-                    }
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>1</span>
-                    <span>50</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Top K for Reranking: {topKForRerank}
-                  </label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="20"
-                    value={topKForRerank}
-                    onChange={(e) => setTopKForRerank(parseInt(e.target.value))}
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>1</span>
-                    <span>20</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Similarity Threshold: {similarityThreshold.toFixed(2)}
-                  </label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={similarityThreshold}
-                    onChange={(e) =>
-                      setSimilarityThreshold(parseFloat(e.target.value))
-                    }
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                  />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>0.00</span>
-                    <span>1.00</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setAppliedTopKForSimilarity(topKForSimilarity);
-                    setAppliedTopKForRerank(topKForRerank);
-                    setAppliedSimilarityThreshold(similarityThreshold);
-                    setIsSettingsOpen(false);
-                  }}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-                >
-                  Apply Settings
-                </button>
-              </div>
-            </div>
-          )}
 
           <div className="flex items-center justify-center space-x-4 mt-2">
             <p className="text-xs text-gray-500">Press Enter to search</p>
