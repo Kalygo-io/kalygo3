@@ -45,7 +45,7 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Chat with TXT",
+    name: "Reranking Search",
     href: "/dashboard/chat-with-txt",
     enabled: true,
   },
