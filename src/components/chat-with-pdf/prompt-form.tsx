@@ -48,6 +48,7 @@ export function PromptForm({
             payload: true,
           });
 
+          // @ts-ignore
           await callChatWithPdf(sessionId, prompt, dispatch);
 
           dispatch({

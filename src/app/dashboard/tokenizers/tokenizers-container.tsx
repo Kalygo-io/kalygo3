@@ -412,7 +412,7 @@ export function TokenizersContainer() {
                 </h3>
                 <p className="text-gray-300 text-sm">
                   Experiment with different tokenization strategies using
-                  OpenAI's interactive tokenizer playground.
+                  OpenAI&apos;s interactive tokenizer playground.
                 </p>
               </div>
               <a
@@ -433,9 +433,9 @@ export function TokenizersContainer() {
                   Universal LLM Hacks
                 </h3>
                 <p className="text-gray-300 text-sm">
-                  Learn about universal methods to "unalign" LLMs and understand
-                  tokenization's role in model behavior from the GenAI
-                  Guidebook.
+                  Learn about universal methods to &rsquo;unalign&rsquo; LLMs
+                  and understand tokenization&apos;s role in model behavior from
+                  the GenAI Guidebook.
                 </p>
               </div>
               <a

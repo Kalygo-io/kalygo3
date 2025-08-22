@@ -268,6 +268,7 @@ export function ToolCallsDrawer({
                                         className="text-sm font-medium text-blue-400 bg-blue-900/20 px-3 py-1 rounded-lg border border-blue-700/30 cursor-pointer hover:bg-blue-900/30 transition-colors"
                                         title={result.filename}
                                         onClick={() =>
+                                          // @ts-ignore
                                           copyToClipboard(result.filename)
                                         }
                                       >
