@@ -64,44 +64,39 @@ export const navigation = [
     href: "/dashboard/agentic-rag",
     enabled: true,
   },
-  // {
-  //   name: "Multimodal Embeddings",
-  //   href: "/dashboard/multimodal",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "BM25",
-  //   href: "/dashboard/bm25",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Graph RAG",
-  //   href: "/dashboard/graph-rag",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Hybrid Search",
-  //   href: "/dashboard/hybrid-search",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Access Control",
-  //   href: "/dashboard/access-control",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Chunking",
-  //   href: "/dashboard/chunking",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Evals",
-  //   href: "/dashboard/evals",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Fine-tuning",
-  //   href: "/dashboard/fine-tuning",
-  //   enabled: true,
-  // },
+  {
+    name: "Multimodal Embeddings",
+    href: "/dashboard/multimodal",
+    enabled: true,
+  },
+  {
+    name: "BM25",
+    href: "/dashboard/bm25",
+    enabled: true,
+  },
+  {
+    name: "Hybrid Search",
+    href: "/dashboard/hybrid-search",
+    enabled: true,
+  },
+  {
+    name: "Graph RAG",
+    href: "/dashboard/graph-rag",
+    enabled: false,
+  },
+  {
+    name: "Access Control",
+    href: "/dashboard/access-control",
+    enabled: false,
+  },
+  {
+    name: "Evals",
+    href: "/dashboard/evals",
+    enabled: false,
+  },
+  {
+    name: "Fine-tuning",
+    href: "/dashboard/fine-tuning",
+    enabled: false,
+  },
 ];
