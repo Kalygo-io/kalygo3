@@ -13,6 +13,7 @@ import { ChunksDrawer } from "./chunks-drawer";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { DebugMessages } from "./chat/debug-messages";
 import { RerankedMatch } from "@/ts/types/Message";
+import { ChatDispatchContext } from "@/app/dashboard/chat-with-txt/chat-session-context";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -24,6 +25,7 @@ export function Chat({ id, className }: ChatProps) {
   const [currentKbQuery, setCurrentKbQuery] = useState<string>("");
   const [isPromptFocused, setIsPromptFocused] = useState(false);
   const chatState = useContext(ChatContext);
+  const dispatch = useContext(ChatDispatchContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   useEffect(() => {
@@ -44,10 +46,27 @@ export function Chat({ id, className }: ChatProps) {
   };
 
   const handlePromptFocus = () => {
+    // Clear messages when focusing to emphasize stateless interaction
+    if (chatState.messages.length > 0) {
+      dispatch({
+        type: "CLEAR_MESSAGES",
+        payload: {},
+      });
+    }
     setIsPromptFocused(true);
+
+    // Close right drawers when focusing the prompt input
+    setIsDrawerOpen(false);
+    setIsChunksDrawerOpen(false);
   };
 
   const handlePromptBlur = () => {
+    setIsPromptFocused(false);
+  };
+
+  const handleSubmit = () => {
+    // Only unfocus the input, don't clear messages
+    // Messages will be cleared when the user focuses the input again
     setIsPromptFocused(false);
   };
 
@@ -69,7 +88,11 @@ export function Chat({ id, className }: ChatProps) {
           ref={scrollRef}
         >
           <div
-            className={cn("pb-[200px] chat-messages-fade", className)}
+            className={cn(
+              "pb-[200px] chat-messages-fade transition-all duration-300",
+              isPromptFocused ? "blur-sm opacity-50" : "",
+              className
+            )}
             ref={messagesRef}
           >
             {chatState.messages.length ? (
@@ -95,41 +118,33 @@ export function Chat({ id, className }: ChatProps) {
             )}
           </div>
 
-          {/* Conditional rendering based on whether to center the prompt or not */}
-          {shouldCenterPrompt ? (
-            <div
-              className="fixed inset-x-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]"
-              style={{ zIndex: 10, bottom: "10%" }}
-            >
-              <div className="mx-auto lg:pl-72 lg:max-w-[calc(100%-18rem)]">
-                <div className="mx-4 space-y-4 border-t bg-black border-gray-700 px-4 py-2 shadow-lg rounded-xl sm:border md:py-4">
-                  {/* <div className="flex justify-center">
-                    <div className="w-full max-w-2xl"> */}
-                  <PromptForm
-                    input={input}
-                    setInput={setInput}
-                    sessionId={chatState.sessionId}
-                    onFocus={handlePromptFocus}
-                    onBlur={handlePromptBlur}
-                  />
-                  {/* </div>
-                  </div> */}
-                  <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
-                    Made with ❤️ in Miami 🌴
-                  </p>
-                </div>
+          {/* Single prompt form container with dynamic positioning */}
+          <div
+            className={`fixed inset-x-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px] ${
+              shouldCenterPrompt ? "top-1/2 -translate-y-1/2" : "bottom-0"
+            }`}
+            style={{ zIndex: 10 }}
+          >
+            <div className="mx-auto lg:pl-72 lg:max-w-[calc(100%-18rem)]">
+              <div
+                className={`space-y-4 border-t bg-black border-gray-700 px-4 py-2 shadow-lg sm:border md:py-4 ${
+                  shouldCenterPrompt ? "mx-4 rounded-xl" : "mx-8 rounded-t-xl"
+                }`}
+              >
+                <PromptForm
+                  input={input}
+                  setInput={setInput}
+                  sessionId={chatState.sessionId}
+                  onFocus={handlePromptFocus}
+                  onBlur={handlePromptBlur}
+                  onSubmit={handleSubmit}
+                />
+                <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
+                  Made with ❤️ in Miami 🌴
+                </p>
               </div>
             </div>
-          ) : (
-            <ChatPanel
-              sessionId={chatState.sessionId}
-              input={input}
-              setInput={setInput}
-              promptForm={PromptForm}
-              onFocus={handlePromptFocus}
-              onBlur={handlePromptBlur}
-            />
-          )}
+          </div>
         </div>
       </div>
       <ContextualAside

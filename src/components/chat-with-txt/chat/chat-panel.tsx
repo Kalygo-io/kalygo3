@@ -8,9 +8,11 @@ export interface P {
     sessionId: string;
     onFocus?: () => void;
     onBlur?: () => void;
+    onSubmit?: () => void;
   }>;
   onFocus?: () => void;
   onBlur?: () => void;
+  onSubmit?: () => void;
 }
 
 export function ChatPanel(P: P) {
@@ -27,6 +29,7 @@ export function ChatPanel(P: P) {
             sessionId={P.sessionId}
             onFocus={P.onFocus}
             onBlur={P.onBlur}
+            onSubmit={P.onSubmit}
           />
           <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
             Made with ❤️ in Miami 🌴

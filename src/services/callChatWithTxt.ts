@@ -6,7 +6,8 @@ import React from "react";
 export async function callChatWithTxt(
   sessionId: string,
   prompt: string,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  signal?: AbortSignal
 ) {
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/completion`,
@@ -20,6 +21,7 @@ export async function callChatWithTxt(
         content: prompt,
       }),
       credentials: "include",
+      signal,
     }
   );
 

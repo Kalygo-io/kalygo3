@@ -20,6 +20,10 @@ export type Action =
         rerankedMatches?: RerankedMatch[];
         kb_search_query?: string;
       };
+    }
+  | {
+      type: "CLEAR_MESSAGES";
+      payload: {};
     };
 
 export function chatReducer(
@@ -80,6 +84,12 @@ export function chatReducer(
       return {
         ...state,
         completionLoading: action.payload,
+      };
+    }
+    case "CLEAR_MESSAGES": {
+      return {
+        ...state,
+        messages: [],
       };
     }
     default: {
