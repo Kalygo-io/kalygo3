@@ -397,27 +397,103 @@ export function TokenizersContainer() {
           </div>
         </div>
 
-        {/* OpenAI Tokenizer Playground Link */}
+        {/* External Resources */}
         <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mt-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-white mb-2">
-                Try It Yourself
-              </h2>
-              <p className="text-gray-300 text-sm">
-                Experiment with different tokenization strategies using
-                OpenAI&quot;s interactive tokenizer playground.
-              </p>
+          <h2 className="text-xl font-semibold text-white mb-4">
+            Additional Resources
+          </h2>
+
+          <div className="space-y-4">
+            {/* OpenAI Tokenizer Playground */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">
+                  OpenAI Tokenizer Playground
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  Experiment with different tokenization strategies using
+                  OpenAI's interactive tokenizer playground.
+                </p>
+              </div>
+              <a
+                href="https://platform.openai.com/tokenizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              >
+                <span>Try It</span>
+                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+              </a>
             </div>
-            <a
-              href="https://platform.openai.com/tokenizer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-            >
-              <span>OpenAI Tokenizer</span>
-              <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-            </a>
+
+            {/* Universal LLM Hacks */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">
+                  Universal LLM Hacks
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  Learn about universal methods to "unalign" LLMs and understand
+                  tokenization's role in model behavior from the GenAI
+                  Guidebook.
+                </p>
+              </div>
+              <a
+                href="https://ravinkumar.com/GenAiGuidebook/deepdive/universalattack.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+              >
+                <span>Read More</span>
+                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Image Tokenization */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">
+                  Image Tokenization
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  Explore how images are converted into tokens for AI
+                  processing, including visual transformers and patch-based
+                  approaches.
+                </p>
+              </div>
+              <a
+                href="https://ravinkumar.com/GenAiGuidebook/image/image_tokenization.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+              >
+                <span>Learn More</span>
+                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Audio Tokenization */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-white font-medium mb-1">
+                  Audio Tokenization
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  Discover how audio signals are tokenized for speech
+                  recognition and audio generation models, including spectrogram
+                  processing.
+                </p>
+              </div>
+              <a
+                href="https://ravinkumar.com/GenAiGuidebook/audio/audio_tokenization.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors"
+              >
+                <span>Explore</span>
+                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
