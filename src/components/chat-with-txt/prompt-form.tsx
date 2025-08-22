@@ -12,10 +12,14 @@ export function PromptForm({
   input,
   setInput,
   sessionId,
+  onFocus,
+  onBlur,
 }: {
   input: string;
   setInput: (value: string) => void;
   sessionId: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }) {
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
@@ -84,6 +88,8 @@ export function PromptForm({
           rows={3}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
           minHeight={80}
           maxHeight={240}
         />

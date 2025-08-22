@@ -22,6 +22,7 @@ export function Chat({ id, className }: ChatProps) {
   const [isChunksDrawerOpen, setIsChunksDrawerOpen] = useState(false);
   const [currentChunks, setCurrentChunks] = useState<RerankedMatch[]>([]);
   const [currentKbQuery, setCurrentKbQuery] = useState<string>("");
+  const [isPromptFocused, setIsPromptFocused] = useState(false);
   const chatState = useContext(ChatContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
@@ -41,6 +42,16 @@ export function Chat({ id, className }: ChatProps) {
     setCurrentKbQuery(kb_search_query || "");
     setIsChunksDrawerOpen(true);
   };
+
+  const handlePromptFocus = () => {
+    setIsPromptFocused(true);
+  };
+
+  const handlePromptBlur = () => {
+    setIsPromptFocused(false);
+  };
+
+  const shouldCenterPrompt = chatState.messages.length === 0 || isPromptFocused;
 
   return (
     <>
@@ -83,12 +94,42 @@ export function Chat({ id, className }: ChatProps) {
               </>
             )}
           </div>
-          <ChatPanel
-            sessionId={chatState.sessionId}
-            input={input}
-            setInput={setInput}
-            promptForm={PromptForm}
-          />
+
+          {/* Conditional rendering based on whether to center the prompt or not */}
+          {shouldCenterPrompt ? (
+            <div
+              className="fixed inset-x-0 w-full duration-300 ease-in-out animate-in peer-[[data-state=open]]:group-[]:lg:pl-[250px] peer-[[data-state=open]]:group-[]:xl:pl-[300px]"
+              style={{ zIndex: 10, bottom: "10%" }}
+            >
+              <div className="mx-auto lg:pl-72 lg:max-w-[calc(100%-18rem)]">
+                <div className="mx-4 space-y-4 border-t bg-black border-gray-700 px-4 py-2 shadow-lg rounded-xl sm:border md:py-4">
+                  {/* <div className="flex justify-center">
+                    <div className="w-full max-w-2xl"> */}
+                  <PromptForm
+                    input={input}
+                    setInput={setInput}
+                    sessionId={chatState.sessionId}
+                    onFocus={handlePromptFocus}
+                    onBlur={handlePromptBlur}
+                  />
+                  {/* </div>
+                  </div> */}
+                  <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
+                    Made with ❤️ in Miami 🌴
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <ChatPanel
+              sessionId={chatState.sessionId}
+              input={input}
+              setInput={setInput}
+              promptForm={PromptForm}
+              onFocus={handlePromptFocus}
+              onBlur={handlePromptBlur}
+            />
+          )}
         </div>
       </div>
       <ContextualAside

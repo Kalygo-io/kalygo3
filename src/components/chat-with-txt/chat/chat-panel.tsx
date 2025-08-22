@@ -6,7 +6,11 @@ export interface P {
     input: string;
     setInput: (value: string) => void;
     sessionId: string;
+    onFocus?: () => void;
+    onBlur?: () => void;
   }>;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export function ChatPanel(P: P) {
@@ -21,6 +25,8 @@ export function ChatPanel(P: P) {
             input={P.input}
             setInput={P.setInput}
             sessionId={P.sessionId}
+            onFocus={P.onFocus}
+            onBlur={P.onBlur}
           />
           <p className="text-gray-200 text-muted-foreground px-2 text-center text-xs leading-normal hidden sm:block">
             Made with ❤️ in Miami 🌴
