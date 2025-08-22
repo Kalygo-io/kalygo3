@@ -44,6 +44,7 @@ export function RerankingDemoContainer() {
   const [appliedTopKForRerank, setAppliedTopKForRerank] = useState(5);
   const [appliedSimilarityThreshold, setAppliedSimilarityThreshold] =
     useState(0.1);
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const settingsRef = useRef<HTMLDivElement>(null);
 
   // Click outside to close settings
@@ -67,13 +68,13 @@ export function RerankingDemoContainer() {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: [
       "reranking",
-      searchQuery,
+      submittedQuery,
       appliedTopKForSimilarity,
       appliedTopKForRerank,
       appliedSimilarityThreshold,
     ],
     queryFn: async () => {
-      if (!searchQuery.trim()) {
+      if (!submittedQuery.trim()) {
         return {
           firstStage: [],
           reranked: [],
@@ -89,7 +90,7 @@ export function RerankingDemoContainer() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            query: searchQuery,
+            query: submittedQuery,
             top_k_for_similarity: appliedTopKForSimilarity,
             top_k_for_rerank: appliedTopKForRerank,
             similarity_threshold: appliedSimilarityThreshold,
@@ -142,20 +143,28 @@ export function RerankingDemoContainer() {
         reranked: rerankedResults,
       };
     },
-    enabled: !!searchQuery.trim(),
+    enabled: !!submittedQuery.trim(), // Only enable when there's a submitted query
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2,
   });
 
   const handleKeyDown = (e: { key: string }) => {
     if (e.key === "Enter" && searchQuery.trim()) {
-      // The query will automatically run when searchQuery changes
+      setSubmittedQuery(searchQuery);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (searchQuery.trim()) {
+      setSubmittedQuery(searchQuery);
     }
   };
 
   const clearCache = () => {
     // Clear all reranking queries
     queryClient.invalidateQueries({ queryKey: ["reranking"] });
+    // Clear the submitted query
+    setSubmittedQuery("");
     // Or clear all queries
     // queryClient.clear();
     console.log("Cache cleared for reranking queries");
@@ -377,15 +386,114 @@ export function RerankingDemoContainer() {
 
   return (
     <>
-      {/* Toggle Button - Fixed positioned in top-right of viewport */}
-      <button
-        onClick={toggleDrawer}
-        className="fixed top-20 right-4 z-50 flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
-      >
-        <InformationCircleIcon className="w-4 h-4 text-blue-400" />
-      </button>
+      {/* Settings and Info Buttons - Fixed positioned in top-right of viewport */}
+      <div className="fixed top-20 right-4 z-50 flex items-center space-x-2">
+        {/* Settings Button */}
+        <div className="relative" ref={settingsRef}>
+          <button
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            className="flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
+          >
+            <Cog6ToothIcon className="w-4 h-4 text-blue-400" />
+          </button>
 
-      <div className="w-full max-w-7xl mx-auto p-6">
+          {/* Settings Dropdown */}
+          {isSettingsOpen && (
+            <div className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-50">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-white mb-4">
+                  Search Settings
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Top K for Similarity Search: {topKForSimilarity}
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="50"
+                      value={topKForSimilarity}
+                      onChange={(e) =>
+                        setTopKForSimilarity(parseInt(e.target.value))
+                      }
+                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>1</span>
+                      <span>50</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Top K for Reranking: {topKForRerank}
+                    </label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="20"
+                      value={topKForRerank}
+                      onChange={(e) =>
+                        setTopKForRerank(parseInt(e.target.value))
+                      }
+                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>1</span>
+                      <span>20</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Similarity Threshold: {similarityThreshold.toFixed(2)}
+                    </label>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={similarityThreshold}
+                      onChange={(e) =>
+                        setSimilarityThreshold(parseFloat(e.target.value))
+                      }
+                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>0.00</span>
+                      <span>1.00</span>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setAppliedTopKForSimilarity(topKForSimilarity);
+                      setAppliedTopKForRerank(topKForRerank);
+                      setAppliedSimilarityThreshold(similarityThreshold);
+                      setIsSettingsOpen(false);
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  >
+                    Apply Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Info Button */}
+        <button
+          onClick={toggleDrawer}
+          className="flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
+        >
+          <InformationCircleIcon className="w-4 h-4 text-blue-400" />
+        </button>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto p-6 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Reranking Demo</h1>
@@ -409,6 +517,13 @@ export function RerankingDemoContainer() {
               className="block w-full pl-10 pr-12 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <button
+                onClick={handleSubmit}
+                className="p-1 hover:bg-gray-700 rounded transition-colors"
+                title="Search"
+              >
+                <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 hover:text-gray-300" />
+              </button>
               <button
                 onClick={() => setIsSettingsOpen(!isSettingsOpen)}
                 className="p-1 hover:bg-gray-700 rounded transition-colors"
@@ -520,19 +635,21 @@ export function RerankingDemoContainer() {
         {/* Results - Two Column Layout */}
         {data && (data.firstStage.length > 0 || data.reranked.length > 0) && (
           <div className="space-y-6">
-            <div className="text-center">
+            <div className="text-center max-w-full">
               <h2 className="text-xl font-semibold text-white mb-2">
                 Two-Stage Retrieval Results
               </h2>
               {data.firstStage.length === data.reranked.length && (
-                <p className="text-sm text-yellow-400 mb-4">
-                  ⚠️ Both stages show the same number of results. The first
-                  stage should show {appliedTopKForSimilarity} results, and the
-                  second stage should show {appliedTopKForRerank} results.
-                </p>
+                <div className="max-w-full mb-4">
+                  <p className="text-sm text-yellow-400 break-words">
+                    ⚠️ Both stages show the same number of results. The first
+                    stage should show {appliedTopKForSimilarity} results, and
+                    the second stage should show {appliedTopKForRerank} results.
+                  </p>
+                </div>
               )}
 
-              {/* Check if reranking actually reordered results */}
+              {/* Check if reranking actually reordered the results */}
               {(() => {
                 const firstStageChunkIds = data.firstStage.map(
                   (r: RerankingResult) => r.metadata.chunk_id
@@ -546,11 +663,13 @@ export function RerankingDemoContainer() {
 
                 if (!isReordered && data.firstStage.length > 0) {
                   return (
-                    <p className="text-sm text-red-400 mb-4">
-                      🚨 Reranking returned same order as similarity search.
-                      This indicates the reranking algorithm may not be working
-                      properly.
-                    </p>
+                    <div className="max-w-full mb-4">
+                      <p className="text-sm text-red-400 break-words">
+                        🚨 Reranking returned same order as similarity search.
+                        This indicates the reranking algorithm may not be
+                        working properly.
+                      </p>
+                    </div>
                   );
                 }
                 return null;
@@ -584,14 +703,14 @@ export function RerankingDemoContainer() {
             </div>
 
             {/* Desktop: Always Side-by-Side */}
-            <div className="hidden lg:flex lg:gap-8">
+            <div className="hidden lg:flex lg:gap-4 xl:gap-8 max-w-full">
               {/* First Stage - Similarity Search */}
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 space-y-4 min-w-0">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-white">
                     First Stage: Similarity Search
                   </h3>
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-gray-400 flex-shrink-0">
                     {data.firstStage.length} results (Top{" "}
                     {appliedTopKForSimilarity})
                   </span>
@@ -612,17 +731,17 @@ export function RerankingDemoContainer() {
               </div>
 
               {/* Small Arrow Separator */}
-              <div className="flex items-center justify-center px-2">
+              <div className="flex items-center justify-center px-2 flex-shrink-0">
                 <ArrowRightIcon className="w-4 h-4 text-blue-400" />
               </div>
 
               {/* Second Stage - Reranked Results */}
-              <div className="flex-1 space-y-4">
+              <div className="flex-1 space-y-4 min-w-0">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-white">
                     Second Stage: Reranked Results
                   </h3>
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-gray-400 flex-shrink-0">
                     {data.reranked.length} results (Top {appliedTopKForRerank})
                   </span>
                 </div>
@@ -650,7 +769,7 @@ export function RerankingDemoContainer() {
                   <h3 className="text-lg font-semibold text-white">
                     {activeTab === "first"
                       ? "First Stage: Similarity Search"
-                      : "Second Stage: Reranked Results"}
+                      : "Second Stage: Rerank"}
                   </h3>
                   <span className="text-sm text-gray-400">
                     {activeTab === "first"
