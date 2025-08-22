@@ -39,7 +39,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Re-Act Agent</h2>
+            <h2 className="text-lg font-semibold text-white">ReAct Agent</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -80,10 +80,10 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-white mb-2">
-                    What is a Re-Act Agent?
+                    What is a ReAct Agent?
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    A Re-Act Agent provides the illusion of reasoning
+                    A ReAct Agent provides the illusion of reasoning
                     capabilities to LLMs through the ReAct (Reasoning + Acting)
                     framework. It enables step-by-step reasoning and maintains
                     conversation context across interactions. When you boil it
