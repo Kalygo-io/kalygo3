@@ -43,6 +43,27 @@ export function ChatMarkdown({ content, className }: ChatMarkdownProps) {
             </h3>
           );
         },
+        h4({ children, ...props }) {
+          return (
+            <h4 className="text-base font-medium text-white mb-2 mt-3 first:mt-0">
+              {children}
+            </h4>
+          );
+        },
+        h5({ children, ...props }) {
+          return (
+            <h5 className="text-sm font-medium text-white mb-2 mt-3 first:mt-0">
+              {children}
+            </h5>
+          );
+        },
+        h6({ children, ...props }) {
+          return (
+            <h6 className="text-xs font-medium text-white mb-2 mt-3 first:mt-0">
+              {children}
+            </h6>
+          );
+        },
 
         // Lists - clean, consistent spacing
         ul({ children, ...props }) {
