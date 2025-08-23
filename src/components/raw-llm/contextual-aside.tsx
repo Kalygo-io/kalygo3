@@ -24,6 +24,14 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
   const popularLLMs = [
     {
+      name: "GPT-5",
+      contextLimit: "128K tokens",
+      wordEstimate: "~96K words",
+      pageEstimate: "~384 pages",
+      link: "https://platform.openai.com/docs/models/gpt-5",
+      provider: "OpenAI",
+    },
+    {
       name: "GPT-4o",
       contextLimit: "128K tokens",
       wordEstimate: "~96K words",

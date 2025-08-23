@@ -14,7 +14,7 @@ export function ChatList(P: P) {
   }
 
   return (
-    <div className="relative mx-auto max-w-2xl px-4">
+    <div className="relative mx-auto max-w-2xl px-4 py-1">
       {P.messages.map((message: Message, index: number) => {
         return <ChatMessage key={message.id} index={index} message={message} />;
       })}

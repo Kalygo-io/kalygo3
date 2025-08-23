@@ -2,6 +2,8 @@ import { cn } from "@/shared/utils";
 import { Message } from "@/ts/types/Message";
 import { BiUser } from "react-icons/bi";
 import { GiArtificialIntelligence } from "react-icons/gi";
+import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
+import { CheckIcon, ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 
 import { Separator } from "@/components/shared/separator";
 import { memo } from "react";
@@ -14,6 +16,13 @@ interface P {
 
 export const ChatMessage = memo(
   function ChatMessage(P: P) {
+    const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+
+    const onCopy = () => {
+      if (isCopied) return;
+      copyToClipboard(P.message.content);
+    };
+
     if (P.message.role === "ai" || P.message.role === "human") {
       return (
         <div key={P.message.id}>
@@ -23,7 +32,7 @@ export const ChatMessage = memo(
               P.message.role === "human"
                 ? "bg-white/10 backdrop-blur-sm border border-white/20"
                 : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
-              "flex hover:shadow-lg hover:scale-[1.01]"
+              "flex hover:shadow-md hover:scale-[1.001]"
             )}
           >
             <div
@@ -52,6 +61,25 @@ export const ChatMessage = memo(
               )}
             >
               <ChatMarkdown content={P.message.content} />
+            </div>
+
+            {/* Copy button - positioned at bottom right */}
+            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <button
+                onClick={onCopy}
+                className={cn(
+                  "p-2 rounded-lg transition-colors duration-200",
+                  "bg-gray-800/80 hover:bg-gray-700/80 border border-gray-600/50",
+                  "text-gray-300 hover:text-white"
+                )}
+                title="Copy message"
+              >
+                {isCopied ? (
+                  <CheckIcon className="h-4 w-4 text-green-400" />
+                ) : (
+                  <ClipboardDocumentIcon className="h-4 w-4" />
+                )}
+              </button>
             </div>
           </div>
           <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />

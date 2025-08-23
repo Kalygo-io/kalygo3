@@ -28,7 +28,7 @@ export const RerankingChatMessage = memo(
               P.message.role === "human"
                 ? "bg-white/10 backdrop-blur-sm border border-white/20"
                 : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
-              "flex hover:shadow-lg hover:scale-[1.01]"
+              "flex hover:shadow-lg hover:scale-[1.001]"
             )}
           >
             <div
