@@ -285,12 +285,12 @@ export function EmbeddingModelsContent({
                     <div className="flex justify-between">
                       <span>Model:</span>
                       <span className="text-blue-400">
-                        text-embedding-ada-002
+                        text-embedding-3-large
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Dimensions:</span>
-                      <span className="text-blue-400">1536</span>
+                      <span className="text-blue-400">3072</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Context Length:</span>
@@ -302,8 +302,9 @@ export function EmbeddingModelsContent({
                     </div>
                   </div>
                   <p className="mt-4 text-gray-400 text-sm">
-                    OpenAI&apos;s flagship embedding model, optimized for
-                    semantic search and text similarity tasks.
+                    OpenAI&apos;s latest embedding model with higher
+                    dimensionality and improved performance for semantic search
+                    and text similarity tasks.
                   </p>
                 </div>
 
@@ -337,50 +338,22 @@ export function EmbeddingModelsContent({
 
                 <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
                   <h3 className="text-xl font-bold text-white mb-4">
-                    Cohere Embeddings
-                  </h3>
-                  <div className="space-y-3 text-sm text-gray-300">
-                    <div className="flex justify-between">
-                      <span>Model:</span>
-                      <span className="text-blue-400">embed-english-v3.0</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Dimensions:</span>
-                      <span className="text-blue-400">1024</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Context Length:</span>
-                      <span className="text-blue-400">512 tokens</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Performance:</span>
-                      <span className="text-green-400">Excellent</span>
-                    </div>
-                  </div>
-                  <p className="mt-4 text-gray-400 text-sm">
-                    Multilingual model with strong performance across different
-                    languages and domains.
-                  </p>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    BGE Embeddings
+                    OpenAI Embeddings
                   </h3>
                   <div className="space-y-3 text-sm text-gray-300">
                     <div className="flex justify-between">
                       <span>Model:</span>
                       <span className="text-blue-400">
-                        BAAI/bge-large-en-v1.5
+                        text-embedding-ada-002
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Dimensions:</span>
-                      <span className="text-blue-400">1024</span>
+                      <span className="text-blue-400">1536</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Context Length:</span>
-                      <span className="text-blue-400">512 tokens</span>
+                      <span className="text-blue-400">8192 tokens</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Performance:</span>
@@ -388,8 +361,37 @@ export function EmbeddingModelsContent({
                     </div>
                   </div>
                   <p className="mt-4 text-gray-400 text-sm">
-                    Open-source model with state-of-the-art performance on
-                    retrieval tasks.
+                    OpenAI&apos;s flagship embedding model, optimized for
+                    semantic search and text similarity tasks.
+                  </p>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+                  <h3 className="text-xl font-bold text-white mb-4">
+                    BGE-M3 Multilingual
+                  </h3>
+                  <div className="space-y-3 text-sm text-gray-300">
+                    <div className="flex justify-between">
+                      <span>Model:</span>
+                      <span className="text-blue-400">BAAI/bge-m3</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Dimensions:</span>
+                      <span className="text-blue-400">1024</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Context Length:</span>
+                      <span className="text-blue-400">8192 tokens</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Performance:</span>
+                      <span className="text-green-400">Excellent</span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-gray-400 text-sm">
+                    Multi-functional, multi-lingual, and multi-granularity model
+                    supporting 100+ languages with dense, sparse, and
+                    multi-vector retrieval.
                   </p>
                 </div>
               </div>
