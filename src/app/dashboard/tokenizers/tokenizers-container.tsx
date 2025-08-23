@@ -113,7 +113,7 @@ export function TokenizersContainer() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Tokenizers</h1>
           <p className="text-gray-400">
-            The fundamental building blocks of language processing and reranking
+            The fundamental building block of AI data processing
           </p>
         </div>
 
