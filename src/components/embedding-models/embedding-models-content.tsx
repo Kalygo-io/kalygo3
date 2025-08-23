@@ -3,17 +3,13 @@
 import { useState, useEffect } from "react";
 import {
   BeakerIcon,
-  CubeIcon,
   ChartBarIcon,
-  LightBulbIcon,
   PlayIcon,
   PauseIcon,
   ArrowPathIcon,
   BookOpenIcon,
 } from "@heroicons/react/24/outline";
-import { InteractiveVectorDemo } from "./interactive-vector-demo";
 import { EmbeddingVisualization } from "./embedding-visualization";
-import { SimilarityDemo } from "./similarity-demo";
 import { ContextualAside } from "./contextual-aside";
 
 interface EmbeddingModelsContentProps {
@@ -31,9 +27,7 @@ export function EmbeddingModelsContent({
 
   const sections = [
     { id: "overview", name: "Overview", icon: BeakerIcon },
-    { id: "vectors", name: "Understanding Vectors", icon: CubeIcon },
     { id: "models", name: "Embedding Models", icon: ChartBarIcon },
-    { id: "applications", name: "Real Applications", icon: LightBulbIcon },
   ];
 
   const steps = [
@@ -94,12 +88,6 @@ export function EmbeddingModelsContent({
                   powerful numerical representations that capture meaning and
                   enable intelligent applications.
                 </p>
-                <div className="mt-8 flex justify-center">
-                  <div className="inline-flex items-center rounded-full bg-blue-600/10 px-4 py-2 text-sm font-medium text-blue-400 ring-1 ring-inset ring-blue-600/20">
-                    <BeakerIcon className="w-4 h-4 mr-2" />
-                    Level 4: Vector Foundations
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -108,7 +96,10 @@ export function EmbeddingModelsContent({
         {/* Navigation Tabs */}
         <div className="border-b border-gray-800">
           <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12">
-            <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+            <nav
+              className="-mb-px flex justify-center space-x-8"
+              aria-label="Tabs"
+            >
               {sections.map((section) => {
                 const Icon = section.icon;
                 return (
@@ -230,7 +221,7 @@ export function EmbeddingModelsContent({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-                    <CubeIcon className="w-6 h-6 text-blue-400" />
+                    <BeakerIcon className="w-6 h-6 text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
                     Vector Space
@@ -258,7 +249,7 @@ export function EmbeddingModelsContent({
 
                 <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
                   <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-                    <LightBulbIcon className="w-6 h-6 text-green-400" />
+                    <BeakerIcon className="w-6 h-6 text-green-400" />
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">
                     Semantic Understanding
@@ -270,23 +261,6 @@ export function EmbeddingModelsContent({
                   </p>
                 </div>
               </div>
-            </div>
-          )}
-
-          {activeSection === "vectors" && (
-            <div className="space-y-12">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-white mb-6">
-                  Understanding Vector Representations
-                </h2>
-                <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-                  Vectors are the mathematical foundation of embeddings.
-                  Let&apos;s explore how they work and why they&apos;re so
-                  powerful for representing meaning.
-                </p>
-              </div>
-
-              <InteractiveVectorDemo />
             </div>
           )}
 
@@ -417,85 +391,6 @@ export function EmbeddingModelsContent({
                     Open-source model with state-of-the-art performance on
                     retrieval tasks.
                   </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeSection === "applications" && (
-            <div className="space-y-12">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-white mb-6">
-                  Real-World Applications
-                </h2>
-                <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-                  Discover how embeddings power the AI applications you use
-                  every day, from search engines to recommendation systems and
-                  beyond.
-                </p>
-              </div>
-
-              <SimilarityDemo />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    Semantic Search
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Transform traditional keyword search into intelligent
-                    semantic search that understands user intent and context.
-                  </p>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <div>• Google Search</div>
-                    <div>• E-commerce product search</div>
-                    <div>• Document retrieval systems</div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    Recommendation Systems
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Power personalized recommendations by understanding user
-                    preferences and content similarity.
-                  </p>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <div>• Netflix movie recommendations</div>
-                    <div>• Spotify music suggestions</div>
-                    <div>• Amazon product recommendations</div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    Content Moderation
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Automatically detect inappropriate content by understanding
-                    semantic meaning beyond simple keyword matching.
-                  </p>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <div>• Social media platforms</div>
-                    <div>• Online communities</div>
-                    <div>• Customer support systems</div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    Chatbots & Assistants
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Enable conversational AI that understands context and can
-                    retrieve relevant information from knowledge bases.
-                  </p>
-                  <div className="space-y-2 text-sm text-gray-400">
-                    <div>• Customer service bots</div>
-                    <div>• Virtual assistants</div>
-                    <div>• Knowledge base Q&A</div>
-                  </div>
                 </div>
               </div>
             </div>
