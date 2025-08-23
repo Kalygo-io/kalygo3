@@ -128,17 +128,17 @@ export function TokenizersContainer() {
                 What are Tokenizers?
               </h2>
               <p className="text-gray-300 leading-relaxed mb-4">
-                Tokenizers are the first step in processing text for AI models.
-                They break down human-readable text into smaller, manageable
-                pieces called &quot;tokens&quot; that machines can understand
-                and process. Think of them as the bridge between human language
-                and machine language.
+                Tokenizers are the first step in processing data for AI models.
+                They break down data into smaller, manageable pieces called
+                &quot;tokens&quot; that machines can understand and process.
+                Think of them as the bridge between the outside world and the
+                machine.
               </p>
               <p className="text-gray-300 leading-relaxed">
-                In the context of reranking, tokenization is crucial because it
-                determines how text is represented and compared. The quality of
-                tokenization directly impacts the accuracy of similarity
-                searches and the effectiveness of reranking algorithms.
+                In the context of reranking, tokenization is where it all starts
+                and you probably won&apos;t have to think too much, if at all,
+                about tokenization but the term is going to pop up a number of
+                times as we move through this outline.
               </p>
             </div>
           </div>

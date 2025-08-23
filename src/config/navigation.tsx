@@ -10,12 +10,12 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Basic Memory Hack",
+    name: "Memory",
     href: "/dashboard/basic-memory",
     enabled: true,
   },
   {
-    name: "Embedding Models",
+    name: "Embeddings",
     href: "/dashboard/embedding-models",
     enabled: true,
   },
@@ -25,7 +25,7 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Similarity Search",
+    name: "Similarity",
     href: "/dashboard/similarity-search",
     enabled: true,
   },
@@ -40,12 +40,12 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Reranking Search",
+    name: "Search",
     href: "/dashboard/chat-with-txt",
     enabled: true,
   },
   {
-    name: "ReAct Agent",
+    name: "ReAct",
     href: "/dashboard/re-act",
     enabled: true,
   },
