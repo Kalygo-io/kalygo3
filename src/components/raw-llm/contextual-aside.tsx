@@ -238,7 +238,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               <div className="space-y-4">
                 <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-gray-300 mb-2">
-                    Popular LLM Models
+                    Popular LLM/LMM Models
                   </h3>
                   <p className="text-gray-100 text-sm leading-relaxed">
                     Here are some of the most popular Large Language Models
