@@ -157,11 +157,19 @@ function dispatchEventToState(
       });
 
       // Handle retrieval calls if available
+      console.log(
+        "Chain end event - checking for retrieval calls:",
+        parsedChunk
+      );
+      console.log("Chain end event keys:", Object.keys(parsedChunk));
       if (parsedChunk.retrieval_calls) {
         try {
+          console.log("Retrieval calls found:", parsedChunk.retrieval_calls);
           const retrievalCallsData = Array.isArray(parsedChunk.retrieval_calls)
             ? parsedChunk.retrieval_calls
             : [];
+
+          console.log("Processed retrieval calls data:", retrievalCallsData);
 
           dispatch({
             type: "EDIT_MESSAGE",
@@ -170,9 +178,19 @@ function dispatchEventToState(
               retrievalCalls: retrievalCallsData,
             },
           });
+
+          console.log("Retrieval calls dispatched to state");
+          console.log(
+            "Message should now have retrievalCalls:",
+            retrievalCallsData
+          );
+          console.log("Retrieval calls count:", retrievalCallsData.length);
         } catch (error) {
           console.error("Error processing retrieval calls:", error);
         }
+      } else {
+        console.log("No retrieval calls found in chain end event");
+        console.log("Available keys in parsedChunk:", Object.keys(parsedChunk));
       }
     } else if (parsedChunk.event === "on_tool_start") {
       try {
