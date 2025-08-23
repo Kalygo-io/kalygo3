@@ -85,6 +85,10 @@ export function chatReducer(
       };
     }
     case "SET_CURRENT_TOOL": {
+      // Prevent unnecessary re-renders if the tool status hasn't changed
+      if (state.currentTool === action.payload) {
+        return state;
+      }
       return {
         ...state,
         currentTool: action.payload,

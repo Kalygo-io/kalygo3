@@ -26,7 +26,6 @@ export async function callReActAgent(
   if (!resp.ok) throw "Network response was not OK";
 
   const reader = resp?.body?.getReader();
-
   const decoder = new TextDecoder();
 
   const aiMessageId = nanoid();
@@ -34,44 +33,55 @@ export async function callReActAgent(
     content: "",
   };
 
-  while (true) {
-    // @ts-ignore
-    const { done, value } = await reader.read();
-    if (done) break;
-    let chunk = decoder.decode(value);
+  // Add timeout to prevent infinite hanging
+  const timeout = setTimeout(() => {
+    console.error("ReAct agent stream timeout - aborting");
+    reader?.cancel();
+  }, 300000); // 5 minutes timeout
 
-    try {
-      const parsedChunk = JSON.parse(chunk);
-      dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
-    } catch (e) {
-      let multiChunkAcc = "";
+  try {
+    while (true) {
+      // @ts-ignore
+      const { done, value } = await reader.read();
+      if (done) break;
+      let chunk = decoder.decode(value);
 
-      let idx = 0;
-      while (0 < chunk.length) {
-        if (chunk[idx] === "}") {
-          try {
+      try {
+        const parsedChunk = JSON.parse(chunk);
+        dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
+      } catch (e) {
+        let multiChunkAcc = "";
+
+        let idx = 0;
+        while (0 < chunk.length) {
+          if (chunk[idx] === "}") {
+            try {
+              multiChunkAcc += chunk[idx];
+              const parsedChunk = JSON.parse(multiChunkAcc);
+
+              dispatchEventToState(
+                parsedChunk,
+                dispatch,
+                aiMessageId,
+                accMessage
+              );
+
+              chunk = chunk.substring(idx + 1);
+              idx = 0;
+              multiChunkAcc = "";
+            } catch (e) {
+              multiChunkAcc += chunk.substring(0, idx);
+            }
+          } else {
             multiChunkAcc += chunk[idx];
-            const parsedChunk = JSON.parse(multiChunkAcc);
-
-            dispatchEventToState(
-              parsedChunk,
-              dispatch,
-              aiMessageId,
-              accMessage
-            );
-
-            chunk = chunk.substring(idx + 1);
-            idx = 0;
-            multiChunkAcc = "";
-          } catch (e) {
-            multiChunkAcc += chunk.substring(0, idx);
+            idx++;
           }
-        } else {
-          multiChunkAcc += chunk[idx];
-          idx++;
         }
       }
     }
+  } finally {
+    clearTimeout(timeout);
+    reader?.cancel();
   }
 }
 
@@ -133,12 +143,15 @@ function dispatchEventToState(
     //   },
     // });
   } else if (parsedChunk["event"] === "on_tool_start") {
-    dispatch({
-      type: "SET_CURRENT_TOOL",
-      payload: parsedChunk["data"],
-    });
-
-    infoToast(`${parsedChunk["data"]}`);
+    // Only update tool status if it's different from current
+    const toolData = parsedChunk["data"];
+    if (toolData && toolData.trim()) {
+      dispatch({
+        type: "SET_CURRENT_TOOL",
+        payload: toolData,
+      });
+      infoToast(`${toolData}`);
+    }
   } else if (parsedChunk["event"] === "on_tool_end") {
     dispatch({
       type: "EDIT_MESSAGE",
