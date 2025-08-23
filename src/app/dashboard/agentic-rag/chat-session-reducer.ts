@@ -21,6 +21,7 @@ export type Action =
         role?: "human" | "ai";
         content?: string;
         error?: any;
+        retrievalCalls?: any[];
       };
     }
   | {
