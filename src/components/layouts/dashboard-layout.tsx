@@ -108,11 +108,11 @@ export function DashboardLayout({
                         "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold cursor-pointer transition-colors duration-150"
                       )}
                     >
-                      L{navItemIndex + 1}: {item.name}
+                      {navItemIndex + 1}: {item.name}
                     </span>
                   ) : (
                     <span className="text-gray-500 cursor-default group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                      L{navItemIndex + 1}: {item.name}
+                      {navItemIndex + 1}: {item.name}
                     </span>
                   )}
                 </li>
