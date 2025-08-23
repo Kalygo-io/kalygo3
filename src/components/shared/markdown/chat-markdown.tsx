@@ -1,5 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { cn } from "@/shared/utils";
 
 interface ChatMarkdownProps {
@@ -7,10 +8,91 @@ interface ChatMarkdownProps {
   className?: string;
 }
 
+// Function to detect and convert text-based tables to HTML tables
+function convertTextTableToHTML(content: string): string {
+  const lines = content.split("\n");
+  const result: string[] = [];
+  let inTable = false;
+  let tableLines: string[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Check if this line looks like a table row (contains | characters)
+    const isTableRow = line.includes("|") && line.trim().length > 0;
+
+    if (isTableRow) {
+      if (!inTable) {
+        inTable = true;
+        tableLines = [];
+      }
+      tableLines.push(line);
+    } else {
+      // Process any accumulated table
+      if (inTable && tableLines.length > 0) {
+        result.push(convertTableLinesToHTML(tableLines));
+        tableLines = [];
+        inTable = false;
+      }
+      result.push(line);
+    }
+  }
+
+  // Handle table at the end of content
+  if (inTable && tableLines.length > 0) {
+    result.push(convertTableLinesToHTML(tableLines));
+  }
+
+  return result.join("\n");
+}
+
+function convertTableLinesToHTML(tableLines: string[]): string {
+  if (tableLines.length === 0) return "";
+
+  const html: string[] = [];
+  html.push("<table>");
+  html.push("<thead>");
+
+  for (let i = 0; i < tableLines.length; i++) {
+    const line = tableLines[i];
+    const cells = line
+      .split("|")
+      .map((cell) => cell.trim())
+      .filter((cell) => cell.length > 0);
+
+    if (cells.length === 0) continue;
+
+    // Check if this is a separator line (contains only dashes and plus signs)
+    const isSeparator = /^[\s\-\+\|]+$/.test(line);
+    if (isSeparator) continue;
+
+    const tag = i === 0 ? "th" : "td";
+    html.push("<tr>");
+
+    cells.forEach((cell) => {
+      html.push(`<${tag}>${cell}</${tag}>`);
+    });
+
+    html.push("</tr>");
+
+    // Add tbody structure after first row
+    if (i === 0) {
+      html.push("</thead><tbody>");
+    }
+  }
+
+  html.push("</tbody></table>");
+  return html.join("");
+}
+
 export function ChatMarkdown({ content, className }: ChatMarkdownProps) {
+  // Convert text-based tables to HTML tables
+  const processedContent = convertTextTableToHTML(content);
+
   return (
     <ReactMarkdown
       className={cn("chat-markdown", className)}
+      rehypePlugins={[rehypeRaw]}
       components={{
         // Paragraphs - clean, readable text
         p({ children, ...props }) {
@@ -133,41 +215,43 @@ export function ChatMarkdown({ content, className }: ChatMarkdownProps) {
           );
         },
 
-        // Tables - clean, readable
+        // Tables - beautiful styling
         table({ children, ...props }) {
           return (
-            <div className="overflow-x-auto mb-4">
-              <table className="min-w-full border border-gray-700/50 rounded-lg">
-                {children}
-              </table>
+            <div className="overflow-x-auto mb-6 rounded-lg border border-gray-700/50 bg-gray-900/30 shadow-lg">
+              <table className="min-w-full">{children}</table>
             </div>
           );
         },
         thead({ children, ...props }) {
-          return <thead className="bg-gray-800/50">{children}</thead>;
+          return (
+            <thead className="bg-gray-800/70 border-b border-gray-700/50">
+              {children}
+            </thead>
+          );
         },
         tbody({ children, ...props }) {
           return (
-            <tbody className="divide-y divide-gray-700/50">{children}</tbody>
+            <tbody className="divide-y divide-gray-700/30">{children}</tbody>
           );
         },
         tr({ children, ...props }) {
           return (
-            <tr className="hover:bg-gray-800/30 transition-colors">
+            <tr className="hover:bg-gray-800/40 transition-colors duration-150">
               {children}
             </tr>
           );
         },
         th({ children, ...props }) {
           return (
-            <th className="px-4 py-3 text-left text-sm font-medium text-white border-r border-gray-700/50">
+            <th className="px-6 py-4 text-left text-sm font-semibold text-white tracking-wide">
               {children}
             </th>
           );
         },
         td({ children, ...props }) {
           return (
-            <td className="px-4 py-3 text-sm text-gray-200 border-r border-gray-700/50">
+            <td className="px-6 py-4 text-sm text-gray-200 leading-relaxed">
               {children}
             </td>
           );
@@ -189,7 +273,7 @@ export function ChatMarkdown({ content, className }: ChatMarkdownProps) {
         },
       }}
     >
-      {content}
+      {processedContent}
     </ReactMarkdown>
   );
 }
