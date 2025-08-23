@@ -76,33 +76,59 @@ export async function callAgenticRagAgent(
         );
         let multiChunkAcc = "";
         let idx = 0;
+        let braceCount = 0;
+        let inString = false;
+        let escapeNext = false;
 
         while (idx < chunk.length) {
-          if (chunk[idx] === "}") {
-            try {
-              multiChunkAcc += chunk[idx];
-              const parsedChunk = JSON.parse(multiChunkAcc);
-              console.log("Parsed multi-chunk:", parsedChunk);
+          const char = chunk[idx];
 
-              dispatchEventToState(
-                parsedChunk,
-                dispatch,
-                aiMessageId,
-                accMessage,
-                retrievalCalls
-              );
+          if (escapeNext) {
+            multiChunkAcc += char;
+            escapeNext = false;
+          } else if (char === "\\") {
+            multiChunkAcc += char;
+            escapeNext = true;
+          } else if (char === '"' && !escapeNext) {
+            multiChunkAcc += char;
+            inString = !inString;
+          } else if (!inString) {
+            if (char === "{") {
+              braceCount++;
+            } else if (char === "}") {
+              braceCount--;
+            }
+            multiChunkAcc += char;
 
-              chunk = chunk.substring(idx + 1);
-              idx = 0;
-              multiChunkAcc = "";
-            } catch (e) {
-              multiChunkAcc += chunk[idx];
-              idx++;
+            // Try to parse when we have a complete JSON object
+            if (braceCount === 0 && multiChunkAcc.trim()) {
+              try {
+                const parsedChunk = JSON.parse(multiChunkAcc.trim());
+                console.log("Parsed multi-chunk:", parsedChunk);
+
+                dispatchEventToState(
+                  parsedChunk,
+                  dispatch,
+                  aiMessageId,
+                  accMessage,
+                  retrievalCalls
+                );
+
+                // Move to next character after the parsed JSON
+                chunk = chunk.substring(idx + 1);
+                idx = 0;
+                multiChunkAcc = "";
+                braceCount = 0;
+                continue;
+              } catch (parseError) {
+                // Continue accumulating if this isn't valid JSON yet
+              }
             }
           } else {
-            multiChunkAcc += chunk[idx];
-            idx++;
+            multiChunkAcc += char;
           }
+
+          idx++;
         }
       }
     }
