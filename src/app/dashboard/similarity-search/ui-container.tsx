@@ -218,7 +218,7 @@ export function SimilaritySearchDemoContainer() {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">
-            Similarity Search (aka 1st Stage of Retrieval)
+            Similarity Search
           </h1>
           <p className="text-gray-400">
             Search through QnA pairs using semantic similarity

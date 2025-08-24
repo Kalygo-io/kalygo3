@@ -516,9 +516,11 @@ export function RerankingDemoContainer() {
       <div className="w-full max-w-7xl mx-auto p-6 overflow-hidden">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Reranking Demo</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Reranking (aka 2-Stage Retrieval)
+          </h1>
           <p className="text-gray-400">
-            Compare first-stage similarity search with re-ranked results
+            Compare similarity search with reranking
           </p>
         </div>
 
