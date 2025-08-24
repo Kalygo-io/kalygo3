@@ -34,7 +34,7 @@ export function EmbeddingsDemoContainer() {
           </h1>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
             Explore the fundamental building blocks of how AI represents and
-            understands text through high-dimensional vectors
+            understands data through high-dimensional vectors
           </p>
         </div>
 
@@ -72,10 +72,12 @@ export function EmbeddingsDemoContainer() {
                   What are Vector Embeddings?
                 </h2>
                 <p className="text-gray-300 leading-relaxed mb-4">
-                  Vector embeddings are numerical representations of text that
-                  capture semantic meaning. Words with similar meanings are
-                  mapped to nearby points in high-dimensional space, allowing AI
-                  systems to understand relationships between concepts.
+                  Vector embeddings are numerical representations of data that
+                  capture &quot;meaning&quot;. Tokens that tend to co-occur with
+                  others tokens are mapped to nearby points in
+                  &quot;high-dimensional&quot; space, allowing AI systems to
+                  understand relationships between tokens (and groups of tokens)
+                  in a body of data.
                 </p>
                 <div className="grid md:grid-cols-2 gap-4 mt-6">
                   <div className="bg-gray-800/50 rounded-lg p-4">
@@ -83,12 +85,12 @@ export function EmbeddingsDemoContainer() {
                       Key Properties
                     </h3>
                     <ul className="space-y-2 text-gray-300">
-                      <li>• Similar words have similar vectors</li>
+                      <li>• Similar data maps to similar vectors</li>
                       <li>• Mathematical operations preserve meaning</li>
                       <li>
-                        • High-dimensional (typically 100-1000+ dimensions)
+                        • High-dimensionality (typically 100-1000+ dimensions)
                       </li>
-                      <li>• Learned from large text corpora</li>
+                      <li>• Learned from large amounts of data</li>
                     </ul>
                   </div>
                   <div className="bg-gray-800/50 rounded-lg p-4">

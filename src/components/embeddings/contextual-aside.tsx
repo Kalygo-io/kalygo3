@@ -85,8 +85,8 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
                     Vector embeddings are the mathematical foundation that
-                    enables AI systems to understand and work with text. They
-                    transform words into numbers while preserving semantic
+                    enables AI systems to understand and work with data. They
+                    transform data into numbers while preserving semantic
                     relationships.
                   </p>
                 </div>
@@ -110,7 +110,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Enable mathematical operations on meaning</span>
+                      <span>
+                        Enable mathematical operations on notions of meaning
+                      </span>
                     </li>
                   </ul>
                 </div>
