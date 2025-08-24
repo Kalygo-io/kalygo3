@@ -109,7 +109,7 @@ export function Chat({ id, className }: ChatProps) {
                   content={
                     <>
                       <h1 className="text-center text-5xl font-semibold leading-12 text-ellipsis overflow-hidden text-text_default_color p-1">
-                        Search with Reranking 📃
+                        Search w/ Reranking 🔍
                       </h1>
                     </>
                   }
