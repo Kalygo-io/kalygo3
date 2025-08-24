@@ -218,10 +218,10 @@ export function SimilaritySearchDemoContainer() {
         {/* Header */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">
-            Similarity Search
+            Similarity Search (aka 1st Stage of Retrieval)
           </h1>
           <p className="text-gray-400">
-            Search through FAQs using semantic similarity
+            Search through QnA pairs using semantic similarity
           </p>
         </div>
 
