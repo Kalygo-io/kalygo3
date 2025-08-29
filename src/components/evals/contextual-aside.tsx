@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import {
-  InformationCircleIcon,
-  LightBulbIcon,
   XMarkIcon,
+  BookOpenIcon,
+  LightBulbIcon,
+  AcademicCapIcon,
   ChartBarIcon,
+  CogIcon,
 } from "@heroicons/react/24/outline";
 
 interface ContextualAsideProps {
@@ -14,11 +15,79 @@ interface ContextualAsideProps {
 }
 
 export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
-  const [activeTab, setActiveTab] = useState("overview");
+  const resources = [
+    {
+      title: "LangSmith",
+      description:
+        "LangChain's comprehensive evaluation platform for LLM applications",
+      url: "https://smith.langchain.com/",
+      type: "Platform",
+    },
+    {
+      title: "promptfoo",
+      description: "Open-source prompt testing and evaluation framework",
+      url: "https://www.promptfoo.dev/",
+      type: "Framework",
+    },
+    {
+      title: "Weights & Biases",
+      description: "ML experiment tracking with LLM evaluation capabilities",
+      url: "https://wandb.ai/",
+      type: "Platform",
+    },
+    {
+      title: "Humanloop",
+      description: "Platform for building and evaluating LLM applications",
+      url: "https://humanloop.com/",
+      type: "Platform",
+    },
+    {
+      title: "OpenAI Evals",
+      description: "OpenAI's framework for evaluating LLM performance",
+      url: "https://github.com/openai/evals",
+      type: "Framework",
+    },
+  ];
 
-  const tabs = [
-    { id: "overview", name: "Overview", icon: InformationCircleIcon },
-    { id: "flowchart", name: "Flow Chart", icon: ChartBarIcon },
+  const keyConcepts = [
+    {
+      concept: "Evaluation Metrics",
+      explanation:
+        "Quantitative measures used to assess model performance, such as accuracy, BLEU score, or custom metrics.",
+    },
+    {
+      concept: "Ground Truth",
+      explanation:
+        "The correct or expected output that serves as a reference for evaluating model predictions.",
+    },
+    {
+      concept: "A/B Testing",
+      explanation:
+        "Comparing two or more model versions to determine which performs better on specific metrics.",
+    },
+    {
+      concept: "Human Evaluation",
+      explanation:
+        "Direct assessment of model outputs by human evaluators for subjective quality measures.",
+    },
+    {
+      concept: "Evaluation Pipeline",
+      explanation:
+        "Automated system for running evaluations, collecting results, and generating reports.",
+    },
+  ];
+
+  const practicalTips = [
+    "Start with simple, well-defined evaluation metrics before adding complexity",
+    "Use multiple complementary metrics to get a comprehensive view of performance",
+    "Include edge cases and failure scenarios in your evaluation datasets",
+    "Set up automated evaluation pipelines for continuous monitoring",
+    "Regularly update evaluation criteria as your use case evolves",
+    "Involve stakeholders in defining evaluation metrics and success criteria",
+    "Document your evaluation methodology for reproducibility",
+    "Use evaluation results to guide model improvements and iterations",
+    "Monitor evaluation metrics in production to detect performance drift",
+    "Consider both automated and human evaluation for comprehensive assessment",
   ];
 
   return (
@@ -40,101 +109,100 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Evals Context</h2>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={onClose}
-                className="p-1 hover:bg-gray-700 rounded transition-colors"
-                title="Close panel"
-              >
-                <XMarkIcon className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="border-b border-gray-700 overflow-x-auto">
-            <div className="flex min-w-max">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center justify-center space-x-2 px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
-                      activeTab === tab.id
-                        ? "text-blue-400 border-b-2 border-blue-400 bg-gray-800"
-                        : "text-gray-400 hover:text-gray-300 hover:bg-gray-800"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">{tab.name}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <h2 className="text-lg font-semibold text-white">
+              Evaluation Resources
+            </h2>
+            <button
+              onClick={onClose}
+              className="p-1 rounded-lg hover:bg-gray-800 transition-colors text-white"
+            >
+              <XMarkIcon className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto p-4">
-            {activeTab === "overview" && (
-              <div className="space-y-4">
-                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    What are RAG Evals?
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    RAG Evals are comprehensive evaluation frameworks for
-                    measuring the performance and quality of RAG systems. They
-                    assess accuracy, relevance, faithfulness, and other critical
-                    metrics to ensure system reliability.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Key Characteristics:
-                  </h4>
-                  <ul className="space-y-2 text-sm text-white">
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Comprehensive performance metrics</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Accuracy and relevance assessment</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Faithfulness and hallucination detection</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Continuous system improvement</span>
-                    </li>
-                  </ul>
-                </div>
+          <div className="flex-1 overflow-y-auto">
+            {/* Resources */}
+            <div className="p-4 border-b border-gray-700">
+              <div className="flex items-center space-x-2 mb-3">
+                <BookOpenIcon className="w-5 h-5 text-blue-400" />
+                <h3 className="font-medium text-white">Evaluation Tools</h3>
               </div>
-            )}
-
-            {activeTab === "flowchart" && (
-              <div className="space-y-4">
-                <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Evals Flow Chart
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    A visual representation of how RAG systems are evaluated and
-                    measured for performance and quality.
-                  </p>
-                </div>
-
-                <div className="bg-gray-800 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-white text-lg font-medium">Coming Soon</p>
-                </div>
+              <div className="space-y-3">
+                {resources.map((resource, index) => (
+                  <div key={index} className="bg-gray-800 rounded-lg p-3">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="px-2 py-1 bg-blue-600 text-xs rounded-full">
+                        {resource.type}
+                      </span>
+                    </div>
+                    <h4 className="font-medium text-sm mb-1 text-white">
+                      {resource.title}
+                    </h4>
+                    <p className="text-gray-300 text-xs mb-2">
+                      {resource.description}
+                    </p>
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 text-xs inline-flex items-center space-x-1"
+                    >
+                      <span>View Tool</span>
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+
+            {/* Key Concepts */}
+            <div className="p-4 border-b border-gray-700">
+              <div className="flex items-center space-x-2 mb-3">
+                <AcademicCapIcon className="w-5 h-5 text-green-400" />
+                <h3 className="font-medium text-white">Key Concepts</h3>
+              </div>
+              <div className="space-y-3">
+                {keyConcepts.map((concept, index) => (
+                  <div key={index} className="bg-gray-800 rounded-lg p-3">
+                    <h4 className="font-medium text-sm mb-1 text-white">
+                      {concept.concept}
+                    </h4>
+                    <p className="text-gray-300 text-xs">
+                      {concept.explanation}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Practical Tips */}
+            <div className="p-4">
+              <div className="flex items-center space-x-2 mb-3">
+                <LightBulbIcon className="w-5 h-5 text-yellow-400" />
+                <h3 className="font-medium text-white">Practical Tips</h3>
+              </div>
+              <div className="space-y-2">
+                {practicalTips.map((tip, index) => (
+                  <div key={index} className="flex items-start space-x-2">
+                    <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className="text-gray-300 text-xs">{tip}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
