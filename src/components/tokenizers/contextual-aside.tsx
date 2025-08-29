@@ -133,7 +133,7 @@ export function TokenizersContextualAside({
 
                 <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
                   <h4 className="text-md font-semibold text-white mb-2">
-                    Why This Matters for Re-ranking
+                    Why This Matters?
                   </h4>
                   <p className="text-white text-sm leading-relaxed">
                     The quality of &quot;tokenization&quot; directly affects how

@@ -5,7 +5,7 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Raw LLM",
+    name: "Raw LLMs",
     href: "/dashboard/raw-llm",
     enabled: true,
   },

@@ -148,7 +148,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-gray-100">Raw LLM</h2>
+            <h2 className="text-lg font-semibold text-gray-100">Raw LLMs</h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -195,7 +195,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     A Large Language Model (LLM) is a foundational pillar of
                     modern AI systems. It processes text input in parallel and
                     autoregressively predicts tokens until a stop token is
-                    predicted or its context is exhausted.
+                    predicted OR its context is exhausted.
                   </p>
                 </div>
 
@@ -210,7 +210,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Each response is independent</span>
+                      <span>Each response is independent of previous ones</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
