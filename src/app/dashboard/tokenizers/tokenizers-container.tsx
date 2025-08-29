@@ -19,6 +19,19 @@ interface TokenExample {
   explanation: string;
 }
 
+interface TokenizerType {
+  name: string;
+  description: string;
+  pros: string[];
+  cons: string[];
+  example: string;
+  implementation: {
+    name: string;
+    url: string;
+    description: string;
+  };
+}
+
 export function TokenizersContainer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeExample, setActiveExample] = useState(0);
@@ -72,7 +85,7 @@ export function TokenizersContainer() {
     },
   ];
 
-  const tokenizerTypes = [
+  const tokenizerTypes: TokenizerType[] = [
     {
       name: "Word-based",
       description: "Splits text by spaces and punctuation",
@@ -83,6 +96,11 @@ export function TokenizersContainer() {
         "No subword information",
       ],
       example: "Hello world → ['Hello', 'world']",
+      implementation: {
+        name: "NLTK Word Tokenizer",
+        url: "https://www.nltk.org/api/nltk.tokenize.html",
+        description: "Natural Language Toolkit's word tokenizer implementation",
+      },
     },
     {
       name: "Subword",
@@ -94,6 +112,11 @@ export function TokenizersContainer() {
       ],
       cons: ["More complex", "Longer sequences", "Harder to interpret"],
       example: "learning → ['learn', 'ing']",
+      implementation: {
+        name: "Hugging Face Tokenizers",
+        url: "https://huggingface.co/docs/tokenizers/",
+        description: "Fast and production-ready tokenizers library",
+      },
     },
     {
       name: "Character-based",
@@ -105,6 +128,12 @@ export function TokenizersContainer() {
         "Computationally expensive",
       ],
       example: "Hello → ['H', 'e', 'l', 'l', 'o']",
+      implementation: {
+        name: "TensorFlow Text",
+        url: "https://www.tensorflow.org/text",
+        description:
+          "TensorFlow's text processing library with character tokenization",
+      },
     },
     {
       name: "Image Patch",
@@ -120,6 +149,12 @@ export function TokenizersContainer() {
         "Position encoding required",
       ],
       example: "224×224 image → 196 16×16 patches",
+      implementation: {
+        name: "Vision Transformer (ViT)",
+        url: "https://github.com/google-research/vision_transformer",
+        description:
+          "Official Vision Transformer implementation with patch embedding",
+      },
     },
     {
       name: "Audio Spectrogram",
@@ -135,6 +170,11 @@ export function TokenizersContainer() {
         "Requires preprocessing",
       ],
       example: "Audio signal → Mel-spectrogram tokens",
+      implementation: {
+        name: "Librosa",
+        url: "https://librosa.org/doc/latest/index.html",
+        description: "Python library for audio and music signal processing",
+      },
     },
     {
       name: "Video Frame",
@@ -150,6 +190,12 @@ export function TokenizersContainer() {
         "Temporal redundancy",
       ],
       example: "Video → Frame patches + temporal tokens",
+      implementation: {
+        name: "VideoMAE",
+        url: "https://github.com/MCG-NJU/VideoMAE",
+        description:
+          "Video Masked Autoencoders for self-supervised video representation learning",
+      },
     },
   ];
 
@@ -322,10 +368,33 @@ export function TokenizersContainer() {
                   </ul>
                 </div>
 
-                <div className="bg-gray-800 p-2 rounded">
+                <div className="bg-gray-800 p-2 rounded mb-3">
                   <span className="text-xs text-gray-400">Example:</span>
                   <div className="text-xs text-white font-mono mt-1">
                     {type.example}
+                  </div>
+                </div>
+
+                <div className="bg-blue-900/20 border border-blue-700/30 rounded p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs text-blue-400 font-medium">
+                      Implementation:
+                    </span>
+                    <a
+                      href={type.implementation.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center space-x-1"
+                    >
+                      <span>View</span>
+                      <ArrowTopRightOnSquareIcon className="w-3 h-3" />
+                    </a>
+                  </div>
+                  <div className="text-xs text-white font-medium mb-1">
+                    {type.implementation.name}
+                  </div>
+                  <div className="text-xs text-gray-300">
+                    {type.implementation.description}
                   </div>
                 </div>
               </div>
