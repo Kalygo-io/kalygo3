@@ -134,12 +134,6 @@ export function TokenizersContainer() {
                 Think of them as the bridge between the outside world and the
                 machine.
               </p>
-              <p className="text-gray-300 leading-relaxed">
-                In the context of reranking, tokenization is where it all starts
-                and you probably won&apos;t have to think too much, if at all,
-                about tokenization but the term is going to pop up a number of
-                times as we move through this outline.
-              </p>
             </div>
           </div>
         </div>
@@ -277,123 +271,6 @@ export function TokenizersContainer() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Why Tokenization Matters for Re-ranking */}
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
-            <MagnifyingGlassIcon className="w-6 h-6 text-yellow-400 mr-2" />
-            Why Tokenization Matters for Reranking
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Similarity Matching
-              </h3>
-              <p className="text-gray-300 text-sm flex-1">
-                Tokenization determines how text is compared. The same text
-                tokenized differently can produce very different similarity
-                scores, affecting which documents are retrieved.
-              </p>
-            </div>
-
-            <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Context Understanding
-              </h3>
-              <p className="text-gray-300 text-sm flex-1">
-                Good tokenization preserves semantic meaning while breaking text
-                into manageable pieces. This helps reranking models understand
-                the true relevance of content.
-              </p>
-            </div>
-
-            <div className="bg-purple-900/20 border border-purple-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Computational Efficiency
-              </h3>
-              <p className="text-gray-300 text-sm flex-1">
-                Tokenization affects processing speed and memory usage. More
-                tokens mean more computation, but too few tokens can lose
-                important information.
-              </p>
-            </div>
-
-            <div className="bg-orange-900/20 border border-orange-700/30 rounded-lg p-4 min-h-[8rem] md:min-h-[8rem] flex flex-col">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Cross-Language Support
-              </h3>
-              <p className="text-gray-300 text-sm flex-1">
-                Different languages require different tokenization strategies.
-                Subword tokenizers are particularly effective for multilingual
-                applications.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Practical Impact */}
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">
-            Practical Impact on Reranking
-          </h2>
-
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <ArrowRightIcon className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-white font-medium">
-                  Better Query Understanding
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Proper tokenization helps the system understand user queries
-                  more accurately, leading to better initial retrieval and more
-                  relevant reranking.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <ArrowRightIcon className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-white font-medium">
-                  Improved Document Matching
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  When documents and queries are tokenized consistently, the
-                  reranking model can better identify semantic similarities and
-                  differences.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <ArrowRightIcon className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-white font-medium">Reduced Noise</h3>
-                <p className="text-gray-300 text-sm">
-                  Good tokenization filters out irrelevant variations (like
-                  different spellings or punctuation) while preserving important
-                  semantic distinctions.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <ArrowRightIcon className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-white font-medium">
-                  Consistent Performance
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Standardized tokenization ensures that reranking performance
-                  is consistent across different types of content and user
-                  queries.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 

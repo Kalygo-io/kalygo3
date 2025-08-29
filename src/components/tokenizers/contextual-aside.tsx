@@ -87,12 +87,12 @@ export function TokenizersContextualAside({
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-white mb-2">
-                    The Foundation of Language Processing
+                    The Foundation of AI Data Processing
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Tokenizers are the first step in any language processing
-                    pipeline. They convert raw text into a format that AI models
-                    can understand and process efficiently.
+                    Tokenizers are the first step in any AI processing pipeline.
+                    They convert raw data into a format that AI models can
+                    understand and process efficiently.
                   </p>
                 </div>
 
@@ -105,7 +105,7 @@ export function TokenizersContextualAside({
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
                       <span>
                         <strong>Tokens:</strong> The smallest units of meaning
-                        in text
+                        in data
                       </span>
                     </li>
                     <li className="flex items-start space-x-2">
@@ -136,9 +136,8 @@ export function TokenizersContextualAside({
                     Why This Matters for Re-ranking
                   </h4>
                   <p className="text-white text-sm leading-relaxed">
-                    The quality of tokenization directly affects how well a
-                    system can understand and compare text, which is fundamental
-                    to effective reranking.
+                    The quality of &quot;tokenization&quot; directly affects how
+                    well a system can understand and compare data.
                   </p>
                 </div>
               </div>
@@ -151,8 +150,7 @@ export function TokenizersContextualAside({
                     Advanced Tokenization Concepts
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Deep dive into the technical aspects of tokenization and
-                    their impact on language model performance.
+                    Deep dive into the technical aspects of tokenization.
                   </p>
                 </div>
 
@@ -218,8 +216,7 @@ export function TokenizersContextualAside({
                     Implementation Best Practices
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Practical guidelines for implementing tokenization in
-                    reranking systems.
+                    Practical guidelines for implementing tokenization.
                   </p>
                 </div>
 
@@ -235,16 +232,6 @@ export function TokenizersContextualAside({
                     <p className="text-gray-300 text-xs">
                       Use the same tokenizer for both indexing and querying to
                       ensure consistent representation.
-                    </p>
-                  </div>
-
-                  <div className="bg-gray-800 rounded-lg p-3">
-                    <h5 className="text-sm font-medium text-white mb-2">
-                      Normalization
-                    </h5>
-                    <p className="text-gray-300 text-xs">
-                      Apply consistent text normalization (lowercase,
-                      punctuation handling) before tokenization.
                     </p>
                   </div>
 
@@ -266,9 +253,6 @@ export function TokenizersContextualAside({
                   <ul className="space-y-1 text-sm text-white">
                     <li>
                       • Inconsistent tokenization between training and inference
-                    </li>
-                    <li>
-                      • Ignoring case sensitivity in multilingual contexts
                     </li>
                     <li>• Not handling out-of-vocabulary tokens properly</li>
                     <li>• Over-tokenization leading to information loss</li>
