@@ -159,7 +159,7 @@ export function BM25DemoContainer() {
         <h1 className="text-4xl font-bold text-white mb-4">
           BM25 Information Retrieval
         </h1>
-        <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+        <p className="text-gray-300 text-lg max-w-3xl mx-auto">
           Explore the Okapi BM25 ranking function used by search engines to
           estimate document relevance
         </p>
@@ -172,6 +172,7 @@ export function BM25DemoContainer() {
           { id: "formula", name: "Formula", icon: CalculatorIcon },
           { id: "demo", name: "Demo", icon: MagnifyingGlassIcon },
           { id: "parameters", name: "Parameters", icon: ChartBarIcon },
+          { id: "resources", name: "Resources", icon: DocumentTextIcon },
         ].map((section) => {
           const Icon = section.icon;
           return (
@@ -518,6 +519,200 @@ export function BM25DemoContainer() {
                       <li>• b=1: BM11 algorithm</li>
                       <li>• k1=0: Binary relevance</li>
                     </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Resources Section */}
+        {activeTab === "resources" && (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-indigo-900/20 to-purple-900/20 border border-indigo-700/30 rounded-lg p-6">
+              <h2 className="text-2xl font-semibold text-white mb-4">
+                BM25 Resources & Documentation
+              </h2>
+              <p className="text-gray-200 leading-relaxed mb-6">
+                Explore comprehensive guides and practical implementations of
+                BM25 in modern search engines.
+              </p>
+
+              <div className="space-y-6">
+                {/* Elasticsearch BM25 Series */}
+                <div className="bg-gray-800/50 rounded-lg p-6">
+                  <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                    <DocumentTextIcon className="w-6 h-6 mr-3 text-blue-400" />
+                    Elasticsearch BM25 Practical Guide Series
+                  </h3>
+                  <p className="text-gray-200 mb-4">
+                    A comprehensive three-part series from Elasticsearch
+                    covering practical aspects of BM25 implementation and
+                    optimization.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="px-2 py-1 bg-blue-600 text-white text-xs rounded-full font-semibold">
+                              Part 1
+                            </span>
+                            <span className="px-2 py-1 bg-gray-700 text-white text-xs rounded-full font-medium">
+                              Elasticsearch
+                            </span>
+                          </div>
+                          <h4 className="text-lg font-semibold text-white mb-2">
+                            How Shards Affect Relevance Scoring in Elasticsearch
+                          </h4>
+                          <p className="text-gray-200 text-sm mb-3">
+                            Understanding how Elasticsearch&apos;s distributed
+                            architecture impacts BM25 scoring and relevance
+                            calculations.
+                          </p>
+                          <a
+                            href="https://www.elastic.co/blog/practical-bm25-part-1-how-shards-affect-relevance-scoring-in-elasticsearch"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                          >
+                            <span>Read Article</span>
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="px-2 py-1 bg-blue-600 text-white text-xs rounded-full font-semibold">
+                              Part 2
+                            </span>
+                            <span className="px-2 py-1 bg-gray-700 text-white text-xs rounded-full font-medium">
+                              Elasticsearch
+                            </span>
+                          </div>
+                          <h4 className="text-lg font-semibold text-white mb-2">
+                            The BM25 Algorithm and Its Variables
+                          </h4>
+                          <p className="text-gray-200 text-sm mb-3">
+                            Deep dive into the BM25 algorithm, its mathematical
+                            foundations, and how variables affect scoring.
+                          </p>
+                          <a
+                            href="https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                          >
+                            <span>Read Article</span>
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="px-2 py-1 bg-blue-600 text-white text-xs rounded-full font-semibold">
+                              Part 3
+                            </span>
+                            <span className="px-2 py-1 bg-gray-700 text-white text-xs rounded-full font-medium">
+                              Elasticsearch
+                            </span>
+                          </div>
+                          <h4 className="text-lg font-semibold text-white mb-2">
+                            Considerations for Picking b and k1 in Elasticsearch
+                          </h4>
+                          <p className="text-gray-200 text-sm mb-3">
+                            Practical guidance on tuning BM25 parameters (b and
+                            k1) for optimal search relevance in Elasticsearch.
+                          </p>
+                          <a
+                            href="https://www.elastic.co/blog/practical-bm25-part-3-considerations-for-picking-b-and-k1-in-elasticsearch"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                          >
+                            <span>Read Article</span>
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Resources */}
+                <div className="bg-gray-800/50 rounded-lg p-6">
+                  <h3 className="text-xl font-semibold text-white mb-4">
+                    Additional BM25 Resources
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-gray-900/50 rounded-lg p-4">
+                      <h4 className="text-lg font-semibold text-white mb-2">
+                        Academic Papers
+                      </h4>
+                      <ul className="space-y-2 text-gray-200 text-sm">
+                        <li>
+                          • Robertson & Walker (1994) - Original BM25 paper
+                        </li>
+                        <li>• Sp&auml;rck Jones (1972) - IDF foundation</li>
+                        <li>• Robertson (2004) - BM25F for multiple fields</li>
+                      </ul>
+                    </div>
+                    <div className="bg-gray-900/50 rounded-lg p-4">
+                      <h4 className="text-lg font-semibold text-white mb-2">
+                        Implementations
+                      </h4>
+                      <ul className="space-y-2 text-gray-200 text-sm">
+                        <li>• Elasticsearch (default since 5.0)</li>
+                        <li>• Apache Lucene</li>
+                        <li>• Python: rank-bm25 library</li>
+                        <li>• Java: Apache Commons Text</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
