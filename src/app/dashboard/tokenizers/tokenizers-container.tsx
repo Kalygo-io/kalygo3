@@ -56,6 +56,20 @@ export function TokenizersContainer() {
       explanation:
         "Emojis and special characters are treated as separate tokens.",
     },
+    {
+      text: "Image: 224×224 pixels",
+      tokens: ["[IMG]", "patch_1", "patch_2", "...", "patch_196"],
+      tokenCount: 197,
+      explanation:
+        "Images are divided into 16×16 pixel patches for vision transformers.",
+    },
+    {
+      text: "Audio: 10 seconds",
+      tokens: ["[AUDIO]", "mel_1", "mel_2", "...", "mel_431"],
+      tokenCount: 432,
+      explanation:
+        "Audio is converted to mel-spectrogram tokens for processing.",
+    },
   ];
 
   const tokenizerTypes = [
@@ -91,6 +105,51 @@ export function TokenizersContainer() {
         "Computationally expensive",
       ],
       example: "Hello → ['H', 'e', 'l', 'l', 'o']",
+    },
+    {
+      name: "Image Patch",
+      description: "Divides images into fixed-size patches",
+      pros: [
+        "Enables vision transformers",
+        "Preserves spatial information",
+        "Scalable to different resolutions",
+      ],
+      cons: [
+        "Loses fine-grained details",
+        "Fixed patch size limitations",
+        "Position encoding required",
+      ],
+      example: "224×224 image → 196 16×16 patches",
+    },
+    {
+      name: "Audio Spectrogram",
+      description: "Converts audio to frequency-time representations",
+      pros: [
+        "Captures frequency patterns",
+        "Time-frequency localization",
+        "Works with transformer architectures",
+      ],
+      cons: [
+        "Loses phase information",
+        "Computationally intensive",
+        "Requires preprocessing",
+      ],
+      example: "Audio signal → Mel-spectrogram tokens",
+    },
+    {
+      name: "Video Frame",
+      description: "Extracts frames and spatial-temporal tokens",
+      pros: [
+        "Handles temporal dynamics",
+        "Spatial-temporal modeling",
+        "Rich visual information",
+      ],
+      cons: [
+        "High computational cost",
+        "Memory intensive",
+        "Temporal redundancy",
+      ],
+      example: "Video → Frame patches + temporal tokens",
     },
   ];
 
@@ -220,7 +279,7 @@ export function TokenizersContainer() {
             Types of Tokenizers
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tokenizerTypes.map((type, index) => (
               <div
                 key={index}
