@@ -75,19 +75,9 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Graph RAG",
-    href: "/dashboard/graph-rag",
-    enabled: false,
-  },
-  {
-    name: "Access Control",
-    href: "/dashboard/access-control",
-    enabled: false,
-  },
-  {
     name: "Evals",
     href: "/dashboard/evals",
-    enabled: false,
+    enabled: true,
   },
   {
     name: "Fine-tuning",
