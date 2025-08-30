@@ -15,6 +15,11 @@ export const navigation = [
     enabled: true,
   },
   {
+    name: "Persistent Memory",
+    href: "/dashboard/persistent-memory",
+    enabled: true,
+  },
+  {
     name: "Embeddings",
     href: "/dashboard/embedding-models",
     enabled: true,
