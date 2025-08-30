@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
+import { errorToast } from "@/shared/toasts/errorToast";
 
 export function SimilaritySearchDemoContainer() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,13 +58,21 @@ export function SimilaritySearchDemoContainer() {
       );
 
       if (!resp.ok) {
-        throw new Error(`HTTP error! status: ${resp.status}`);
+        errorToast(`HTTP error status: ${resp.status}`);
+
+        throw new Error(`HTTP error status: ${resp.status}`);
       }
 
-      return await resp.json();
+      const responseBody = await resp.json();
+
+      if (!responseBody.success) {
+        errorToast(`${responseBody.error}`);
+      }
+
+      return responseBody;
     },
     enabled: !!searchQuery.trim(),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 1 minute
     retry: 2,
   });
 
@@ -291,65 +300,6 @@ export function SimilaritySearchDemoContainer() {
                 ) => {
                   const scorePercentage = Math.round(result.score * 100);
 
-                  // Enhanced color mapping with better contrast and vibrancy
-                  let scoreColor;
-                  let scoreBgColor;
-                  let scoreBorderColor;
-                  let scoreTextColor;
-
-                  if (scorePercentage >= 90) {
-                    scoreColor = "text-green-400";
-                    scoreBgColor = "bg-green-600/20";
-                    scoreBorderColor = "border-green-500/40";
-                    scoreTextColor = "text-green-100";
-                  } else if (scorePercentage >= 80) {
-                    scoreColor = "text-green-400";
-                    scoreBgColor = "bg-green-600/15";
-                    scoreBorderColor = "border-green-500/35";
-                    scoreTextColor = "text-green-100";
-                  } else if (scorePercentage >= 70) {
-                    scoreColor = "text-green-300";
-                    scoreBgColor = "bg-green-600/15";
-                    scoreBorderColor = "border-green-500/30";
-                    scoreTextColor = "text-green-50";
-                  } else if (scorePercentage >= 60) {
-                    scoreColor = "text-yellow-300";
-                    scoreBgColor = "bg-yellow-600/20";
-                    scoreBorderColor = "border-yellow-500/40";
-                    scoreTextColor = "text-yellow-50";
-                  } else if (scorePercentage >= 50) {
-                    scoreColor = "text-orange-300";
-                    scoreBgColor = "bg-orange-600/20";
-                    scoreBorderColor = "border-orange-500/40";
-                    scoreTextColor = "text-orange-50";
-                  } else if (scorePercentage >= 40) {
-                    scoreColor = "text-orange-400";
-                    scoreBgColor = "bg-orange-600/25";
-                    scoreBorderColor = "border-orange-500/50";
-                    scoreTextColor = "text-orange-50";
-                  } else if (scorePercentage >= 30) {
-                    scoreColor = "text-red-300";
-                    scoreBgColor = "bg-red-600/20";
-                    scoreBorderColor = "border-red-500/40";
-                    scoreTextColor = "text-red-50";
-                  } else if (scorePercentage >= 20) {
-                    scoreColor = "text-red-400";
-                    scoreBgColor = "bg-red-600/25";
-                    scoreBorderColor = "border-red-500/50";
-                    scoreTextColor = "text-red-50";
-                  } else if (scorePercentage >= 10) {
-                    scoreColor = "text-red-500";
-                    scoreBgColor = "bg-red-600/30";
-                    scoreBorderColor = "border-red-500/60";
-                    scoreTextColor = "text-red-50";
-                  } else {
-                    // For very low scores (0-9%), use a distinct gray color to ensure visibility
-                    scoreColor = "text-gray-300";
-                    scoreBgColor = "bg-gray-600/20";
-                    scoreBorderColor = "border-gray-500/40";
-                    scoreTextColor = "text-gray-50";
-                  }
-
                   const isExpanded = expandedCards.has(index);
 
                   return (
@@ -529,4 +479,7 @@ export function SimilaritySearchDemoContainer() {
       />
     </>
   );
+}
+function successToast(arg0: string) {
+  throw new Error("Function not implemented.");
 }
