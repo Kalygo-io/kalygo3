@@ -19,9 +19,8 @@ export function useChatSessions() {
   //   setLoading(false);
   // }, []);
 
-  const createSession = useCallback((appId: string) => {
-    const newSession = chatAppSessionService.createSession(appId);
-    setSessions((prev) => [newSession, ...prev.slice(0, 9)]); // Keep only 10 sessions
+  const createSession = useCallback(async (appId: string) => {
+    const newSession = await chatAppSessionService.createSession(appId);
     return newSession;
   }, []);
 

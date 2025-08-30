@@ -14,6 +14,7 @@ export default async function Page() {
       </DashboardLayout>
     );
   } catch (error) {
+    console.error("Error in persistent-memory page:", error);
     return redirect("/");
   }
 }

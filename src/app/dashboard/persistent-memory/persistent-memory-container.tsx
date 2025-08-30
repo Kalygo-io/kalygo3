@@ -6,6 +6,7 @@ import { Chat as PersistentMemoryChat } from "@/components/persistent-memory/cha
 import { useReducer, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
+import { errorToast } from "@/shared/toasts/errorToast";
 
 export function PersistentMemoryContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
@@ -16,25 +17,38 @@ export function PersistentMemoryContainer() {
   const sessionId = searchParams.get("session");
 
   useEffect(() => {
-    if (sessionId) {
-      dispatch({ type: "SET_SESSION_ID", payload: sessionId });
-      const session = getSession(sessionId);
-      if (session && session.chatHistory.length > 0) {
-        dispatch({ type: "SET_MESSAGES", payload: session.chatHistory });
-      } else if (session) {
-      } else {
-        const newSession = createSession("/dashboard/persistent-memory");
-        const url = new URL(window.location.href);
-        url.searchParams.set("session", newSession.id);
-        window.history.replaceState({}, "", url.toString());
+    async function asyncCode() {
+      try {
+        if (sessionId) {
+          dispatch({ type: "SET_SESSION_ID", payload: sessionId });
+          const session = getSession(sessionId);
+          if (session && session.chatHistory.length > 0) {
+            dispatch({ type: "SET_MESSAGES", payload: session.chatHistory });
+          } else if (session) {
+          } else {
+            const newSession = await createSession(
+              "/dashboard/persistent-memory"
+            );
+            const url = new URL(window.location.href);
+            url.searchParams.set("session", newSession.sessionId);
+            window.history.replaceState({}, "", url.toString());
+          }
+        } else if (!sessionCreatedRef.current) {
+          sessionCreatedRef.current = true;
+          const newSession = await createSession(
+            "/dashboard/persistent-memory"
+          );
+          const url = new URL(window.location.href);
+          url.searchParams.set("session", newSession.sessionId);
+          window.history.replaceState({}, "", url.toString());
+        }
+      } catch (error) {
+        // console.error("Error in persistent-memory container:", error);
+        errorToast(`Error in persistent-memory container: ${error}`);
       }
-    } else if (!sessionCreatedRef.current) {
-      sessionCreatedRef.current = true;
-      const newSession = createSession("/dashboard/persistent-memory");
-      const url = new URL(window.location.href);
-      url.searchParams.set("session", newSession.id);
-      window.history.replaceState({}, "", url.toString());
     }
+
+    asyncCode();
   }, [sessionId, createSession, getSession]);
 
   useEffect(() => {

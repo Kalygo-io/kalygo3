@@ -33,16 +33,6 @@ export function Chat({ id, className }: ChatProps) {
       const hasScrollableContent = scrollHeight > clientHeight;
       const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
 
-      console.log("Scroll Debug:", {
-        scrollTop,
-        scrollHeight,
-        clientHeight,
-        hasScrollableContent,
-        isNearBottom,
-        shouldShowButton: hasScrollableContent && !isNearBottom,
-        showScrollButton,
-      });
-
       setShowScrollButton(hasScrollableContent && !isNearBottom);
     }
   };

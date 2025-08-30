@@ -2,9 +2,18 @@ import { Message } from "@/ts/types/Message";
 import { v4 as uuid } from "uuid";
 
 export interface ChatAppSession {
-  id: string;
-  appId: string;
+  id: number;
+  sessionId: string;
+  chatAppId: string;
+  accountId: number;
   chatHistory: Message[];
+  createdAt: string;
+  title?: string;
+}
+
+export interface ChatAppSessionCreate {
+  chatAppId: string;
+  title?: string;
 }
 
 class ChatAppSessionService {
@@ -42,21 +51,53 @@ class ChatAppSessionService {
 
   getSession(id: string): ChatAppSession | null {
     // const sessions = this.getSessions();
-    // return sessions.find((session) => session.id === id) || null;
+    // return (
+    //   sessions.find((session: ChatAppSession) => session.id === id) || null
+    // );
     return {
-      id,
-      appId: "persistent-memory",
+      id: 1,
+      sessionId: id,
+      chatAppId: "persistent-memory",
+      accountId: 1,
+      createdAt: new Date().toISOString(),
       chatHistory: [],
+      title: undefined,
     };
   }
 
-  createSession(appId: string): ChatAppSession {
-    const session: ChatAppSession = {
-      id: this.generateId(),
-      appId,
-      chatHistory: [],
-    };
-    return session;
+  async createSession(appId: string, title?: string): Promise<ChatAppSession> {
+    try {
+      const sessionData: ChatAppSessionCreate = {
+        chatAppId: appId,
+        title: title,
+      };
+
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-app-sessions/sessions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(sessionData),
+          credentials: "include",
+        }
+      );
+
+      if (!resp.ok) {
+        const errorText = await resp.text();
+        console.error("Failed to create session:", resp.status, errorText);
+        throw new Error(
+          `Failed to create session: ${resp.status} - ${errorText}`
+        );
+      }
+
+      const session: ChatAppSession = await resp.json();
+      return session;
+    } catch (error) {
+      console.error("Error creating chat app session:", error);
+      throw error;
+    }
   }
 
   // updateSession(id: string, messages: any[]): void {
