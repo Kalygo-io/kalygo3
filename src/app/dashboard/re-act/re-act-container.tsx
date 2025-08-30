@@ -9,17 +9,31 @@ import {
   initialState,
 } from "@/app/dashboard/re-act/chat-session-reducer";
 import { Chat as ReActChat } from "@/components/re-act-chat/chat";
-import { useReducer, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useReducer, useEffect, useRef, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 
 export function ReActContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
   const searchParams = useSearchParams();
-  const { createSession, getSession } = useChatSessions();
+  const router = useRouter();
   const sessionCreatedRef = useRef(false);
 
   const sessionId = searchParams.get("session");
+
+  // Handle current session deletion
+  const handleCurrentSessionDeleted = useCallback(() => {
+    // Reset chat state to initial state
+    dispatch({ type: "SET_MESSAGES", payload: [] });
+    dispatch({ type: "SET_SESSION_ID", payload: "" });
+
+    // Redirect to tokenizers page
+    router.push("/dashboard/tokenizers");
+  }, [router]);
+
+  const { createSession, getSession } = useChatSessions(
+    handleCurrentSessionDeleted
+  );
 
   useEffect(() => {
     console.log("Session loading effect triggered", { sessionId });
@@ -29,7 +43,7 @@ export function ReActContainer() {
         dispatch({ type: "SET_SESSION_ID", payload: sessionId });
 
         // Load existing session
-        const session = getSession(sessionId);
+        const session = await getSession(sessionId);
         console.log("Retrieved session", { session });
         if (session && session.chatHistory.length > 0) {
           console.log("Loading messages from session", {

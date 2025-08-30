@@ -3,8 +3,8 @@
 import { ChatContext, ChatDispatchContext } from "./chat-session-context";
 import { chatReducer, initialState } from "./chat-session-reducer";
 import { Chat as PersistentMemoryChat } from "@/components/persistent-memory/chat";
-import { useReducer, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useReducer, useEffect, useRef, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 import { errorToast } from "@/shared/toasts/errorToast";
 import { PERSISTENT_MEMORY_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
@@ -12,10 +12,24 @@ import { PERSISTENT_MEMORY_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
 export function PersistentMemoryContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
   const searchParams = useSearchParams();
-  const { createSession, getSession } = useChatSessions();
+  const router = useRouter();
   const sessionCreatedRef = useRef(false);
 
   const sessionId = searchParams.get("session");
+
+  // Handle current session deletion
+  const handleCurrentSessionDeleted = useCallback(() => {
+    // Reset chat state to initial state
+    dispatch({ type: "SET_MESSAGES", payload: [] });
+    dispatch({ type: "SET_SESSION_ID", payload: "" });
+
+    // Redirect to tokenizers page
+    router.push("/dashboard/tokenizers");
+  }, [router]);
+
+  const { createSession, getSession } = useChatSessions(
+    handleCurrentSessionDeleted
+  );
 
   useEffect(() => {
     async function asyncCode() {

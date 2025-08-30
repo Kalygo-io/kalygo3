@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -20,8 +20,7 @@ import {
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 import { navigation } from "@/config/navigation";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { logoutRequest } from "@/services/logoutRequest";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 import { ChatAppSession } from "@/services/chatAppSessionService";
@@ -39,8 +38,22 @@ export function DashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { sessions, deleteSession } = useChatSessions();
+
+  const currentSessionId = searchParams.get("session");
+
+  // Handle current session deletion
+  const handleCurrentSessionDeleted = useCallback(() => {
+    // If we're on a chat page and the current session was deleted, redirect to tokenizers
+    if (currentSessionId && pathname.includes("/dashboard/")) {
+      router.push("/dashboard/tokenizers");
+    }
+  }, [currentSessionId, pathname, router]);
+
+  const { sessions, deleteSession } = useChatSessions(
+    handleCurrentSessionDeleted
+  );
 
   const userNavigation = [
     {

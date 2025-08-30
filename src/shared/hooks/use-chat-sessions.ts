@@ -4,7 +4,7 @@ import {
   ChatAppSession,
 } from "@/services/chatAppSessionService";
 
-export function useChatSessions() {
+export function useChatSessions(onCurrentSessionDeleted?: () => void) {
   const [sessions, setSessions] = useState<ChatAppSession[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,10 +47,28 @@ export function useChatSessions() {
   //   });
   // }, []);
 
-  const deleteSession = useCallback(async (id: string) => {
-    chatAppSessionService.deleteSession(id);
-    setSessions((prev) => prev.filter((session) => session.sessionId !== id));
-  }, []);
+  const deleteSession = useCallback(
+    async (id: string) => {
+      try {
+        await chatAppSessionService.deleteSession(id);
+        setSessions((prev) =>
+          prev.filter((session) => session.sessionId !== id)
+        );
+
+        // Check if the deleted session was the current session
+        const currentSessionId = new URLSearchParams(
+          window.location.search
+        ).get("session");
+        if (currentSessionId === id && onCurrentSessionDeleted) {
+          onCurrentSessionDeleted();
+        }
+      } catch (error) {
+        console.error("Error deleting session:", error);
+        throw error;
+      }
+    },
+    [onCurrentSessionDeleted]
+  );
 
   const getSession = useCallback((id: string) => {
     return chatAppSessionService.getSession(id);
