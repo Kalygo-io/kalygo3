@@ -10,7 +10,7 @@ import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 export function PersistentMemoryContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
   const searchParams = useSearchParams();
-  const { createSession, updateSession, getSession } = useChatSessions();
+  const { createSession, getSession } = useChatSessions();
   const sessionCreatedRef = useRef(false);
 
   const sessionId = searchParams.get("session");
@@ -19,26 +19,18 @@ export function PersistentMemoryContainer() {
     if (sessionId) {
       dispatch({ type: "SET_SESSION_ID", payload: sessionId });
       const session = getSession(sessionId);
-      if (session && session.messages.length > 0) {
-        dispatch({ type: "SET_MESSAGES", payload: session.messages });
+      if (session && session.chatHistory.length > 0) {
+        dispatch({ type: "SET_MESSAGES", payload: session.chatHistory });
       } else if (session) {
       } else {
-        const newSession = createSession(
-          "/dashboard/basic-memory",
-          "Basic Memory",
-          []
-        );
+        const newSession = createSession("/dashboard/persistent-memory");
         const url = new URL(window.location.href);
         url.searchParams.set("session", newSession.id);
         window.history.replaceState({}, "", url.toString());
       }
     } else if (!sessionCreatedRef.current) {
       sessionCreatedRef.current = true;
-      const newSession = createSession(
-        "/dashboard/basic-memory",
-        "Basic Memory",
-        []
-      );
+      const newSession = createSession("/dashboard/persistent-memory");
       const url = new URL(window.location.href);
       url.searchParams.set("session", newSession.id);
       window.history.replaceState({}, "", url.toString());

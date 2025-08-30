@@ -8,10 +8,7 @@ export async function callRawLLM(
   dispatch: React.Dispatch<Action>,
   abortController?: AbortController
 ) {
-  let reader:
-    | ReadableStreamDefaultReader<Uint8Array<ArrayBufferLike>>
-    | undefined
-    | null = null;
+  let reader: ReadableStreamDefaultReader<Uint8Array> | undefined | null = null;
   try {
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_AI_API_URL}/api/raw-llm/completion`,
