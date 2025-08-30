@@ -45,7 +45,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
     {
       concept: "Vector Space",
       explanation:
-        "A mathematical space where each point represents a word or document as a vector of numbers.",
+        "A mathematical space where each point represents a token (or sequence of tokens) as a vector of numbers.",
     },
     {
       concept: "Cosine Similarity",
@@ -55,17 +55,12 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
     {
       concept: "Dimensionality",
       explanation:
-        "The number of dimensions in an embedding vector (typically 384-1536 for modern models).",
+        "The number of dimensions in an embedding vector (typically hundreds or thousands for modern models).",
     },
     {
       concept: "Semantic Meaning",
       explanation:
-        "The meaning and context of words, captured through their relationships in vector space.",
-    },
-    {
-      concept: "Tokenization",
-      explanation:
-        "The process of breaking text into smaller units (tokens) that can be processed by the model.",
+        "The meaning and context of data, captured through their relationships in vector space.",
     },
   ];
 
@@ -102,7 +97,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
             <div className="flex items-center space-x-2">
               <BookOpenIcon className="w-5 h-5 text-blue-400" />
               <h2 className="text-lg font-semibold text-white">
-                Learning Resources
+                Embedding Models
               </h2>
             </div>
             <button
@@ -184,37 +179,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               </div>
             </div>
 
-            {/* Quick Facts */}
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">
-                Quick Facts
-              </h3>
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                  <div className="text-2xl font-bold text-blue-400">
-                    384-1536
-                  </div>
-                  <div className="text-gray-400">Typical dimensions</div>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                  <div className="text-2xl font-bold text-green-400">99%+</div>
-                  <div className="text-gray-400">
-                    Accuracy on semantic tasks
-                  </div>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                  <div className="text-2xl font-bold text-purple-400">
-                    &lt;1ms
-                  </div>
-                  <div className="text-gray-400">Similarity calculation</div>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                  <div className="text-2xl font-bold text-orange-400">2013</div>
-                  <div className="text-gray-400">Word2Vec introduced</div>
-                </div>
-              </div>
-            </div>
-
             {/* Next Steps */}
             <div className="bg-blue-600/10 border border-blue-500/20 rounded-lg p-4">
               <h3 className="text-lg font-semibold text-white mb-3">
@@ -227,15 +191,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span>Learn about fine-tuning embedding models</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                   <span>Build a semantic search application</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span>Experiment with multimodal embeddings</span>
                 </div>
               </div>
             </div>

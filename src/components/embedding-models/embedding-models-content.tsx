@@ -84,9 +84,9 @@ export function EmbeddingModelsContent({
                   Embedding Models
                 </h1>
                 <p className="mt-6 text-xl leading-8 text-gray-300 max-w-3xl mx-auto">
-                  Discover how AI transforms words, images, and data into
-                  powerful numerical representations that capture meaning and
-                  enable intelligent applications.
+                  Discover how neural networks transform words, images, and data
+                  into powerful numerical representations that capture meaning
+                  and enable &quot;AI&quot; applications.
                 </p>
               </div>
             </div>
@@ -131,11 +131,11 @@ export function EmbeddingModelsContent({
                   The Magic of Embeddings
                 </h2>
                 <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                  Embeddings are the secret sauce that makes AI understand
-                  meaning. They convert complex data like text, images, and
-                  sounds into numerical vectors that capture semantic
-                  relationships and enable powerful machine learning
-                  applications.
+                  Embeddings are how most modern AI systems begin to understand
+                  the &quot;meaning&quot; of data. They convert complex data
+                  like text, images, and sounds into numerical vectors that
+                  capture the relationships between tokens and enable more
+                  sophisticated downstream applications.
                 </p>
               </div>
 
@@ -228,8 +228,8 @@ export function EmbeddingModelsContent({
                   </h3>
                   <p className="text-gray-300">
                     Embeddings create a mathematical space where similar
-                    concepts are positioned close together, enabling semantic
-                    search and similarity calculations.
+                    concepts are positioned close together, enabling similarity
+                    calculations and basic search capabilities.
                   </p>
                 </div>
 
@@ -241,9 +241,9 @@ export function EmbeddingModelsContent({
                     Dimensionality
                   </h3>
                   <p className="text-gray-300">
-                    Modern embedding models typically use 384-1536 dimensions to
-                    capture rich semantic information while maintaining
-                    computational efficiency.
+                    Modern embedding models typically use hundreds or event
+                    thousands of dimensions to capture nuanced relationships
+                    between tokens in a body of training data.
                   </p>
                 </div>
 
@@ -255,9 +255,8 @@ export function EmbeddingModelsContent({
                     Semantic Understanding
                   </h3>
                   <p className="text-gray-300">
-                    Embeddings capture meaning beyond just words, understanding
-                    context, relationships, and even cultural nuances in
-                    language.
+                    Embeddings are capabable of understanding context,
+                    relationships, and, at times, more nuanced concepts.
                   </p>
                 </div>
               </div>
