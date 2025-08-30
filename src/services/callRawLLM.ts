@@ -3,8 +3,8 @@ import { nanoid } from "@/shared/utils";
 import { Message } from "@/ts/types/Message";
 import React from "react";
 
-export async function callRawLLMAgent(
-  messages: Message[],
+export async function callRawLLM(
+  prompt: string,
   dispatch: React.Dispatch<Action>,
   abortController?: AbortController
 ) {
@@ -13,8 +13,6 @@ export async function callRawLLMAgent(
     | undefined
     | null = null;
   try {
-    console.log("Starting raw LLM call with messages:", messages);
-
     const resp = await fetch(
       `${process.env.NEXT_PUBLIC_AI_API_URL}/api/raw-llm/completion`,
       {
@@ -23,7 +21,7 @@ export async function callRawLLMAgent(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          messages,
+          prompt,
         }),
         credentials: "include",
         signal: abortController?.signal,

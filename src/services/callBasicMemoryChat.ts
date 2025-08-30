@@ -1,10 +1,12 @@
 import { Action } from "@/app/dashboard/basic-memory/chat-session-reducer";
 import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
+import { Message } from "@/ts/types/Message";
 import React from "react";
 
 export async function callBasicMemoryChat(
   sessionId: string,
+  messages: Message[],
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {

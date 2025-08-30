@@ -8,7 +8,7 @@ import {
 } from "@/app/dashboard/raw-llm/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callRawLLMAgent } from "@/services/callRawLLMAgent";
+import { callRawLLM } from "@/services/callRawLLM";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 import { StopIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
@@ -79,7 +79,7 @@ export function PromptForm({
 
           console.log("chatState", chatState);
 
-          await callRawLLMAgent(chatState.messages, dispatch, abortController);
+          await callRawLLM(input, dispatch, abortController);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
