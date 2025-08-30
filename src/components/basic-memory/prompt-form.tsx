@@ -37,6 +37,11 @@ export function PromptForm({
           setInput("");
           if (!prompt) return;
 
+          // Abort any existing request
+          if (chatState.currentRequest) {
+            dispatch({ type: "ABORT_CURRENT_REQUEST" });
+          }
+
           dispatch({
             type: "ADD_MESSAGE",
             payload: {
@@ -63,11 +68,12 @@ export function PromptForm({
             type: "SET_COMPLETION_LOADING",
             payload: false,
           });
-        } catch (error) {
+        } catch (error: any) {
           dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: false,
           });
+
           dispatch({
             type: "EDIT_MESSAGE",
             payload: {
@@ -75,7 +81,6 @@ export function PromptForm({
               error: error,
             },
           });
-          console.error(error);
         }
       }}
     >

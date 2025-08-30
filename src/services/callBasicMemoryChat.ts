@@ -10,71 +10,85 @@ export async function callBasicMemoryChat(
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/basic-memory/completion`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        sessionId: sessionId,
-        chatHistory: chatHistory,
-        prompt: prompt,
-      }),
-      credentials: "include",
-    }
-  );
+  const abortController = new AbortController();
+  dispatch({ type: "SET_CURRENT_REQUEST", payload: abortController });
 
-  if (!resp.ok) throw "Network response was not OK";
+  try {
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/basic-memory/completion`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sessionId: sessionId,
+          chatHistory: chatHistory,
+          prompt: prompt,
+        }),
+        credentials: "include",
+        signal: abortController.signal,
+      }
+    );
 
-  const reader = resp?.body?.getReader();
+    if (!resp.ok) throw "Network response was not OK";
 
-  const decoder = new TextDecoder();
+    const reader = resp?.body?.getReader();
 
-  const aiMessageId = nanoid();
-  let accMessage = {
-    content: "",
-  };
+    const decoder = new TextDecoder();
 
-  while (true) {
-    // @ts-ignore
-    const { done, value } = await reader.read();
-    if (done) break;
-    let chunk = decoder.decode(value);
+    const aiMessageId = nanoid();
+    let accMessage = {
+      content: "",
+    };
 
-    try {
-      const parsedChunk = JSON.parse(chunk);
-      dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
-    } catch (e) {
-      let multiChunkAcc = "";
+    while (true) {
+      // @ts-ignore
+      const { done, value } = await reader.read();
+      if (done) break;
+      let chunk = decoder.decode(value);
 
-      let idx = 0;
-      while (0 < chunk.length) {
-        if (chunk[idx] === "}") {
-          try {
+      try {
+        const parsedChunk = JSON.parse(chunk);
+        dispatchEventToState(parsedChunk, dispatch, aiMessageId, accMessage);
+      } catch (e) {
+        let multiChunkAcc = "";
+
+        let idx = 0;
+        while (0 < chunk.length) {
+          if (chunk[idx] === "}") {
+            try {
+              multiChunkAcc += chunk[idx];
+              const parsedChunk = JSON.parse(multiChunkAcc);
+
+              dispatchEventToState(
+                parsedChunk,
+                dispatch,
+                aiMessageId,
+                accMessage
+              );
+
+              chunk = chunk.substring(idx + 1);
+              idx = 0;
+              multiChunkAcc = "";
+            } catch (e) {
+              multiChunkAcc += chunk.substring(0, idx);
+            }
+          } else {
             multiChunkAcc += chunk[idx];
-            const parsedChunk = JSON.parse(multiChunkAcc);
-
-            dispatchEventToState(
-              parsedChunk,
-              dispatch,
-              aiMessageId,
-              accMessage
-            );
-
-            chunk = chunk.substring(idx + 1);
-            idx = 0;
-            multiChunkAcc = "";
-          } catch (e) {
-            multiChunkAcc += chunk.substring(0, idx);
+            idx++;
           }
-        } else {
-          multiChunkAcc += chunk[idx];
-          idx++;
         }
       }
     }
+  } catch (error: any) {
+    if (error.name === "AbortError") {
+      console.log("Request was aborted");
+    } else {
+      throw error;
+    }
+  } finally {
+    dispatch({ type: "SET_CURRENT_REQUEST", payload: null });
   }
 }
 

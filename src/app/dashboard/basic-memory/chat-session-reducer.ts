@@ -26,6 +26,13 @@ export type Action =
   | {
       type: "SET_SESSION_ID";
       payload: string;
+    }
+  | {
+      type: "SET_CURRENT_REQUEST";
+      payload: AbortController | null;
+    }
+  | {
+      type: "ABORT_CURRENT_REQUEST";
     };
 
 export function chatReducer(
@@ -33,6 +40,7 @@ export function chatReducer(
     messages: Message[];
     completionLoading: boolean;
     sessionId: string;
+    currentRequest: AbortController | null;
   },
   action: Action
 ) {
@@ -84,6 +92,22 @@ export function chatReducer(
         sessionId: action.payload,
       };
     }
+    case "SET_CURRENT_REQUEST": {
+      return {
+        ...state,
+        currentRequest: action.payload,
+      };
+    }
+    case "ABORT_CURRENT_REQUEST": {
+      if (state.currentRequest) {
+        state.currentRequest.abort();
+      }
+      return {
+        ...state,
+        currentRequest: null,
+        completionLoading: false,
+      };
+    }
     default: {
       throw Error("Unknown action type");
     }
@@ -94,8 +118,10 @@ export const initialState: {
   messages: Message[];
   completionLoading: boolean;
   sessionId: string;
+  currentRequest: AbortController | null;
 } = {
   messages: [],
   completionLoading: false,
   sessionId: uuid(),
+  currentRequest: null,
 };
