@@ -136,7 +136,7 @@ function dispatchEventToState(
     });
   } else if (parsedChunk["event"] === "on_chat_model_end") {
   } else if (parsedChunk["event"] === "event_stream_error") {
-    debugger;
+    // debugger;
     errorToast("Error in text/event-stream");
   } else {
     console.error("Unknown event:", parsedChunk["event"]);

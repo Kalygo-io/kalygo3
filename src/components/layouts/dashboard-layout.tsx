@@ -25,6 +25,8 @@ import { useRouter } from "next/navigation";
 import { logoutRequest } from "@/services/logoutRequest";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 import { ChatAppSession } from "@/services/chatAppSessionService";
+import { errorToast } from "@/shared/toasts/errorToast";
+import { PERSISTENT_MEMORY_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -38,7 +40,7 @@ export function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { sessions } = useChatSessions();
+  const { sessions, deleteSession } = useChatSessions();
 
   const userNavigation = [
     {
@@ -54,16 +56,19 @@ export function DashboardLayout({
   const segments = pathname.split("/");
   const current = segments[segments.length - 1];
 
-  // const handleSessionClick = (session: ChatAppSession) => {
-  //   // Navigate to the level with session ID as query parameter
-  //   router.push(`${session.level}?session=${session.id}`);
-  //   setSidebarOpen(false);
-  // };
+  const handleSessionClick = (session: ChatAppSession) => {
+    if (session.chatAppId === PERSISTENT_MEMORY_CHAT_APP_ID) {
+      router.push(`/dashboard/persistent-memory?session=${session.sessionId}`);
+      setSidebarOpen(false);
+    } else {
+      errorToast(`Session ${session.chatAppId} is not supported yet`);
+    }
+  };
 
-  // const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
-  //   e.stopPropagation();
-  //   deleteSession(sessionId);
-  // };
+  const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation();
+    deleteSession(sessionId);
+  };
 
   const SidebarContent = () => (
     <div className="flex grow flex-col overflow-y-auto bg-black px-6">
@@ -137,25 +142,38 @@ export function DashboardLayout({
                 sessions.map((session, idx) => (
                   <li key={session.id}>
                     <div
-                      // onClick={() => handleSessionClick(session)}
+                      onClick={() => handleSessionClick(session)}
                       className="group flex items-center justify-between gap-x-3 rounded-md p-2 text-sm leading-6 text-blue-200 hover:text-white hover:bg-blue-700 cursor-pointer transition-colors duration-150"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="font-medium truncate">
-                          {/* {session.title} */}
-                          {idx + 1}: {session.appId}
+                          {session.chatAppId}
                         </div>
                         <div className="text-xs text-gray-400 truncate">
-                          {/* {session.levelName} */}
-                          {session.appId}
+                          {new Date(session.createdAt).toLocaleString(
+                            undefined,
+                            {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            }
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-400 truncate">
+                          {session.sessionId}
                         </div>
                       </div>
-                      {/* <button
-                        onClick={(e) => handleDeleteSession(e, session.id)}
+                      <button
+                        onClick={(e) =>
+                          handleDeleteSession(e, session.sessionId)
+                        }
                         className="opacity-0 group-hover:opacity-100 transition-all duration-150 p-1 hover:bg-red-600 rounded"
                       >
                         <TrashIcon className="h-4 w-4 text-red-400 hover:text-red-200" />
-                      </button> */}
+                      </button>
                     </div>
                   </li>
                 ))

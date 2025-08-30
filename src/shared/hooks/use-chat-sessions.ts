@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   chatAppSessionService,
   ChatAppSession,
@@ -8,16 +8,21 @@ export function useChatSessions() {
   const [sessions, setSessions] = useState<ChatAppSession[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   loadSessions();
-  // }, []);
+  useEffect(() => {
+    loadSessions();
+  }, []);
 
-  // const loadSessions = useCallback(() => {
-  //   setLoading(true);
-  //   const recentSessions = chatAppSessionService.getRecentSessions();
-  //   setSessions(recentSessions);
-  //   setLoading(false);
-  // }, []);
+  const loadSessions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const recent = await chatAppSessionService.getRecentSessions();
+      setSessions(recent);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const createSession = useCallback(async (appId: string) => {
     const newSession = await chatAppSessionService.createSession(appId);
@@ -42,10 +47,10 @@ export function useChatSessions() {
   //   });
   // }, []);
 
-  // const deleteSession = useCallback((id: string) => {
-  //   chatAppSessionService.deleteSession(id);
-  //   setSessions((prev) => prev.filter((session) => session.id !== id));
-  // }, []);
+  const deleteSession = useCallback(async (id: string) => {
+    chatAppSessionService.deleteSession(id);
+    setSessions((prev) => prev.filter((session) => session.sessionId !== id));
+  }, []);
 
   const getSession = useCallback((id: string) => {
     return chatAppSessionService.getSession(id);
@@ -56,7 +61,7 @@ export function useChatSessions() {
     loading,
     createSession,
     // updateSession,
-    // deleteSession,
+    deleteSession,
     getSession,
     // refreshSessions: loadSessions,
   };

@@ -151,34 +151,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                         {chatState?.messages?.length || 0}
                       </span>
                     </div>
-
-                    {/* Clear Chat Button */}
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-300">
-                        Chat Actions
-                      </h4>
-                      <button
-                        onClick={handleClearChat}
-                        disabled={!chatState?.messages?.length}
-                        className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
-                        title="Clear all messages from chat history"
-                      >
-                        <TrashIcon className="w-5 h-5" />
-                        <span>Clear Chat History</span>
-                      </button>
-                    </div>
-
-                    {/* Info */}
-                    <div className="text-xs text-gray-400 bg-gray-800/50 p-3 rounded-lg">
-                      <p className="mb-2">
-                        <strong>Note:</strong> Messages are automatically
-                        limited to 8 total messages.
-                      </p>
-                      <p>
-                        When the limit is exceeded, the oldest messages are
-                        automatically removed.
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

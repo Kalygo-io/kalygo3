@@ -17,17 +17,59 @@ export interface ChatAppSessionCreate {
 }
 
 class ChatAppSessionService {
-  // private getSessions(): ChatAppSession[] {
-  //   if (typeof window === "undefined") return [];
+  private MAX_SESSIONS = 10;
 
-  //   try {
-  //     const stored = localStorage.getItem(this.STORAGE_KEY);
-  //     return stored ? JSON.parse(stored) : [];
-  //   } catch (error) {
-  //     console.error("Error loading chat sessions:", error);
-  //     return [];
-  //   }
-  // }
+  async getSessions(
+    limit: number = 50,
+    offset: number = 0
+  ): Promise<ChatAppSession[]> {
+    try {
+      const params = new URLSearchParams();
+      params.append("limit", limit.toString());
+      params.append("offset", offset.toString());
+
+      const resp = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_AI_API_URL
+        }/api/chat-app-sessions/sessions?${params.toString()}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!resp.ok) {
+        const errorText = await resp.text();
+        console.error("Failed to get sessions:", resp.status, errorText);
+        throw new Error(
+          `Failed to get sessions: ${resp.status} - ${errorText}`
+        );
+      }
+
+      const sessionsData = await resp.json();
+
+      // Transform the API response to match our interface
+      const sessions: ChatAppSession[] = sessionsData.map(
+        (sessionData: any) => ({
+          id: sessionData.id,
+          sessionId: sessionData.sessionId,
+          chatAppId: sessionData.chatAppId,
+          accountId: sessionData.accountId,
+          createdAt: sessionData.createdAt,
+          title: sessionData.title,
+          chatHistory: [], // Sessions list doesn't include messages
+        })
+      );
+
+      return sessions;
+    } catch (error) {
+      console.error("Error getting chat app sessions:", error);
+      throw error;
+    }
+  }
 
   // private saveSessions(sessions: ChatAppSession[]): void {
   //   if (typeof window === "undefined") return;
@@ -39,30 +81,51 @@ class ChatAppSessionService {
   //   }
   // }
 
-  // getRecentSessions(): ChatSession[] {
-  //   const sessions = this.getSessions();
-  //   return sessions
-  //     .sort(
-  //       (a, b) =>
-  //         new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()
-  //     )
-  //     .slice(0, this.MAX_SESSIONS);
-  // }
+  async getRecentSessions(): Promise<ChatAppSession[]> {
+    const sessions = await this.getSessions();
+    return sessions.slice(0, this.MAX_SESSIONS);
+  }
 
-  getSession(id: string): ChatAppSession | null {
-    // const sessions = this.getSessions();
-    // return (
-    //   sessions.find((session: ChatAppSession) => session.id === id) || null
-    // );
-    return {
-      id: 1,
-      sessionId: id,
-      chatAppId: "persistent-memory",
-      accountId: 1,
-      createdAt: new Date().toISOString(),
-      chatHistory: [],
-      title: undefined,
-    };
+  async getSession(id: string): Promise<ChatAppSession | null> {
+    try {
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-app-sessions/sessions/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!resp.ok) {
+        if (resp.status === 404) {
+          return null; // Session not found
+        }
+        const errorText = await resp.text();
+        console.error("Failed to get session:", resp.status, errorText);
+        throw new Error(`Failed to get session: ${resp.status} - ${errorText}`);
+      }
+
+      const sessionData = await resp.json();
+
+      // Transform the API response to match our interface
+      const session: ChatAppSession = {
+        id: sessionData.id,
+        sessionId: sessionData.sessionId,
+        chatAppId: sessionData.chatAppId,
+        accountId: sessionData.accountId,
+        createdAt: sessionData.createdAt,
+        title: sessionData.title,
+        chatHistory: sessionData.messages || [],
+      };
+
+      return session;
+    } catch (error) {
+      console.error("Error getting chat app session:", error);
+      throw error;
+    }
   }
 
   async createSession(appId: string, title?: string): Promise<ChatAppSession> {
@@ -120,11 +183,36 @@ class ChatAppSessionService {
   //   }
   // }
 
-  // deleteSession(id: string): void {
-  //   const sessions = this.getSessions();
-  //   const filteredSessions = sessions.filter((session) => session.id !== id);
-  //   this.saveSessions(filteredSessions);
-  // }
+  async deleteSession(sessionId: string): Promise<void> {
+    try {
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-app-sessions/sessions/${sessionId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!resp.ok) {
+        if (resp.status === 404) {
+          throw new Error("Session not found");
+        }
+        const errorText = await resp.text();
+        console.error("Failed to delete session:", resp.status, errorText);
+        throw new Error(
+          `Failed to delete session: ${resp.status} - ${errorText}`
+        );
+      }
+
+      console.log("Session deleted successfully");
+    } catch (error) {
+      console.error("Error deleting chat app session:", error);
+      throw error;
+    }
+  }
 
   private generateId(): string {
     return uuid();
