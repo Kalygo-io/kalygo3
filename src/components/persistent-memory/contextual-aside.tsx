@@ -53,7 +53,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Basic Memory</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Persistent Memory
+            </h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -94,15 +96,12 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-blue-400 mb-2">
-                    Simple &quot;Memory&quot; Trick
+                    Persistent &quot;Memory&quot; Trick
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    A simple trick for adding the illusion of memory to an LLM
-                    is to send the last few messages in a session along with
-                    each subsequent prompt. For example, send the last 5
-                    messages related to the current session with the subsequent
-                    prompt. This creates an illusion of the LLM remembering the
-                    recent chat history.
+                    The trick for adding the illusion of persistentmemory to an
+                    LLM is to store all messages associated with a chat session
+                    into a database like Postgres.
                   </p>
                 </div>
 

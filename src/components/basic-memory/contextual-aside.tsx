@@ -122,7 +122,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Simple session-based approach</span>
+                      <span>State is stored on the client</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
