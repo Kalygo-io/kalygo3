@@ -6,7 +6,7 @@ import React from "react";
 
 export async function callBasicMemoryChat(
   sessionId: string,
-  messages: Message[],
+  chatHistory: Message[],
   prompt: string,
   dispatch: React.Dispatch<Action>
 ) {
@@ -19,7 +19,8 @@ export async function callBasicMemoryChat(
       },
       body: JSON.stringify({
         sessionId: sessionId,
-        content: prompt,
+        chatHistory: chatHistory,
+        prompt: prompt,
       }),
       credentials: "include",
     }

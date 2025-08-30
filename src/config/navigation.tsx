@@ -10,7 +10,7 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Memory",
+    name: "Basic Memory",
     href: "/dashboard/basic-memory",
     enabled: true,
   },

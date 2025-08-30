@@ -2,7 +2,10 @@
 
 import * as React from "react";
 
-import { ChatDispatchContext } from "@/app/dashboard/basic-memory/chat-session-context";
+import {
+  ChatContext,
+  ChatDispatchContext,
+} from "@/app/dashboard/basic-memory/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
 import { callBasicMemoryChat } from "@/services/callBasicMemoryChat";
@@ -20,6 +23,7 @@ export function PromptForm({
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const dispatch = React.useContext(ChatDispatchContext);
+  const chatState = React.useContext(ChatContext);
 
   return (
     <form
@@ -48,7 +52,12 @@ export function PromptForm({
             payload: true,
           });
 
-          await callBasicMemoryChat(sessionId, prompt, dispatch);
+          await callBasicMemoryChat(
+            sessionId,
+            chatState.messages,
+            prompt,
+            dispatch
+          );
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
