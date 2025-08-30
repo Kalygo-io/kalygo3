@@ -7,7 +7,7 @@ import { useReducer, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 
-export function NoRagContainer() {
+export function BasicMemoryContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
   const searchParams = useSearchParams();
   const { createSession, updateSession, getSession } = useChatSessions();

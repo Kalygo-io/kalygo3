@@ -13,8 +13,12 @@ export default async function Page() {
         <RawLLMContainer />
       </DashboardLayout>
     );
-  } catch (error) {
-    // console.log("! error !", error);
-    return <h1 className="text-white">Oops!</h1>;
+  } catch (error: any) {
+    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+      // @ts-ignore
+      console.log("error.digest() !", error.digest);
+      return redirect("/auth");
+    }
+    return <h1 className="text-white">Oops!!!</h1>;
   }
 }

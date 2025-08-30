@@ -48,6 +48,8 @@ export function PromptForm({
         const humanMessageId = nanoid();
         const prompt = input.trim();
         try {
+          console.log("form submitted");
+
           e.preventDefault();
 
           setInput("");
@@ -75,7 +77,9 @@ export function PromptForm({
             payload: abortController,
           });
 
-          await callRawLLMAgent(sessionId, prompt, dispatch, abortController);
+          console.log("chatState", chatState);
+
+          await callRawLLMAgent(chatState.messages, dispatch, abortController);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",
@@ -86,25 +90,25 @@ export function PromptForm({
             payload: null,
           });
         } catch (error) {
-          // Only handle errors if the request wasn't aborted
-          if (error instanceof Error && error.name !== "AbortError") {
-            dispatch({
-              type: "SET_COMPLETION_LOADING",
-              payload: false,
-            });
-            dispatch({
-              type: "SET_CURRENT_REQUEST",
-              payload: null,
-            });
-            dispatch({
-              type: "EDIT_MESSAGE",
-              payload: {
-                id: humanMessageId,
-                error: error,
-              },
-            });
-            console.error(error);
-          }
+          console.log("! prompt-form.tsx error !", error);
+          console.log(error instanceof Error);
+
+          dispatch({
+            type: "SET_COMPLETION_LOADING",
+            payload: false,
+          });
+          dispatch({
+            type: "SET_CURRENT_REQUEST",
+            payload: null,
+          });
+          dispatch({
+            type: "EDIT_MESSAGE",
+            payload: {
+              id: humanMessageId,
+              error: error,
+            },
+          });
+          console.error(error);
         }
       }}
     >
