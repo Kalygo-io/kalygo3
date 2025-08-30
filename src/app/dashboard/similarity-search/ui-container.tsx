@@ -359,7 +359,7 @@ export function SimilaritySearchDemoContainer() {
                               </div>
                             </div>
                             <h3 className="text-base font-semibold text-white line-clamp-1 group-hover:text-blue-100 transition-colors">
-                              {result.metadata.q}
+                              Q: {result.metadata.q}
                             </h3>
                           </div>
 
@@ -427,11 +427,9 @@ export function SimilaritySearchDemoContainer() {
                       {/* Compact Description */}
                       <div className="space-y-2 ml-8">
                         <p
-                          className={`text-gray-300 text-sm leading-relaxed ${
-                            isExpanded ? "" : "line-clamp-2"
-                          }`}
+                          className={`text-gray-300 text-sm leading-relaxed line-clamp-2`}
                         >
-                          {result.metadata.a}
+                          A: {result.metadata.a}
                         </p>
 
                         {/* Expanded Details - More compact */}
@@ -439,7 +437,16 @@ export function SimilaritySearchDemoContainer() {
                           <div className="space-y-3 pt-3 border-t border-gray-700/50">
                             <div className="bg-gray-900/20 rounded-md p-3">
                               <h5 className="font-medium text-white mb-2 text-sm">
-                                Full Description:
+                                Question:
+                              </h5>
+                              <p className="text-gray-300 text-sm leading-relaxed">
+                                {result.metadata.q}
+                              </p>
+                            </div>
+
+                            <div className="bg-gray-900/20 rounded-md p-3">
+                              <h5 className="font-medium text-white mb-2 text-sm">
+                                Answer:
                               </h5>
                               <p className="text-gray-300 text-sm leading-relaxed">
                                 {result.metadata.a}
