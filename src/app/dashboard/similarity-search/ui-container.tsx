@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
 import {
   MagnifyingGlassIcon,
@@ -12,6 +12,7 @@ import {
   StarIcon,
   DocumentIcon,
   Cog6ToothIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
@@ -28,8 +29,9 @@ export function SimilaritySearchDemoContainer() {
   const [appliedSimilarityThreshold, setAppliedSimilarityThreshold] =
     useState(0.1);
   const settingsRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
-  const { isPending, error, data, isFetching } = useQuery({
+  const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: [
       "similarity-search",
       searchQuery,
@@ -119,12 +121,50 @@ export function SimilaritySearchDemoContainer() {
     });
   };
 
+  const handleReset = () => {
+    // Reset UI to initial state
+    setSearchQuery("");
+    setExpandedCards(new Set());
+    setIsSettingsOpen(false);
+
+    // Reset settings to defaults
+    setTopK(5);
+    setSimilarityThreshold(0.1);
+    setAppliedTopK(5);
+    setAppliedSimilarityThreshold(0.1);
+
+    // Clear any cached queries
+    queryClient.removeQueries({
+      queryKey: ["similarity-search"],
+    });
+  };
+
   if (error)
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-red-400 text-center">
-          <p className="text-lg font-semibold mb-2">An error has occurred</p>
-          <p className="text-sm">{error.message}</p>
+      <div className="flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+            <InformationCircleIcon className="w-8 h-8 text-red-400" />
+          </div>
+          <h2 className="text-xl font-semibold text-white mb-2">
+            Search Error
+          </h2>
+          <p className="text-gray-400 mb-6">{error.message}</p>
+          <div className="space-y-3">
+            <button
+              onClick={handleReset}
+              className="flex items-center justify-center space-x-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              <ArrowPathIcon className="w-4 h-4" />
+              <span>Reset to Initial State</span>
+            </button>
+            <button
+              onClick={() => setSearchQuery("")}
+              className="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              Clear Search
+            </button>
+          </div>
         </div>
       </div>
     );
