@@ -46,17 +46,22 @@ export function chatReducer(
 ) {
   switch (action.type) {
     case "ADD_MESSAGE": {
+      const newMessages = [
+        ...state.messages,
+        {
+          id: action.payload.id,
+          content: action.payload.content,
+          role: action.payload.role,
+          error: action.payload.error,
+        },
+      ];
+
+      // Keep only the last 8 messages
+      const limitedMessages = newMessages.slice(-8);
+
       return {
         ...state,
-        messages: [
-          ...state.messages,
-          {
-            id: action.payload.id,
-            content: action.payload.content,
-            role: action.payload.role,
-            error: action.payload.error,
-          },
-        ],
+        messages: limitedMessages,
       };
     }
     case "EDIT_MESSAGE": {
