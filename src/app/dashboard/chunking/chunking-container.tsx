@@ -43,48 +43,6 @@ export function ChunkingContainer() {
           </p>
         </div>
 
-        {/* Our Approach Section */}
-        <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-8 h-8 bg-green-600/20 rounded-lg flex items-center justify-center">
-              <ChartBarIcon className="w-5 h-5 text-green-400" />
-            </div>
-            <h2 className="text-xl font-semibold text-white">
-              Our Chunking Approach
-            </h2>
-          </div>
-          <div className="space-y-4">
-            <p className="text-gray-300 leading-relaxed">
-              For this tutorial, we&apos;ll use a simple but effective approach:
-              breaking up our search data into chunks of approximately{" "}
-              <strong className="text-white">200 consecutive tokens</strong>.
-            </p>
-            <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Why 200 Tokens?
-              </h3>
-              <ul className="text-gray-300 space-y-2 text-sm">
-                <li>
-                  • <strong>Optimal Size:</strong> Large enough to maintain
-                  context, small enough for efficient processing
-                </li>
-                <li>
-                  • <strong>Semantic Coherence:</strong> Preserves meaningful
-                  relationships between concepts
-                </li>
-                <li>
-                  • <strong>Retrieval Efficiency:</strong> Balances precision
-                  and recall in search results
-                </li>
-                <li>
-                  • <strong>Embedding Quality:</strong> Works well with modern
-                  embedding models
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
         {/* Multi-Modal Chunking Section */}
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
@@ -397,20 +355,12 @@ export function ChunkingContainer() {
                 different data types
               </li>
               <li>
-                • <strong>Implement modality-specific chunking</strong> in your
-                retrieval pipeline
-              </li>
-              <li>
-                • <strong>Evaluate chunk quality</strong> using different
-                metrics per modality
+                • <strong>Evaluate chunk quality</strong> using application
+                specific evaluation metrics
               </li>
               <li>
                 • <strong>Optimize chunk parameters</strong> for your specific
                 use case and data type
-              </li>
-              <li>
-                • <strong>Combine multi-modal chunking with reranking</strong>{" "}
-                for better results
               </li>
             </ul>
           </div>
