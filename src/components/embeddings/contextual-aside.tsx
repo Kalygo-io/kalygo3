@@ -98,15 +98,11 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                   <ul className="space-y-2 text-sm text-white">
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Enable semantic search and similarity</span>
+                      <span>Enable search and similarity calculations</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Power modern NLP applications</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Bridge human language and AI computation</span>
+                      <span>Bridge raw data and AI computation</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
