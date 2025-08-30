@@ -90,9 +90,6 @@ export function PromptForm({
             payload: null,
           });
         } catch (error) {
-          console.log("! prompt-form.tsx error !", error);
-          console.log(error instanceof Error);
-
           dispatch({
             type: "SET_COMPLETION_LOADING",
             payload: false,
