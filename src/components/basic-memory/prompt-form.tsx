@@ -89,10 +89,14 @@ export function PromptForm({
             payload: false,
           });
 
+          // Add error as an AI message to the chat history
+          const errorMessageId = nanoid();
           dispatch({
-            type: "EDIT_MESSAGE",
+            type: "ADD_MESSAGE",
             payload: {
-              id: humanMessageId,
+              id: errorMessageId,
+              content: `Error: ${error.message || error.toString()}`,
+              role: "ai",
               error: error,
             },
           });

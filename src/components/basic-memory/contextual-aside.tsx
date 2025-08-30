@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   InformationCircleIcon,
   LightBulbIcon,
   XMarkIcon,
   ChartBarIcon,
+  Cog6ToothIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
+import {
+  ChatContext,
+  ChatDispatchContext,
+} from "@/app/dashboard/basic-memory/chat-session-context";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -15,10 +21,19 @@ interface ContextualAsideProps {
 
 export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   const [activeTab, setActiveTab] = useState("overview");
+  const chatState = useContext(ChatContext);
+  const dispatch = useContext(ChatDispatchContext);
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
+    { id: "actions", name: "Actions", icon: Cog6ToothIcon },
   ];
+
+  const handleClearChat = () => {
+    if (dispatch) {
+      dispatch({ type: "SET_MESSAGES", payload: [] });
+    }
+  };
 
   return (
     <>
@@ -114,6 +129,59 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                       <span>No external data or tools</span>
                     </li>
                   </ul>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "actions" && (
+              <div className="space-y-4">
+                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-4">
+                    Chat Management
+                  </h3>
+
+                  <div className="space-y-4">
+                    {/* Message Count */}
+                    <div className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg">
+                      <div className="flex items-center space-x-2">
+                        <ChartBarIcon className="w-5 h-5 text-blue-400" />
+                        <span className="text-white font-medium">
+                          Total Messages
+                        </span>
+                      </div>
+                      <span className="text-2xl font-bold text-blue-400">
+                        {chatState?.messages?.length || 0}
+                      </span>
+                    </div>
+
+                    {/* Clear Chat Button */}
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium text-gray-300">
+                        Chat Actions
+                      </h4>
+                      <button
+                        onClick={handleClearChat}
+                        disabled={!chatState?.messages?.length}
+                        className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                        title="Clear all messages from chat history"
+                      >
+                        <TrashIcon className="w-5 h-5" />
+                        <span>Clear Chat History</span>
+                      </button>
+                    </div>
+
+                    {/* Info */}
+                    <div className="text-xs text-gray-400 bg-gray-800/50 p-3 rounded-lg">
+                      <p className="mb-2">
+                        <strong>Note:</strong> Messages are automatically
+                        limited to 8 total messages.
+                      </p>
+                      <p>
+                        When the limit is exceeded, the oldest messages are
+                        automatically removed.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
