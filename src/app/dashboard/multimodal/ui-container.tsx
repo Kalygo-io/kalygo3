@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
@@ -11,21 +10,57 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
+interface MediaAsset {
+  metadata: {
+    title?: string;
+    description?: string;
+    url?: string;
+    modality?: "vision" | "audio";
+    file_type?: string;
+    size?: string;
+    filename?: string;
+  };
+  score: number;
+}
+
+interface SearchResponse {
+  results: MediaAsset[];
+}
+
+interface StreamEvent {
+  status:
+    | "starting"
+    | "embedding"
+    | "searching"
+    | "processing"
+    | "completed"
+    | "cancelled"
+    | "error";
+  message: string;
+  results?: MediaAsset[];
+  iteration?: number;
+}
+
 export function MultiModalContainer() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [searchStatus, setSearchStatus] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<MediaAsset[]>([]);
+  const [searchError, setSearchError] = useState<string>("");
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const { isPending, error, data, isFetching, refetch } = useQuery({
-    queryKey: ["media-assets/query", searchQuery],
-    queryFn: async () => {
-      // Create a new AbortController for this request
-      abortControllerRef.current = new AbortController();
+  const handleSearch = useCallback(async () => {
+    if (searchQuery.trim() && !isSearching) {
       setIsSearching(true);
+      setSearchStatus("Starting search...");
+      setSearchResults([]);
+      setSearchError("");
+
+      // Create new AbortController for this request
+      abortControllerRef.current = new AbortController();
 
       try {
-        const resp = await fetch(
+        const response = await fetch(
           `${process.env.NEXT_PUBLIC_AI_API_URL}/api/multi-modal/media-assets/query`,
           {
             method: "POST",
@@ -40,32 +75,104 @@ export function MultiModalContainer() {
           }
         );
 
-        if (!resp.ok) {
-          throw new Error(`HTTP error! status: ${resp.status}`);
+        if (!response.ok) {
+          if (response.status === 499) {
+            throw new Error("Request was cancelled");
+          }
+          throw new Error(`Search failed: ${response.status}`);
         }
 
-        return await resp.json();
-      } finally {
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+
+        if (!reader) {
+          throw new Error("Failed to get response reader");
+        }
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split("\n").filter((line) => line.trim());
+
+            for (const line of lines) {
+              try {
+                const event: StreamEvent = JSON.parse(line);
+                console.log("Stream event:", event);
+
+                setSearchStatus(event.message);
+
+                switch (event.status) {
+                  case "starting":
+                    setSearchStatus("Initializing search...");
+                    break;
+                  case "embedding":
+                    setSearchStatus("Generating embedding...");
+                    break;
+                  case "searching":
+                    setSearchStatus("Searching vector database...");
+                    break;
+                  case "processing":
+                    setSearchStatus("Processing results...");
+                    break;
+                  case "completed":
+                    if (event.results) {
+                      setSearchResults(event.results);
+                    }
+                    setSearchStatus("Search completed");
+                    setIsSearching(false);
+                    break;
+                  case "cancelled":
+                    setSearchError("Search was cancelled");
+                    setSearchStatus("Cancelled");
+                    setIsSearching(false);
+                    break;
+                  case "error":
+                    setSearchError(event.message);
+                    setSearchStatus("Error occurred");
+                    setIsSearching(false);
+                    break;
+                }
+              } catch (parseError) {
+                console.error(
+                  "Failed to parse stream event:",
+                  parseError,
+                  "Line:",
+                  line
+                );
+              }
+            }
+          }
+        } finally {
+          reader.releaseLock();
+        }
+      } catch (error: any) {
+        console.error("Search error:", error);
+        if (error.name === "AbortError") {
+          setSearchError("Search was cancelled");
+          setSearchStatus("Cancelled");
+        } else {
+          setSearchError(error.message || "Search failed");
+          setSearchStatus("Error occurred");
+        }
         setIsSearching(false);
+      } finally {
         abortControllerRef.current = null;
       }
-    },
-    enabled: false, // Don't auto-trigger, only manual triggers
-    retry: false, // Don't retry on abort
-  });
-
-  const handleSearch = useCallback(() => {
-    if (searchQuery.trim() && !isSearching) {
-      refetch();
     }
-  }, [searchQuery, refetch, isSearching]);
+  }, [searchQuery, isSearching]);
 
   const handleCancel = useCallback(() => {
     if (abortControllerRef.current) {
+      console.log("Cancelling search request...");
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
     setIsSearching(false);
+    setSearchStatus("Cancelled");
   }, []);
 
   const handleKeyDown = (e: { key: string }) => {
@@ -74,30 +181,31 @@ export function MultiModalContainer() {
     }
   };
 
-  const isRequestInFlight = isSearching || isFetching;
+  const isRequestInFlight = isSearching;
 
-  if (error)
+  if (searchError && !isSearching) {
     return (
       <div className="w-full max-w-6xl mx-auto p-6">
         <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-6">
           <h2 className="text-2xl font-semibold text-red-400 mb-4">
-            Error Occurred
+            Search Error
           </h2>
-          <p className="text-gray-300">
-            An error has occurred: {error.message}
-          </p>
+          <p className="text-gray-300 mb-4">{searchError}</p>
           <button
             onClick={() => {
-              setIsQueryEnabled(false);
+              setSearchError("");
               setSearchQuery("");
+              setSearchResults([]);
+              setSearchStatus("");
             }}
-            className="mt-4 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
           >
-            Reset
+            Try Again
           </button>
         </div>
       </div>
     );
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
@@ -171,19 +279,29 @@ export function MultiModalContainer() {
         </div>
       </div>
 
+      {/* Search Status */}
+      {isRequestInFlight && searchStatus && (
+        <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-400"></div>
+            <span className="text-blue-400 font-medium">{searchStatus}</span>
+          </div>
+        </div>
+      )}
+
       {/* Results Section */}
-      {data?.results && data.results.length > 0 && (
+      {searchResults.length > 0 && (
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-green-900/20 to-blue-900/20 border border-green-700/30 rounded-lg p-6">
             <h2 className="text-2xl font-semibold text-white mb-4">
               Search Results
             </h2>
             <p className="text-gray-300 mb-6">
-              Found {data.results.length} media assets matching your query
+              Found {searchResults.length} media assets matching your query
             </p>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {data.results.map((result: any, index: number) => {
+              {searchResults.map((result: MediaAsset, index: number) => {
                 const scoreColor =
                   Math.round(result.score * 100) > 80
                     ? "text-green-400"
@@ -255,18 +373,8 @@ export function MultiModalContainer() {
         </div>
       )}
 
-      {/* Loading State */}
-      {isRequestInFlight && (
-        <div className="text-center py-8">
-          <div className="inline-flex items-center space-x-2 text-gray-400">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
-            <span>Searching media assets...</span>
-          </div>
-        </div>
-      )}
-
       {/* Empty State */}
-      {!data?.results && !isRequestInFlight && searchQuery && (
+      {!searchResults.length && !isRequestInFlight && searchQuery && (
         <div className="text-center py-8">
           <div className="text-gray-400">
             <CameraIcon className="w-12 h-12 mx-auto mb-4 text-gray-600" />
@@ -277,7 +385,7 @@ export function MultiModalContainer() {
       )}
 
       {/* Initial State */}
-      {!data?.results && !isRequestInFlight && !searchQuery && (
+      {!searchResults.length && !isRequestInFlight && !searchQuery && (
         <div className="text-center py-12">
           <div className="text-gray-400">
             <div className="flex justify-center space-x-4 mb-4">
