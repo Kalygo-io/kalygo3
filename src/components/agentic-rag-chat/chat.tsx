@@ -19,10 +19,6 @@ export function Chat({ id, className }: ChatProps) {
   const chatState = useContext(ChatContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [chatState.messages, scrollToBottom]);
-
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };

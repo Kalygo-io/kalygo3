@@ -23,7 +23,7 @@ export async function callAgenticRagAgent(
       },
       body: JSON.stringify({
         sessionId: sessionId,
-        content: prompt,
+        prompt: prompt,
       }),
       credentials: "include",
     }
