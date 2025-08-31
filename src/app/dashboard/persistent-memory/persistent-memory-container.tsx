@@ -17,13 +17,9 @@ export function PersistentMemoryContainer() {
 
   const sessionId = searchParams.get("session");
 
-  // Handle current session deletion
   const handleCurrentSessionDeleted = useCallback(() => {
-    // Reset chat state to initial state
     dispatch({ type: "SET_MESSAGES", payload: [] });
     dispatch({ type: "SET_SESSION_ID", payload: "" });
-
-    // Redirect to tokenizers page
     router.push("/dashboard/tokenizers");
   }, [router]);
 
@@ -36,9 +32,7 @@ export function PersistentMemoryContainer() {
       try {
         if (sessionId) {
           dispatch({ type: "SET_SESSION_ID", payload: sessionId });
-          // debugger;
           const session = await getSession(sessionId);
-
           if (session && session.chatHistory) {
             dispatch({ type: "SET_MESSAGES", payload: session.chatHistory });
           } else if (session) {
@@ -58,7 +52,6 @@ export function PersistentMemoryContainer() {
           window.history.replaceState({}, "", url.toString());
         }
       } catch (error) {
-        // console.error("Error in persistent-memory container:", error);
         errorToast(`Error in persistent-memory container: ${error}`);
       }
     }

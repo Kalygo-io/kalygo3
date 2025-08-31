@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -25,7 +25,10 @@ import { logoutRequest } from "@/services/logoutRequest";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
 import { ChatAppSession } from "@/services/chatAppSessionService";
 import { errorToast } from "@/shared/toasts/errorToast";
-import { PERSISTENT_MEMORY_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
+import {
+  PERSISTENT_MEMORY_CHAT_APP_ID,
+  REACT_CHAT_APP_ID,
+} from "@/ts/types/ChatAppIds";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -40,18 +43,14 @@ export function DashboardLayout({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const currentSessionId = searchParams.get("session");
-
   // Handle current session deletion
+  const currentSessionId = searchParams.get("session");
   const handleCurrentSessionDeleted = useCallback(() => {
-    // If we're on a chat page and the current session was deleted, redirect to tokenizers
     if (currentSessionId && pathname.includes("/dashboard/")) {
       router.push("/dashboard/tokenizers");
     }
   }, [currentSessionId, pathname, router]);
-
-  const { sessions, deleteSession } = useChatSessions(
+  const { sessions, deleteSession, loading } = useChatSessions(
     handleCurrentSessionDeleted
   );
 
@@ -73,6 +72,9 @@ export function DashboardLayout({
     if (session.chatAppId === PERSISTENT_MEMORY_CHAT_APP_ID) {
       router.push(`/dashboard/persistent-memory?session=${session.sessionId}`);
       setSidebarOpen(false);
+    } else if (session.chatAppId === REACT_CHAT_APP_ID) {
+      router.push(`/dashboard/re-act?session=${session.sessionId}`);
+      setSidebarOpen(false);
     } else {
       errorToast(`Session ${session.chatAppId} is not supported yet`);
     }
@@ -82,6 +84,8 @@ export function DashboardLayout({
     e.stopPropagation();
     deleteSession(sessionId);
   };
+
+  // debugger;
 
   const SidebarContent = () => (
     <div className="flex grow flex-col overflow-y-auto bg-black px-6">
@@ -147,7 +151,9 @@ export function DashboardLayout({
               Recent Sessions
             </div>
             <ul role="list" className="-mx-2 space-y-1">
-              {sessions.length === 0 ? (
+              {loading ? (
+                <li className="text-gray-500 text-sm px-2 py-1">Loading...</li>
+              ) : sessions.length === 0 ? (
                 <li className="text-gray-500 text-sm px-2 py-1">
                   No recent sessions
                 </li>

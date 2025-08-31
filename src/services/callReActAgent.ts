@@ -17,7 +17,7 @@ export async function callReActAgent(
       },
       body: JSON.stringify({
         sessionId: sessionId,
-        content: prompt,
+        prompt: prompt,
       }),
       credentials: "include",
     }
