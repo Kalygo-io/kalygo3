@@ -35,6 +35,15 @@ export function AgenticRagContainer() {
     handleCurrentSessionDeleted
   );
 
+  // Cleanup effect to abort any ongoing requests when component unmounts
+  useEffect(() => {
+    return () => {
+      if (chat.currentRequest) {
+        dispatch({ type: "ABORT_CURRENT_REQUEST" });
+      }
+    };
+  }, [chat.currentRequest]);
+
   useEffect(() => {
     async function asyncCode() {
       if (sessionId) {

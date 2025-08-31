@@ -5,7 +5,8 @@ import React from "react";
 export async function callAgenticRagAgent(
   sessionId: string,
   prompt: string,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  abortController?: AbortController
 ) {
   console.log(
     "Starting agentic RAG call with sessionId:",
@@ -26,6 +27,7 @@ export async function callAgenticRagAgent(
         prompt: prompt,
       }),
       credentials: "include",
+      signal: abortController?.signal,
     }
   );
 
@@ -51,6 +53,12 @@ export async function callAgenticRagAgent(
 
   try {
     while (true) {
+      // Check for cancellation before reading
+      if (abortController?.signal.aborted) {
+        console.log("Agentic RAG request cancelled");
+        break;
+      }
+
       const { done, value } = await reader.read();
       if (done) {
         console.log("Stream complete");
@@ -133,6 +141,10 @@ export async function callAgenticRagAgent(
       }
     }
   } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.log("Agentic RAG request aborted");
+      throw error;
+    }
     console.error("Error in streaming response:", error);
     throw error;
   } finally {
