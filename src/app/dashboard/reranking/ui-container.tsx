@@ -240,14 +240,14 @@ export function RerankingDemoContainer() {
       <div
         className={`bg-gray-800/50 border rounded-lg p-4 hover:border-gray-600 transition-all duration-200 ${
           madeItThrough
-            ? "border-amber-400/60 bg-amber-900/10 shadow-lg shadow-amber-500/10"
+            ? "border-yellow-400 border-2 bg-yellow-900/20 shadow-lg shadow-yellow-500/20 ring-1 ring-yellow-300/30"
             : "border-gray-700/50"
         }`}
       >
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center space-x-2 flex-1">
             <h3 className="text-md font-semibold text-white line-clamp-2">
-              {index + 1}) Chunk {result.metadata.chunk_number}
+              {index + 1}) Chunk {result.metadata.chunk_id}
             </h3>
             {/* {madeItThrough && (
               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-600/20 text-amber-300 border border-amber-500/40">
