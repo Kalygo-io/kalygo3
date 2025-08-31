@@ -77,7 +77,13 @@ export function MultiModalContainer() {
 
         if (!response.ok) {
           if (response.status === 499) {
-            throw new Error("Request was cancelled");
+            // Reset form on cancellation instead of showing error
+            setSearchQuery("");
+            setSearchResults([]);
+            setSearchStatus("");
+            setSearchError("");
+            setIsSearching(false);
+            return;
           }
           throw new Error(`Search failed: ${response.status}`);
         }
@@ -126,8 +132,11 @@ export function MultiModalContainer() {
                     setIsSearching(false);
                     break;
                   case "cancelled":
-                    setSearchError("Search was cancelled");
-                    setSearchStatus("Cancelled");
+                    // Reset form on cancellation instead of showing error
+                    setSearchQuery("");
+                    setSearchResults([]);
+                    setSearchStatus("");
+                    setSearchError("");
                     setIsSearching(false);
                     break;
                   case "error":
@@ -152,8 +161,11 @@ export function MultiModalContainer() {
       } catch (error: any) {
         console.error("Search error:", error);
         if (error.name === "AbortError") {
-          setSearchError("Search was cancelled");
-          setSearchStatus("Cancelled");
+          // Reset form on cancellation instead of showing error
+          setSearchQuery("");
+          setSearchResults([]);
+          setSearchStatus("");
+          setSearchError("");
         } else {
           setSearchError(error.message || "Search failed");
           setSearchStatus("Error occurred");
@@ -171,8 +183,12 @@ export function MultiModalContainer() {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
+    // Reset form on cancellation
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchStatus("");
+    setSearchError("");
     setIsSearching(false);
-    setSearchStatus("Cancelled");
   }, []);
 
   const handleKeyDown = (e: { key: string }) => {
@@ -182,30 +198,6 @@ export function MultiModalContainer() {
   };
 
   const isRequestInFlight = isSearching;
-
-  if (searchError && !isSearching) {
-    return (
-      <div className="w-full max-w-6xl mx-auto p-6">
-        <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-6">
-          <h2 className="text-2xl font-semibold text-red-400 mb-4">
-            Search Error
-          </h2>
-          <p className="text-gray-300 mb-4">{searchError}</p>
-          <button
-            onClick={() => {
-              setSearchError("");
-              setSearchQuery("");
-              setSearchResults([]);
-              setSearchStatus("");
-            }}
-            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
@@ -258,7 +250,7 @@ export function MultiModalContainer() {
               <button
                 onClick={handleSearch}
                 disabled={!searchQuery.trim()}
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
               >
                 <MagnifyingGlassIcon className="w-5 h-5" />
                 <span>Search</span>
