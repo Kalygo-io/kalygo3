@@ -121,9 +121,7 @@ export function ChooseFile(props: Props) {
           results.push(result);
 
           if (result.success) {
-            successToast(
-              `Successfully uploaded ${result.filename}: ${result.successful_uploads} chunks created`
-            );
+            successToast(`Successfully uploaded ${result.filename}`);
           } else {
             errorToast(`Failed to upload ${result.filename}: ${result.error}`);
           }
@@ -158,6 +156,7 @@ export function ChooseFile(props: Props) {
 
       // Clear files after upload attempt
       setFiles(null);
+
       if (inputRef.current) inputRef.current.value = "";
 
       // Call onUploadSuccess callback if provided
@@ -276,45 +275,38 @@ export function ChooseFile(props: Props) {
               </div>
             </div>
           )}
+        </div>
+      )}
 
-          {/* Upload Results */}
-          {!uploading && uploadResults.length > 0 && (
-            <div className="mt-4 space-y-3">
-              <h4 className="text-sm font-semibold text-white">
-                Upload Results:
-              </h4>
-              {uploadResults.map((result, index) => (
-                <div
-                  key={index}
-                  className={`p-3 rounded-lg border ${
-                    result.success
-                      ? "bg-green-900/20 border-green-700/30"
-                      : "bg-red-900/20 border-red-700/30"
+      {/* Upload Results */}
+      {!uploading && uploadResults.length > 0 && (
+        <div className="mt-4 space-y-3">
+          <h4 className="text-sm font-semibold text-white">Upload Results:</h4>
+          {uploadResults.map((result, index) => (
+            <div
+              key={index}
+              className={`p-3 rounded-lg border ${
+                result.success
+                  ? "bg-green-900/20 border-green-700/30"
+                  : "bg-red-900/20 border-red-700/30"
+              }`}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-sm font-medium text-white">
+                    {result.filename}
+                  </p>
+                </div>
+                <span
+                  className={`text-xs font-medium ${
+                    result.success ? "text-green-400" : "text-red-400"
                   }`}
                 >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium text-white">
-                        {result.filename}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {result.successful_uploads} chunks uploaded successfully
-                        {result.failed_uploads > 0 &&
-                          `, ${result.failed_uploads} failed`}
-                      </p>
-                    </div>
-                    <span
-                      className={`text-xs font-medium ${
-                        result.success ? "text-green-400" : "text-red-400"
-                      }`}
-                    >
-                      {result.success ? "✓ Success" : "✗ Failed"}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                  {result.success ? "✓ Success" : "✗ Failed"}
+                </span>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       )}
     </>
