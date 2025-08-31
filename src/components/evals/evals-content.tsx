@@ -111,24 +111,11 @@ export function EvalsContent({
       useCase: "Classification tasks, factual questions",
     },
     {
-      name: "BLEU Score",
+      name: "Precision",
       description:
-        "Evaluates text generation quality by comparing with reference texts",
-      formula: "N-gram overlap with reference translations",
-      useCase: "Machine translation, text generation",
-    },
-    {
-      name: "ROUGE Score",
-      description: "Measures text summarization quality using n-gram overlap",
-      formula: "Recall of n-grams from reference summaries",
-      useCase: "Text summarization, content generation",
-    },
-    {
-      name: "Semantic Similarity",
-      description:
-        "Evaluates meaning similarity between generated and reference text",
-      formula: "Cosine similarity of embeddings",
-      useCase: "Semantic understanding, paraphrasing",
+        "Measures the proportion of positive identifications that were actually correct",
+      formula: "True Positives / (True Positives + False Positives)",
+      useCase: "Classification tasks where false positives are costly",
     },
     {
       name: "Human Evaluation",
