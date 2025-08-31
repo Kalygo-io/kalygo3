@@ -40,10 +40,6 @@ function MessageActions({ message }: { message: Message }) {
             <ClipboardDocumentIcon className="h-4 w-4 text-gray-300 hover:text-white transition-colors duration-200" />
           )}
         </div>
-        {/* Success indicator */}
-        {isCopied && (
-          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-        )}
       </button>
     </div>
   );
