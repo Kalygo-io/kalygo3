@@ -84,10 +84,7 @@ export function Chat({ id, className }: ChatProps) {
           "text-gray-300 hover:text-white",
           // Responsive positioning - further from edge on mobile, closer on desktop
           "right-4 sm:right-6",
-          // Show/hide based on scroll position
-          showScrollButton
-            ? "opacity-100 translate-y-0 scale-100"
-            : "opacity-0 translate-y-2 scale-95 pointer-events-none"
+          "opacity-100 translate-y-0 scale-100"
         )}
         title="Scroll to bottom"
       >
