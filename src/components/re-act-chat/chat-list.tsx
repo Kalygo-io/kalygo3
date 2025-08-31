@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/components/re-act-chat/chat-message";
+import { ChatMessage } from "@/components/shared/chat/chat-message";
 import { ToolStatus } from "@/components/re-act-chat/tool-status";
 import { Message } from "@/ts/types/Message";
 
