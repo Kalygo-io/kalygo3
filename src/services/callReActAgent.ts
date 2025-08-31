@@ -6,7 +6,8 @@ import React from "react";
 export async function callReActAgent(
   sessionId: string,
   prompt: string,
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<Action>,
+  abortController?: AbortController
 ) {
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_AI_API_URL}/api/react-agent/completion`,
@@ -20,6 +21,7 @@ export async function callReActAgent(
         prompt: prompt,
       }),
       credentials: "include",
+      signal: abortController?.signal,
     }
   );
 
@@ -41,6 +43,12 @@ export async function callReActAgent(
 
   try {
     while (true) {
+      // Check for cancellation before reading
+      if (abortController?.signal.aborted) {
+        console.log("ReAct agent request cancelled");
+        break;
+      }
+
       // @ts-ignore
       const { done, value } = await reader.read();
       if (done) break;
@@ -79,6 +87,12 @@ export async function callReActAgent(
         }
       }
     }
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.log("ReAct agent request aborted");
+      throw error;
+    }
+    throw error;
   } finally {
     clearTimeout(timeout);
     reader?.cancel();
