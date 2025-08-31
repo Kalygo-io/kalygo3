@@ -332,7 +332,7 @@ export function HybridSearchContainer() {
                 </div>
                 <div className="text-center">
                   <div className="bg-gray-800/50 rounded-lg p-6 mb-4">
-                    <CogIcon className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                    <CogIcon className="w-12 h-12 text-blue-400 mx-auto mb-3" />
                     <h3 className="text-lg font-semibold text-white mb-2">
                       2. Multi-Strategy Search
                     </h3>
@@ -343,7 +343,7 @@ export function HybridSearchContainer() {
                 </div>
                 <div className="text-center">
                   <div className="bg-gray-800/50 rounded-lg p-6 mb-4">
-                    <SparklesIcon className="w-12 h-12 text-purple-400 mx-auto mb-3" />
+                    <SparklesIcon className="w-12 h-12 text-blue-400 mx-auto mb-3" />
                     <h3 className="text-lg font-semibold text-white mb-2">
                       3. Result Fusion
                     </h3>
@@ -383,7 +383,7 @@ export function HybridSearchContainer() {
                       </p>
 
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-green-400 mb-2">
+                        <h4 className="text-sm font-semibold text-white mb-2">
                           Pros:
                         </h4>
                         <ul className="space-y-1 text-xs text-gray-300">

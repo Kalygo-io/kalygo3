@@ -2,46 +2,79 @@
 
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
   MagnifyingGlassIcon,
   CameraIcon,
   MusicalNoteIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 export function MultiModalContainer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isQueryEnabled, setIsQueryEnabled] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const { isPending, error, data, isFetching, refetch } = useQuery({
-    queryKey: ["media-assets/query"],
+    queryKey: ["media-assets/query", searchQuery],
     queryFn: async () => {
-      const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_AI_API_URL}/api/multi-modal/media-assets/query`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            text: searchQuery,
-          }),
-        }
-      );
+      // Create a new AbortController for this request
+      abortControllerRef.current = new AbortController();
+      setIsSearching(true);
 
-      return await resp.json();
+      try {
+        const resp = await fetch(
+          `${process.env.NEXT_PUBLIC_AI_API_URL}/api/multi-modal/media-assets/query`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              text: searchQuery,
+            }),
+            signal: abortControllerRef.current.signal,
+          }
+        );
+
+        if (!resp.ok) {
+          throw new Error(`HTTP error! status: ${resp.status}`);
+        }
+
+        return await resp.json();
+      } finally {
+        setIsSearching(false);
+        abortControllerRef.current = null;
+      }
     },
-    enabled: isQueryEnabled,
+    enabled: false, // Don't auto-trigger, only manual triggers
+    retry: false, // Don't retry on abort
   });
 
-  const handleKeyDown = (e: { key: string }) => {
-    if (e.key === "Enter" && searchQuery) {
-      !isQueryEnabled && setIsQueryEnabled(true);
+  const handleSearch = useCallback(() => {
+    if (searchQuery.trim() && !isSearching) {
       refetch();
     }
+  }, [searchQuery, refetch, isSearching]);
+
+  const handleCancel = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsSearching(false);
+  }, []);
+
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter" && searchQuery.trim() && !isSearching) {
+      handleSearch();
+    }
   };
+
+  const isRequestInFlight = isSearching || isFetching;
 
   if (error)
     return (
@@ -53,6 +86,15 @@ export function MultiModalContainer() {
           <p className="text-gray-300">
             An error has occurred: {error.message}
           </p>
+          <button
+            onClick={() => {
+              setIsQueryEnabled(false);
+              setSearchQuery("");
+            }}
+            className="mt-4 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+          >
+            Reset
+          </button>
         </div>
       </div>
     );
@@ -91,22 +133,29 @@ export function MultiModalContainer() {
                 onKeyDown={handleKeyDown}
                 placeholder="What are you looking for? (e.g., 'a cat playing with a ball', 'upbeat music')"
                 className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                disabled={isRequestInFlight}
               />
               <MagnifyingGlassIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             </div>
-            <button
-              onClick={() => {
-                if (searchQuery) {
-                  !isQueryEnabled && setIsQueryEnabled(true);
-                  refetch();
-                }
-              }}
-              disabled={!searchQuery || isFetching}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
-            >
-              <MagnifyingGlassIcon className="w-5 h-5" />
-              <span>Search</span>
-            </button>
+
+            {isRequestInFlight ? (
+              <button
+                onClick={handleCancel}
+                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <XMarkIcon className="w-5 h-5" />
+                <span>Cancel</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleSearch}
+                disabled={!searchQuery.trim()}
+                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <MagnifyingGlassIcon className="w-5 h-5" />
+                <span>Search</span>
+              </button>
+            )}
           </div>
 
           <div className="flex items-center space-x-4 mt-4 text-sm text-gray-400">
@@ -207,7 +256,7 @@ export function MultiModalContainer() {
       )}
 
       {/* Loading State */}
-      {isFetching && (
+      {isRequestInFlight && (
         <div className="text-center py-8">
           <div className="inline-flex items-center space-x-2 text-gray-400">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
@@ -217,7 +266,7 @@ export function MultiModalContainer() {
       )}
 
       {/* Empty State */}
-      {!data?.results && !isFetching && searchQuery && (
+      {!data?.results && !isRequestInFlight && searchQuery && (
         <div className="text-center py-8">
           <div className="text-gray-400">
             <CameraIcon className="w-12 h-12 mx-auto mb-4 text-gray-600" />
@@ -228,7 +277,7 @@ export function MultiModalContainer() {
       )}
 
       {/* Initial State */}
-      {!data?.results && !isFetching && !searchQuery && (
+      {!data?.results && !isRequestInFlight && !searchQuery && (
         <div className="text-center py-12">
           <div className="text-gray-400">
             <div className="flex justify-center space-x-4 mb-4">

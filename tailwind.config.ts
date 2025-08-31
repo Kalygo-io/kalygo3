@@ -18,6 +18,7 @@ const config: Config = {
       indigo: colors.indigo,
       yellow: colors.yellow,
       blue: colors.blue,
+      green: colors.green,
       red: colors.red,
       // Kathryn Grayson Nanz
       text_default_color: "#fff",
