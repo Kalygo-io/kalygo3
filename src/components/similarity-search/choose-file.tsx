@@ -293,20 +293,26 @@ export function ChooseFile(props: Props) {
                   : "bg-red-900/20 border-red-700/30"
               }`}
             >
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm font-medium text-white">
-                    {result.filename}
-                  </p>
-                </div>
-                <span
-                  className={`text-xs font-medium ${
-                    result.success ? "text-green-400" : "text-red-400"
-                  }`}
-                >
-                  {result.success ? "✓ Success" : "✗ Failed"}
-                </span>
-              </div>
+              {result.success ? (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-white">
+                      {result.filename}
+                    </p>
+                  </div>
+                  <span className={`text-xs font-medium text-green-400`}>
+                    {"✓ Success"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between items-start">
+                    <span className={`text-xs font-medium text-red-400`}>
+                      {"✗ Error on upload"}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
