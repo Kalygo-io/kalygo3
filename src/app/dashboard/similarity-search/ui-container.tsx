@@ -14,6 +14,7 @@ import {
   Cog6ToothIcon,
   ArrowPathIcon,
   PaperAirplaneIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
@@ -94,6 +95,17 @@ export function SimilaritySearchDemoContainer() {
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const handleClearCache = () => {
+    // Clear all similarity search queries from React Query cache
+    queryClient.removeQueries({
+      queryKey: ["similarity-search"],
+    });
+    // Optionally refetch the current query if there is one
+    if (submittedQuery.trim()) {
+      refetch();
+    }
   };
 
   // Close settings dropdown when clicking outside
@@ -307,9 +319,18 @@ export function SimilaritySearchDemoContainer() {
               </button>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Press Enter to search
-          </p>
+          <div className="flex items-center justify-between mt-2">
+            <p className="text-xs text-gray-500">Press Enter to search</p>
+            {/* Clear Cache Button */}
+            <button
+              onClick={handleClearCache}
+              className="flex items-center space-x-1 text-xs text-gray-400 hover:text-red-400 transition-colors px-2 py-1 rounded-md hover:bg-red-500/10"
+              title="Clear cache and allow reissuing same query"
+            >
+              <TrashIcon className="w-3 h-3" />
+              <span>Clear Cache</span>
+            </button>
+          </div>
         </div>
 
         {/* Loading State - Single loader for all loading states */}
