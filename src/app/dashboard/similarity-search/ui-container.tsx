@@ -192,7 +192,7 @@ export function SimilaritySearchDemoContainer() {
   return (
     <>
       {/* Settings and Info Buttons - Fixed positioned in top-right of viewport */}
-      <div className="fixed top-20 right-4 z-50 flex items-center space-x-2">
+      <div className="fixed top-20 right-4 z-10 flex items-center space-x-2">
         {/* Settings Button */}
         <div className="relative" ref={settingsRef}>
           <button
@@ -372,6 +372,7 @@ export function SimilaritySearchDemoContainer() {
                       filename: string;
                       row_number: number;
                       upload_timestamp: string;
+                      user_email: string;
                     };
                     score: number;
                   },
@@ -408,6 +409,10 @@ export function SimilaritySearchDemoContainer() {
                             <span>
                               {result.metadata.filename} (Row{" "}
                               {result.metadata.row_number})
+                            </span>
+                            <span className="mx-1">•</span>
+                            <span className="text-blue-400">
+                              by {result.metadata.user_email}
                             </span>
                           </div>
                         </div>

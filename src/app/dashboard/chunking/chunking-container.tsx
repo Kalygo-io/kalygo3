@@ -47,7 +47,7 @@ export function ChunkingContainer() {
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-8 h-8 bg-purple-600/20 rounded-lg flex items-center justify-center">
-              <DocumentTextIcon className="w-5 h-5 text-purple-400" />
+              <DocumentTextIcon className="w-5 h-5 text-gray-400" />
             </div>
             <h2 className="text-xl font-semibold text-white">
               Multi-Modal Chunking Strategies
@@ -222,7 +222,7 @@ export function ChunkingContainer() {
         <div className="bg-gray-800/50 border border-gray-700/50 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-8 h-8 bg-orange-600/20 rounded-lg flex items-center justify-center">
-              <LinkIcon className="w-5 h-5 text-orange-400" />
+              <LinkIcon className="w-5 h-5 text-gray-400" />
             </div>
             <h2 className="text-xl font-semibold text-white">
               Learning Resources
