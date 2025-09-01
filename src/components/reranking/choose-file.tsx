@@ -121,9 +121,7 @@ export function ChooseFile(props: Props) {
           results.push(result);
 
           if (result.success) {
-            successToast(
-              `Successfully uploaded ${result.filename}: ${result.successful_uploads} chunks created`
-            );
+            successToast(`Successfully uploaded ${result.filename}`);
           } else {
             errorToast(`Failed to upload ${result.filename}: ${result.error}`);
           }
