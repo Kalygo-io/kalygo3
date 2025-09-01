@@ -52,7 +52,7 @@ export const ChatMessage = memo(
         <div key={P.message.id}>
           <div
             className={cn(
-              "group relative mb-6 items-start p-6 rounded-xl transition-all duration-200",
+              "group relative mb-6 items-start px-4 py-6 rounded-xl transition-all duration-200",
               P.message.role === "human"
                 ? "bg-white/10 backdrop-blur-sm border border-white/20"
                 : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
