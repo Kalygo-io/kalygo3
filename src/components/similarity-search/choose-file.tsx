@@ -72,6 +72,8 @@ export function ChooseFile(props: Props) {
             file.name.toLowerCase().endsWith(".csv")
           );
         });
+
+        setUploadResults([]);
         setFiles((prevFiles) =>
           prevFiles ? [...prevFiles, ...validFiles] : validFiles
         );

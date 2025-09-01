@@ -13,6 +13,7 @@ import {
   DocumentIcon,
   Cog6ToothIcon,
   ArrowPathIcon,
+  PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { ContextualAside } from "@/components/similarity-search/contextual-aside";
 import Image from "next/image";
@@ -20,6 +21,7 @@ import { errorToast } from "@/shared/toasts/errorToast";
 
 export function SimilaritySearchDemoContainer() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -34,12 +36,12 @@ export function SimilaritySearchDemoContainer() {
   const { isPending, error, data, isFetching, refetch } = useQuery({
     queryKey: [
       "similarity-search",
-      searchQuery,
+      submittedQuery,
       appliedTopK,
       appliedSimilarityThreshold,
     ],
     queryFn: async () => {
-      if (!searchQuery.trim()) {
+      if (!submittedQuery.trim()) {
         return { results: [] };
       }
 
@@ -52,7 +54,7 @@ export function SimilaritySearchDemoContainer() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            query: searchQuery,
+            query: submittedQuery,
             top_k: appliedTopK,
             similarity_threshold: appliedSimilarityThreshold,
           }),
@@ -73,15 +75,20 @@ export function SimilaritySearchDemoContainer() {
 
       return responseBody;
     },
-    enabled: !!searchQuery.trim(),
-    staleTime: 5 * 60 * 1000, // 1 minute
+    enabled: !!submittedQuery.trim(),
+    staleTime: 0, // No caching - always fetch fresh results
     retry: 2,
   });
 
-  const handleKeyDown = (e: { key: string }) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchQuery.trim()) {
-      // The query will automatically run when searchQuery changes
-      // due to the query key including searchQuery
+      setSubmittedQuery(searchQuery.trim());
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      setSubmittedQuery(searchQuery.trim());
     }
   };
 
@@ -124,6 +131,7 @@ export function SimilaritySearchDemoContainer() {
   const handleReset = () => {
     // Reset UI to initial state
     setSearchQuery("");
+    setSubmittedQuery("");
     setExpandedCards(new Set());
     setIsSettingsOpen(false);
 
@@ -286,8 +294,18 @@ export function SimilaritySearchDemoContainer() {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="What are you looking for?"
-              className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="block w-full pl-10 pr-12 py-3 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
+            {/* Magnifier glass on the right for mobile */}
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <button
+                onClick={handleSearch}
+                className="p-1 text-gray-400 hover:text-gray-300 transition-colors"
+                title="Search"
+              >
+                <PaperAirplaneIcon className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           <p className="text-xs text-gray-500 mt-2 text-center">
             Press Enter to search
@@ -295,7 +313,7 @@ export function SimilaritySearchDemoContainer() {
         </div>
 
         {/* Loading State - Single loader for all loading states */}
-        {(isPending || isFetching) && searchQuery.trim() && (
+        {(isPending || isFetching) && submittedQuery.trim() && (
           <div className="flex items-center justify-center py-12">
             <div className="flex flex-col items-center space-y-4">
               <Image
@@ -313,7 +331,7 @@ export function SimilaritySearchDemoContainer() {
         )}
 
         {/* Results */}
-        {data?.results && searchQuery.trim() && !isPending && (
+        {data?.results && submittedQuery.trim() && !isPending && (
           <div className="space-y-3">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-white mb-2">
@@ -487,7 +505,7 @@ export function SimilaritySearchDemoContainer() {
         )}
 
         {/* Empty State */}
-        {!searchQuery.trim() && (
+        {!submittedQuery.trim() && (
           <div className="flex flex-col items-center justify-center py-16">
             <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
               <MagnifyingGlassIcon className="w-8 h-8 text-gray-400" />
@@ -496,7 +514,8 @@ export function SimilaritySearchDemoContainer() {
               Ready to search
             </h3>
             <p className="text-gray-400 text-center max-w-md">
-              Enter a search query above to find results using similarity search
+              Enter a search query above and press Enter to find results using
+              similarity search
             </p>
           </div>
         )}
@@ -504,7 +523,7 @@ export function SimilaritySearchDemoContainer() {
         {/* No Results */}
         {data?.results &&
           data.results.length === 0 &&
-          searchQuery.trim() &&
+          submittedQuery.trim() &&
           !isPending && (
             <div className="flex flex-col items-center justify-center py-16">
               <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mb-4">
