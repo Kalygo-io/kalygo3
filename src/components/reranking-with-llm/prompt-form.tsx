@@ -5,7 +5,7 @@ import * as React from "react";
 import { ChatDispatchContext } from "@/app/dashboard/chat-with-txt/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callChatWithTxt } from "@/services/callChatWithTxt";
+import { callRerankingWithLLM } from "@/services/callRerankingWithLLM";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 import { PaperAirplaneIcon, StopIcon } from "@heroicons/react/24/solid";
 
@@ -98,7 +98,7 @@ export function PromptForm({
         payload: true,
       });
 
-      await callChatWithTxt(
+      await callRerankingWithLLM(
         sessionId,
         prompt,
         dispatch,

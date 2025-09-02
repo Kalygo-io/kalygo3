@@ -1,4 +1,4 @@
-import { RerankingChatMessage } from "@/components/chat-with-txt/chat/reranking-chat-message";
+import { RerankingChatMessage } from "@/components/reranking-with-llm/chat/reranking-chat-message";
 import { Message } from "@/ts/types/Message";
 
 export interface P {

@@ -45,8 +45,8 @@ export const navigation = [
     enabled: true,
   },
   {
-    name: "Search",
-    href: "/dashboard/chat-with-txt",
+    name: "Reranking + LLM",
+    href: "/dashboard/reranking-with-llm",
     enabled: true,
   },
   {

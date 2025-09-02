@@ -8,7 +8,7 @@ import {
   chatReducer,
   initialState,
 } from "@/app/dashboard/chat-with-txt/chat-session-reducer";
-import { Chat as RerankingChat } from "@/components/chat-with-txt/chat";
+import { Chat as RerankingChat } from "@/components/reranking-with-llm/chat";
 import { useReducer } from "react";
 
 export function RerankingChatUiContainer() {

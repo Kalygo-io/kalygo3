@@ -3,14 +3,14 @@ import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callChatWithTxt(
+export async function callRerankingWithLLM(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>,
   signal?: AbortSignal
 ) {
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking-with-llm/completion`,
     {
       method: "POST",
       headers: {
