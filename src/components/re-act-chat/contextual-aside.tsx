@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   InformationCircleIcon,
   LightBulbIcon,
   XMarkIcon,
   ChartBarIcon,
+  DocumentTextIcon,
+  ArrowPathIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
+import { callGetReActKbStats, KbStats } from "@/services/callGetReActKbStats";
+import {
+  callDeleteVectorsInNamespace,
+  DeleteVectorsResponse,
+} from "@/services/callDeleteVectorsInNamespace";
+import { errorToast, successToast } from "@/shared/toasts";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -15,10 +24,80 @@ interface ContextualAsideProps {
 
 export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   const [activeTab, setActiveTab] = useState("overview");
+  const [kbStats, setKbStats] = useState<KbStats | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const fetchKbStats = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const stats = await callGetReActKbStats();
+      setKbStats(stats);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch KB stats";
+      setError(errorMessage);
+      errorToast(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteVectors = async () => {
+    if (!kbStats?.namespace) {
+      errorToast("No namespace available for deletion");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to delete all vectors in namespace "${kbStats.namespace}"? This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeleting(true);
+    setError(null);
+    try {
+      const response = await callDeleteVectorsInNamespace(kbStats.namespace);
+      if (response.success) {
+        successToast(
+          `Successfully deleted vectors from namespace "${kbStats.namespace}"`
+        );
+        // Refresh the stats after deletion
+        await fetchKbStats();
+      } else {
+        const errorMessage = response.error || "Failed to delete vectors";
+        setError(errorMessage);
+        errorToast(errorMessage);
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to delete vectors";
+      setError(errorMessage);
+      errorToast(errorMessage);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen && activeTab === "kb-stats") {
+      fetchKbStats();
+    }
+  }, [isOpen, activeTab]);
 
   const tabs = [
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
+    { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
   ];
+
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat().format(num);
+  };
 
   return (
     <>
@@ -117,6 +196,129 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </li>
                   </ul>
                 </div>
+              </div>
+            )}
+
+            {activeTab === "kb-stats" && (
+              <div className="space-y-4">
+                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-semibold text-white">
+                      Knowledge Base Statistics
+                    </h3>
+                    <button
+                      onClick={fetchKbStats}
+                      disabled={loading}
+                      className="p-1 hover:bg-blue-700/30 rounded transition-colors disabled:opacity-50"
+                      title="Refresh stats"
+                    >
+                      <ArrowPathIcon
+                        className={`w-4 h-4 text-blue-400 ${
+                          loading ? "animate-spin" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                  <p className="text-white text-sm leading-relaxed">
+                    Overview of your current knowledge base content and
+                    performance metrics.
+                  </p>
+                </div>
+
+                {loading && (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+                    <span className="ml-2 text-gray-300">Loading stats...</span>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
+                    <p className="text-red-300 text-sm">{error}</p>
+                    <button
+                      onClick={fetchKbStats}
+                      className="mt-2 text-red-300 hover:text-red-200 text-sm underline"
+                    >
+                      Try again
+                    </button>
+                  </div>
+                )}
+
+                {!loading && !error && kbStats && (
+                  <div className="space-y-3">
+                    <h4 className="text-md font-semibold text-white">
+                      Index Information:
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Index Name
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.index_name || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Dimensions
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.index_dimension || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Namespace
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {kbStats.namespace || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="bg-gray-800/50 rounded-lg p-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-300">
+                            Vectors in Namespace
+                          </span>
+                          <span className="text-sm font-medium text-white">
+                            {formatNumber(kbStats.namespace_vector_count || 0)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Delete Vectors Button */}
+                      {kbStats.namespace_vector_count > 0 && (
+                        <div className="bg-red-900/20 border border-red-700/30 rounded-lg p-3">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <span className="text-sm text-red-300 font-medium">
+                                Delete All Vectors
+                              </span>
+                              <p className="text-xs text-red-400 mt-1">
+                                This will permanently delete all vectors in
+                                namespace &quot;{kbStats.namespace}&quot;
+                              </p>
+                            </div>
+                            <button
+                              onClick={handleDeleteVectors}
+                              disabled={deleting}
+                              className="flex items-center space-x-1 px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white text-xs font-medium rounded transition-colors"
+                              title="Delete all vectors in this namespace"
+                            >
+                              <TrashIcon className="w-3 h-3" />
+                              <span>{deleting ? "Deleting..." : "Delete"}</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
