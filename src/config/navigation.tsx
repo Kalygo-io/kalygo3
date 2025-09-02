@@ -69,16 +69,16 @@ export const navigation = [
     href: "/dashboard/multimodal",
     enabled: true,
   },
-  {
-    name: "BM25",
-    href: "/dashboard/bm25",
-    enabled: true,
-  },
-  {
-    name: "Hybrid Search",
-    href: "/dashboard/hybrid-search",
-    enabled: true,
-  },
+  // {
+  //   name: "BM25",
+  //   href: "/dashboard/bm25",
+  //   enabled: true,
+  // },
+  // {
+  //   name: "Hybrid Search",
+  //   href: "/dashboard/hybrid-search",
+  //   enabled: true,
+  // },
   {
     name: "Evals",
     href: "/dashboard/evals",
