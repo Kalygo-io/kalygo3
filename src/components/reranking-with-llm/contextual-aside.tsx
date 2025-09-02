@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from "react";
 import {
-  InformationCircleIcon,
   XMarkIcon,
-  ChartBarIcon,
   DocumentTextIcon,
   CogIcon,
   ArrowPathIcon,
@@ -12,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChooseFile } from "./choose-file";
 import {
-  callGetChatWithTxtKbStats,
+  callGetRerankingWithLLMKbStats,
   KbStats,
 } from "@/services/callGetRerankingWithLLMKbStats";
 import {
@@ -43,7 +41,7 @@ export function ContextualAside({
     setLoading(true);
     setError(null);
     try {
-      const stats = await callGetChatWithTxtKbStats();
+      const stats = await callGetRerankingWithLLMKbStats();
       setKbStats(stats);
     } catch (err) {
       const errorMessage =
@@ -128,7 +126,9 @@ export function ContextualAside({
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Chat with TXT</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Reranking with LLM
+            </h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
