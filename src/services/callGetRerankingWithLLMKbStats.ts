@@ -12,10 +12,10 @@ export interface KbStats {
   error?: string;
 }
 
-export async function callGetChatWithTxtKbStats(): Promise<KbStats> {
+export async function callGetRerankingWithLLMKbStats(): Promise<KbStats> {
   try {
     const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/kb-stats`,
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking-with-llm/kb-stats`,
       {
         method: "GET",
         headers: {

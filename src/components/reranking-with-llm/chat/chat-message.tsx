@@ -3,15 +3,38 @@ import { Message } from "@/ts/types/Message";
 import { BiUser } from "react-icons/bi";
 import { GiArtificialIntelligence } from "react-icons/gi";
 import { DocumentTextIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 
 import { Separator } from "@/components/shared/separator";
 import { memo, useState } from "react";
 import { ChatMarkdown } from "@/components/shared/markdown/chat-markdown";
 import { ChunksDrawer } from "../chunks-drawer";
+import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
 
 interface P {
   index: number;
   message: Message;
+}
+
+// Simple message actions component for Message type
+function MessageActions({ message }: { message: Message }) {
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+
+  return (
+    <div className="flex items-center space-x-2">
+      <button
+        onClick={() => copyToClipboard(message.content)}
+        className="opacity-100 transition-opacity duration-200 p-2 hover:bg-gray-700/50 rounded-lg"
+        title="Copy message"
+      >
+        {isCopied ? (
+          <CheckIcon className="w-4 h-4 text-green-400" />
+        ) : (
+          <ClipboardDocumentIcon className="w-4 h-4 text-gray-400 hover:text-gray-300" />
+        )}
+      </button>
+    </div>
+  );
 }
 
 export const ChatMessage = memo(
@@ -24,7 +47,7 @@ export const ChatMessage = memo(
           <div key={P.message.id}>
             <div
               className={cn(
-                "group relative mb-6 items-start p-6 rounded-xl transition-all duration-200",
+                "group relative mb-6 items-start px-4 py-6 rounded-xl transition-all duration-200",
                 P.message.role === "human"
                   ? "bg-white/10 backdrop-blur-sm border border-white/20"
                   : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
@@ -74,6 +97,10 @@ export const ChatMessage = memo(
                       </button>
                     </div>
                   )}
+              </div>
+              {/* MessageActions positioned on the right side */}
+              <div className="flex-shrink-0 ml-2">
+                <MessageActions message={P.message} />
               </div>
             </div>
             <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />

@@ -8,12 +8,36 @@ import { ChatMarkdown } from "@/components/shared/markdown/chat-markdown";
 import {
   DocumentTextIcon,
   ChevronRightIcon,
+  CheckIcon,
+  ClipboardDocumentIcon,
 } from "@heroicons/react/24/outline";
+import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
 
 interface P {
   index: number;
   message: Message;
   onShowChunks?: (rerankedMatches: any[], kb_search_query?: string) => void;
+}
+
+// Simple message actions component for Message type
+function MessageActions({ message }: { message: Message }) {
+  const { isCopied, copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+
+  return (
+    <div className="flex items-center space-x-2">
+      <button
+        onClick={() => copyToClipboard(message.content)}
+        className="opacity-100 transition-opacity duration-200 p-2 hover:bg-gray-700/50 rounded-lg"
+        title="Copy message"
+      >
+        {isCopied ? (
+          <CheckIcon className="w-4 h-4 text-green-400" />
+        ) : (
+          <ClipboardDocumentIcon className="w-4 h-4 text-gray-400 hover:text-gray-300" />
+        )}
+      </button>
+    </div>
+  );
 }
 
 export const RerankingChatMessage = memo(
@@ -28,7 +52,7 @@ export const RerankingChatMessage = memo(
         <div key={P.message.id}>
           <div
             className={cn(
-              "group relative mb-6 items-start p-6 rounded-xl transition-all duration-200",
+              "group relative mb-6 items-start px-4 py-6 rounded-xl transition-all duration-200",
               P.message.role === "human"
                 ? "bg-white/10 backdrop-blur-sm border border-white/20"
                 : "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50",
@@ -84,6 +108,10 @@ export const RerankingChatMessage = memo(
                     </button>
                   </div>
                 )}
+            </div>
+            {/* MessageActions positioned on the right side */}
+            <div className="flex-shrink-0 ml-2">
+              <MessageActions message={P.message} />
             </div>
           </div>
           <Separator className="my-6 bg-gradient-to-r from-transparent via-gray-600/30 to-transparent" />

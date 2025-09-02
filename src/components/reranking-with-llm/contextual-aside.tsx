@@ -14,7 +14,7 @@ import { ChooseFile } from "./choose-file";
 import {
   callGetChatWithTxtKbStats,
   KbStats,
-} from "@/services/callGetChatWithTxtKbStats";
+} from "@/services/callGetRerankingWithLLMKbStats";
 import {
   callDeleteVectorsInNamespace,
   DeleteVectorsResponse,
