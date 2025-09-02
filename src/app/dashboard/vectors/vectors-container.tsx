@@ -6,9 +6,9 @@ import {
   LightBulbIcon,
   BeakerIcon,
 } from "@heroicons/react/24/outline";
-import { ContextualAside } from "@/components/embeddings/contextual-aside";
+import { ContextualAside } from "@/components/vectors/contextual-aside";
 
-export function EmbeddingsDemoContainer() {
+export function VectorsDemoContainer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("basics");
 
