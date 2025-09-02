@@ -1,10 +1,5 @@
 import { errorReporter } from "@/shared/errorReporter";
-import {
-  XCircleIcon,
-  DocumentDuplicateIcon,
-  DocumentIcon,
-  Square2StackIcon,
-} from "@heroicons/react/24/outline";
+import { XCircleIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   callUploadChatWithTxt,
@@ -140,7 +135,7 @@ export function ChooseFile(props: Props) {
             total_chunks_created: 0,
             successful_uploads: 0,
             failed_uploads: 1,
-            namespace: "chat_with_txt",
+            namespace: "reranking",
             file_size_bytes: file.size,
             success: false,
             error: errorMessage,
