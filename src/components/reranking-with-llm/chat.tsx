@@ -1,8 +1,7 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/chat-with-txt/chat-session-context";
+import { ChatContext } from "@/app/dashboard/reranking-with-llm/chat-session-context";
 import { ChatList } from "@/components/reranking-with-llm/chat/chat-list";
-import { ChatPanel } from "@/components/reranking-with-llm/chat/chat-panel";
 import { EmptyScreen } from "@/components/reranking-with-llm/chat/empty-screen";
 import { PromptForm } from "@/components/reranking-with-llm/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
@@ -11,9 +10,8 @@ import { useContext, useEffect, useState } from "react";
 import { ContextualAside } from "./contextual-aside";
 import { ChunksDrawer } from "./chunks-drawer";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { DebugMessages } from "./chat/debug-messages";
 import { RerankedMatch } from "@/ts/types/Message";
-import { ChatDispatchContext } from "@/app/dashboard/chat-with-txt/chat-session-context";
+import { ChatDispatchContext } from "@/app/dashboard/reranking-with-llm/chat-session-context";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 

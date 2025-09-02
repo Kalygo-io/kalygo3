@@ -3,11 +3,11 @@
 import {
   ChatContext,
   ChatDispatchContext,
-} from "@/app/dashboard/chat-with-txt/chat-session-context";
+} from "@/app/dashboard/reranking-with-llm/chat-session-context";
 import {
   chatReducer,
   initialState,
-} from "@/app/dashboard/chat-with-txt/chat-session-reducer";
+} from "@/app/dashboard/reranking-with-llm/chat-session-reducer";
 import { Chat as RerankingChat } from "@/components/reranking-with-llm/chat";
 import { useReducer } from "react";
 
