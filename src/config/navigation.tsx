@@ -70,11 +70,6 @@ export const navigation = [
     enabled: true,
   },
   // {
-  //   name: "BM25",
-  //   href: "/dashboard/bm25",
-  //   enabled: true,
-  // },
-  // {
   //   name: "Hybrid Search",
   //   href: "/dashboard/hybrid-search",
   //   enabled: true,
@@ -87,6 +82,11 @@ export const navigation = [
   {
     name: "Fine-tuning",
     href: "/dashboard/fine-tuning",
+    enabled: true,
+  },
+  {
+    name: "BONUS: BM25",
+    href: "/dashboard/bm25",
     enabled: true,
   },
 ];
