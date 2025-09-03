@@ -18,13 +18,13 @@ import { ContextualAside } from "@/components/reranking/contextual-aside";
 
 interface RerankingResult {
   metadata: {
-    chunk_id: number;
-    chunk_number: number;
-    chunk_size_tokens: number;
+    chunkId: number;
+    chunkNumber: number;
+    chunkSizeTokens: number;
     content: string;
     filename: string;
-    total_chunks: number;
-    upload_timestamp: string;
+    totalChunks: number;
+    uploadTimestamp: string;
   };
   similarity_score: number;
   relevance_score: number;
@@ -120,10 +120,10 @@ export function RerankingDemoContainer() {
 
       // Check if reranking actually reordered the results
       const firstStageChunkIds = firstStageResults.map(
-        (r: RerankingResult) => r.metadata.chunk_id
+        (r: RerankingResult) => r.metadata.chunkId
       );
       const rerankedChunkIds = rerankedResults.map(
-        (r: RerankingResult) => r.metadata.chunk_id
+        (r: RerankingResult) => r.metadata.chunkId
       );
       const isReordered =
         JSON.stringify(firstStageChunkIds.slice(0, 5)) !==
@@ -233,7 +233,7 @@ export function RerankingDemoContainer() {
       stage === "first" &&
       data?.reranked.some(
         (rerankedResult: RerankingResult) =>
-          rerankedResult.metadata.chunk_id === result.metadata.chunk_id
+          rerankedResult.metadata.chunkId === result.metadata.chunkId
       );
 
     return (
@@ -247,7 +247,7 @@ export function RerankingDemoContainer() {
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center space-x-2 flex-1">
             <h3 className="text-md font-semibold text-white line-clamp-2">
-              {index + 1}) Chunk {result.metadata.chunk_id}
+              {index + 1}) Chunk {result.metadata.chunkId}
             </h3>
             {/* {madeItThrough && (
               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-600/20 text-amber-300 border border-amber-500/40">
@@ -325,11 +325,11 @@ export function RerankingDemoContainer() {
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
                   <span className="font-medium">Chunk ID:</span>
-                  <span>{result.metadata.chunk_id}</span>
+                  <span>{result.metadata.chunkId}</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
                   <span className="font-medium">Chunk Size:</span>
-                  <span>{result.metadata.chunk_size_tokens} tokens</span>
+                  <span>{result.metadata.chunkSizeTokens} tokens</span>
                 </div>
                 <div className="flex items-center space-x-2 mb-2">
                   <span className="font-medium">Similarity Score:</span>
@@ -357,7 +357,7 @@ export function RerankingDemoContainer() {
                   <span className="font-medium">Uploaded:</span>
                   <span>
                     {new Date(
-                      parseInt(result.metadata.upload_timestamp)
+                      parseInt(result.metadata.uploadTimestamp)
                     ).toLocaleDateString()}
                   </span>
                 </div>
@@ -581,10 +581,10 @@ export function RerankingDemoContainer() {
               {/* Check if reranking actually reordered the results */}
               {(() => {
                 const firstStageChunkIds = data.firstStage.map(
-                  (r: RerankingResult) => r.metadata.chunk_id
+                  (r: RerankingResult) => r.metadata.chunkId
                 );
                 const rerankedChunkIds = data.reranked.map(
-                  (r: RerankingResult) => r.metadata.chunk_id
+                  (r: RerankingResult) => r.metadata.chunkId
                 );
                 const isReordered =
                   JSON.stringify(firstStageChunkIds.slice(0, 5)) !==
@@ -750,7 +750,7 @@ export function RerankingDemoContainer() {
                       >
                         <div className="flex justify-between items-start mb-1">
                           <h5 className="text-sm font-medium text-white line-clamp-1">
-                            Chunk {result.metadata.chunk_number}
+                            Chunk {result.metadata.chunkNumber}
                           </h5>
                           <span
                             className="text-xs font-bold ml-2 flex-shrink-0"
