@@ -10,7 +10,7 @@ export async function callDeleteVectorsInNamespace(
 ): Promise<DeleteVectorsResponse> {
   try {
     const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/delete-vectors`,
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking-with-llm/delete-vectors`,
       {
         method: "DELETE",
         headers: {

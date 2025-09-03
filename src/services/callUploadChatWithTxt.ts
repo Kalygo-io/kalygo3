@@ -29,7 +29,7 @@ export async function callUploadChatWithTxt(
     formData.append("files", file);
 
     const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/chat-with-txt/upload`,
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/reranking-with-llm/upload`,
       {
         method: "POST",
         body: formData,
