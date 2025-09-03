@@ -98,10 +98,7 @@ export function ContextualAside({
     }
   }, [isOpen, activeTab]);
 
-  const tabs = [
-    { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
-    { id: "update-kb", name: "Update KB", icon: CogIcon },
-  ];
+  const tabs = [{ id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon }];
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat().format(num);
@@ -285,38 +282,6 @@ export function ContextualAside({
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-
-            {activeTab === "update-kb" && (
-              <div className="space-y-4">
-                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    Update Knowledge Base
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    Upload new data into your knowledge base.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Provide Knowledge:
-                  </h4>
-                  <div className="space-y-3">
-                    <ChooseFile
-                      files={files}
-                      setFiles={setFiles}
-                      onUploadSuccess={() => {
-                        if (onUploadSuccess) {
-                          onUploadSuccess();
-                        }
-                        // Refresh KB stats after upload
-                        fetchKbStats();
-                      }}
-                    />
-                  </div>
-                </div>
               </div>
             )}
           </div>
