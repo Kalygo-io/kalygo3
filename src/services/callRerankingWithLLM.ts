@@ -1,4 +1,4 @@
-import { Action } from "@/app/dashboard/chat-with-txt/chat-session-reducer";
+import { Action } from "@/app/dashboard/reranking-with-llm/chat-session-reducer";
 import { errorToast } from "@/shared/toasts";
 import { nanoid } from "@/shared/utils";
 import React from "react";
