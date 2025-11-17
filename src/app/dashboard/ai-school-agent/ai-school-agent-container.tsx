@@ -12,7 +12,7 @@ import { Chat as AiSchoolRagChat } from "@/components/ai-school-rag-chat/chat";
 import { useReducer, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
-import { AGENTIC_RAG_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
+import { AI_SCHOOL_AGENT_CHAT_APP_ID } from "@/ts/types/ChatAppIds";
 
 export function AiSchoolAgentContainer() {
   const [chat, dispatch] = useReducer(chatReducer, initialState);
@@ -54,14 +54,14 @@ export function AiSchoolAgentContainer() {
         } else if (session) {
           // Session exists but has no messages, this is fine
         } else {
-          const newSession = await createSession(AGENTIC_RAG_CHAT_APP_ID);
+          const newSession = await createSession(AI_SCHOOL_AGENT_CHAT_APP_ID);
           const url = new URL(window.location.href);
           url.searchParams.set("session", newSession.sessionId);
           window.history.replaceState({}, "", url.toString());
         }
       } else if (!sessionCreatedRef.current) {
         sessionCreatedRef.current = true;
-        const newSession = await createSession(AGENTIC_RAG_CHAT_APP_ID);
+        const newSession = await createSession(AI_SCHOOL_AGENT_CHAT_APP_ID);
         const url = new URL(window.location.href);
         url.searchParams.set("session", newSession.sessionId);
         window.history.replaceState({}, "", url.toString());

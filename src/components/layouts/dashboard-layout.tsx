@@ -27,6 +27,7 @@ import { ChatAppSession } from "@/services/chatAppSessionService";
 import { errorToast } from "@/shared/toasts/errorToast";
 import {
   AGENTIC_RAG_CHAT_APP_ID,
+  AI_SCHOOL_AGENT_CHAT_APP_ID,
   PERSISTENT_MEMORY_CHAT_APP_ID,
   REACT_CHAT_APP_ID,
 } from "@/ts/types/ChatAppIds";
@@ -78,6 +79,9 @@ export function DashboardLayout({
       setSidebarOpen(false);
     } else if (session.chatAppId === AGENTIC_RAG_CHAT_APP_ID) {
       router.push(`/dashboard/agentic-rag?session=${session.sessionId}`);
+      setSidebarOpen(false);
+    } else if (session.chatAppId === AI_SCHOOL_AGENT_CHAT_APP_ID) {
+      router.push(`/dashboard/ai-school-agent?session=${session.sessionId}`);
       setSidebarOpen(false);
     } else {
       errorToast(`Session ${session.chatAppId} is not supported yet`);
