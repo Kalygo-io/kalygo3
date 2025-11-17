@@ -431,29 +431,6 @@ export function TokenizersContainer() {
               </a>
             </div>
 
-            {/* Universal LLM Hacks */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-white font-medium mb-1">
-                  Universal LLM Hacks
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  Learn about universal methods to &rsquo;unalign&rsquo; LLMs
-                  and understand tokenization&apos;s role in model behavior from
-                  the GenAI Guidebook.
-                </p>
-              </div>
-              <a
-                href="https://ravinkumar.com/GenAiGuidebook/deepdive/universalattack.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-              >
-                <span>Read More</span>
-                <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-              </a>
-            </div>
-
             {/* Image Tokenization */}
             <div className="flex items-center justify-between">
               <div>

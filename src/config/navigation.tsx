@@ -1,14 +1,14 @@
 export const navigation = [
-  // {
-  //   name: "Tokenizers",
-  //   href: "/dashboard/tokenizers",
-  //   enabled: true,
-  // },
-  // {
-  //   name: "Raw LLMs",
-  //   href: "/dashboard/raw-llm",
-  //   enabled: true,
-  // },
+  {
+    name: "Tokenizers",
+    href: "/dashboard/tokenizers",
+    enabled: true,
+  },
+  {
+    name: "Raw LLMs",
+    href: "/dashboard/raw-llm",
+    enabled: true,
+  },
   // {
   //   name: "Basic Memory",
   //   href: "/dashboard/basic-memory",
