@@ -1,6 +1,9 @@
 "use client";
 
-import { ChatContext } from "@/app/dashboard/ai-school-agent/chat-session-context";
+import {
+  ChatContext,
+  ChatDispatchContext,
+} from "@/app/dashboard/ai-school-agent/chat-session-context";
 import { ChatList } from "@/components/ai-school-agent-chat/chat-list";
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { EmptyScreen } from "@/components/shared/chat/empty-screen";
@@ -12,7 +15,10 @@ import { ContextualAside } from "./contextual-aside";
 import {
   InformationCircleIcon,
   ChevronDownIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
+import { clearSessionMessages } from "@/services/clearSessionMessages";
+import { errorToast, successToast } from "@/shared/toasts";
 
 export interface ChatProps extends React.ComponentProps<"div"> {}
 
@@ -20,7 +26,9 @@ export function Chat({ id, className }: ChatProps) {
   const [input, setInput] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
   const chatState = useContext(ChatContext);
+  const dispatch = useContext(ChatDispatchContext);
   const { messagesRef, scrollRef, scrollToBottom } = useScrollAnchor();
 
   const toggleDrawer = () => {
@@ -62,15 +70,78 @@ export function Chat({ id, className }: ChatProps) {
     scrollToBottom();
   };
 
+  const handleResetChat = async () => {
+    if (!chatState.sessionId) {
+      errorToast("No active session to reset");
+      return;
+    }
+
+    if (!dispatch) {
+      errorToast("Chat context not available");
+      return;
+    }
+
+    if (isResetting) return;
+
+    // Confirm with user
+    if (
+      !confirm(
+        "Are you sure you want to clear all messages in this chat session? This action cannot be undone."
+      )
+    ) {
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      // Clear messages from API
+      await clearSessionMessages(chatState.sessionId);
+
+      // Clear messages from UI state
+      dispatch({ type: "SET_MESSAGES", payload: [] });
+
+      successToast("Chat session cleared successfully");
+    } catch (error) {
+      console.error("Error clearing session messages:", error);
+      errorToast(
+        `Failed to clear chat session: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   return (
     <>
-      {/* Toggle Button - Fixed positioned in top-right of viewport */}
-      <button
-        onClick={toggleDrawer}
-        className="fixed top-20 right-4 z-50 flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
-      >
-        <InformationCircleIcon className="w-4 h-4 text-blue-400" />
-      </button>
+      {/* Action Buttons - Fixed positioned in top-right of viewport */}
+      <div className="fixed top-20 right-4 z-50 flex items-center space-x-2">
+        {/* Reset Chat Button */}
+        {chatState.messages.length > 0 && (
+          <button
+            onClick={handleResetChat}
+            disabled={isResetting}
+            className="flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
+            title="Reset chat session"
+          >
+            <ArrowPathIcon
+              className={cn(
+                "w-4 h-4 text-red-400",
+                isResetting && "animate-spin"
+              )}
+            />
+          </button>
+        )}
+
+        {/* Toggle Button */}
+        <button
+          onClick={toggleDrawer}
+          className="flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors text-white shadow-lg"
+        >
+          <InformationCircleIcon className="w-4 h-4 text-blue-400" />
+        </button>
+      </div>
 
       {/* Floating Scroll to Bottom Button - Integrated with input area */}
       <button
