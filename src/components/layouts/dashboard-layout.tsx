@@ -16,6 +16,7 @@ import {
   Bars3Icon,
   XMarkIcon,
   TrashIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -209,12 +210,30 @@ export function DashboardLayout({
           </li>
         </ul>
 
-        {/* Divider before sign out */}
+        {/* Divider before bottom actions */}
         <div className="border-t border-gray-700 mb-6"></div>
 
-        {/* Sign Out Section */}
+        {/* Settings and Sign Out Section */}
         <div className="pb-6">
           <ul className="space-y-1">
+            <li>
+              <span
+                onClick={() => {
+                  router.push("/dashboard/settings");
+                  setSidebarOpen(false);
+                }}
+                className={classNames(
+                  "cursor-pointer text-blue-200 hover:text-white hover:bg-blue-700",
+                  "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors duration-150"
+                )}
+              >
+                <Cog6ToothIcon
+                  aria-hidden="true"
+                  className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
+                />
+                Settings
+              </span>
+            </li>
             <li>
               <span
                 onClick={async () => {
