@@ -49,7 +49,7 @@ export const SignupForm = () => {
             {CONFIG.applicationName}
           </h1>
           <h2 className="text-2xl font-semibold text-gray-300">Get started</h2>
-          <p className="text-gray-400 mt-2">Create your account to begin learning</p>
+          <p className="text-gray-400 mt-2">Create your account to begin</p>
         </div>
 
         <form className="space-y-6" onSubmit={handleRegister}>
@@ -113,4 +113,3 @@ export const SignupForm = () => {
     </div>
   );
 };
-

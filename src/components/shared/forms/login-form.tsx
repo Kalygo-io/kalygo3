@@ -50,7 +50,7 @@ export const LoginForm = () => {
             {CONFIG.applicationName}
           </h1>
           <h2 className="text-2xl font-semibold text-gray-300">Welcome back</h2>
-          <p className="text-gray-400 mt-2">Sign in to continue your learning</p>
+          <p className="text-gray-400 mt-2">Sign in to continue</p>
         </div>
 
         <form className="space-y-6" onSubmit={handleLogin}>
@@ -122,4 +122,3 @@ export const LoginForm = () => {
     </div>
   );
 };
-
