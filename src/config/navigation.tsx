@@ -60,15 +60,15 @@ export const navigation = [
   //   enabled: true,
   // },
   {
-    name: "AI School Agent",
+    name: "Agentic RAG",
     href: "/dashboard/agentic-rag",
     enabled: true,
   },
-  // {
-  //   name: "AI School Agent",
-  //   href: "/dashboard/ai-school-agent",
-  //   enabled: true,
-  // },
+  {
+    name: "AI School Agent",
+    href: "/dashboard/ai-school-agent",
+    enabled: true,
+  },
   // {
   //   name: "Multimodal Embeddings",
   //   href: "/dashboard/multimodal",
