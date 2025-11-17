@@ -30,7 +30,7 @@ export const navigation = [
   //   enabled: true,
   // },
   {
-    name: "Similarity",
+    name: "Search Knowledge Base",
     href: "/dashboard/similarity-search",
     enabled: true,
   },
