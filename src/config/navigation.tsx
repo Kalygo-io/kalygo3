@@ -59,11 +59,11 @@ export const navigation = [
   //   href: "/dashboard/tools",
   //   enabled: true,
   // },
-  {
-    name: "Agentic RAG",
-    href: "/dashboard/agentic-rag",
-    enabled: true,
-  },
+  // {
+  //   name: "Agentic RAG",
+  //   href: "/dashboard/agentic-rag",
+  //   enabled: true,
+  // },
   {
     name: "AI School Agent",
     href: "/dashboard/ai-school-agent",

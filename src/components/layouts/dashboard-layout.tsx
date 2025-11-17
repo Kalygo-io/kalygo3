@@ -285,7 +285,7 @@ export function DashboardLayout({
         <div className="lg:pl-72">
           <div
             id="dashboard-sticky-top-nav"
-            className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-900 bg-black text-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
+            className="sticky top-0 z-[60] flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-900 bg-black text-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
           >
             <button
               type="button"
@@ -305,7 +305,7 @@ export function DashboardLayout({
             <div className="flex flex-1 gap-x-4 justify-end lg:gap-x-6">
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative">
+                <Menu as="div" className="relative z-[100]">
                   <MenuButton className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
                     <span className="hidden lg:flex lg:items-center">
@@ -323,7 +323,7 @@ export function DashboardLayout({
                   </MenuButton>
                   <MenuItems
                     transition
-                    className="absolute right-0 z-50 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="absolute right-0 z-[100] mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                   >
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>

@@ -116,7 +116,7 @@ export function Chat({ id, className }: ChatProps) {
   return (
     <>
       {/* Action Buttons - Fixed positioned in top-right of viewport */}
-      <div className="fixed top-20 right-4 z-50 flex items-center space-x-2">
+      <div className="fixed top-20 right-4 z-40 flex items-center space-x-2">
         {/* Reset Chat Button */}
         {chatState.messages.length > 0 && (
           <button
