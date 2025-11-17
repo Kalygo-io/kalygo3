@@ -8,7 +8,7 @@ import {
   chatReducer,
   initialState,
 } from "@/app/dashboard/ai-school-agent/chat-session-reducer";
-import { Chat as AiSchoolRagChat } from "@/components/ai-school-rag-chat/chat";
+import { Chat as AiSchoolAgentChat } from "@/components/ai-school-agent-chat/chat";
 import { useReducer, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useChatSessions } from "@/shared/hooks/use-chat-sessions";
@@ -74,7 +74,7 @@ export function AiSchoolAgentContainer() {
   return (
     <ChatContext.Provider value={chat}>
       <ChatDispatchContext.Provider value={dispatch}>
-        <AiSchoolRagChat />
+        <AiSchoolAgentChat />
       </ChatDispatchContext.Provider>
     </ChatContext.Provider>
   );

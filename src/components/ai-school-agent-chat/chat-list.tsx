@@ -1,5 +1,5 @@
-import { ChatMessage } from "@/components/ai-school-rag-chat/chat-message";
-import { ToolStatus } from "@/components/ai-school-rag-chat/tool-status";
+import { ChatMessage } from "@/components/ai-school-agent-chat/chat-message";
+import { ToolStatus } from "@/components/ai-school-agent-chat/tool-status";
 import { Message } from "@/ts/types/Message";
 
 export interface P {

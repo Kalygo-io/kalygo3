@@ -12,13 +12,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChooseFile } from "./choose-file";
 import {
-  callGetSimilaritySearchKbStats,
+  callGetAiSchoolKbStats,
   KbStats,
-} from "@/services/callGetSimilaritySearchKbStats";
+} from "@/services/callGetAiSchoolKbStats";
 import {
-  callDeleteSimilaritySearchVectorsInNamespace,
+  callDeleteAiSchoolVectorsInNamespace,
   DeleteVectorsResponse,
-} from "@/services/callDeleteSimilaritySearchVectorsInNamespace";
+} from "@/services/callDeleteAiSchoolVectorsInNamespace";
 import { errorToast, successToast } from "@/shared/toasts";
 
 interface ContextualAsideProps {
@@ -43,7 +43,7 @@ export function ContextualAside({
     setLoading(true);
     setError(null);
     try {
-      const stats = await callGetSimilaritySearchKbStats();
+      const stats = await callGetAiSchoolKbStats();
       setKbStats(stats);
     } catch (err) {
       const errorMessage =
@@ -72,7 +72,7 @@ export function ContextualAside({
     setDeleting(true);
     setError(null);
     try {
-      const response = await callDeleteSimilaritySearchVectorsInNamespace(
+      const response = await callDeleteAiSchoolVectorsInNamespace(
         kbStats.namespace
       );
       if (response.success) {
@@ -127,7 +127,7 @@ export function ContextualAside({
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
             <h2 className="text-lg font-semibold text-white">
-              Similarity Search
+              AI School Agent
             </h2>
             <div className="flex items-center space-x-2">
               <button

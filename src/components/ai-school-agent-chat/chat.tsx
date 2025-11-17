@@ -1,10 +1,10 @@
 "use client";
 
 import { ChatContext } from "@/app/dashboard/ai-school-agent/chat-session-context";
-import { ChatList } from "@/components/ai-school-rag-chat/chat-list";
+import { ChatList } from "@/components/ai-school-agent-chat/chat-list";
 import { ChatPanel } from "@/components/shared/chat/chat-panel";
 import { EmptyScreen } from "@/components/shared/chat/empty-screen";
-import { PromptForm } from "@/components/ai-school-rag-chat/prompt-form";
+import { PromptForm } from "@/components/ai-school-agent-chat/prompt-form";
 import { useScrollAnchor } from "@/shared/hooks/use-scroll-anchor";
 import { cn } from "@/shared/utils";
 import { useContext, useEffect, useState } from "react";

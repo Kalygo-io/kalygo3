@@ -7,9 +7,9 @@ import {
 } from "@heroicons/react/24/outline";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  callUploadKnowledgeForSimilaritySearch,
+  callUploadKnowledgeForAiSchool,
   UploadResponse,
-} from "@/services/callUploadKnowledgeForSimilaritySearch";
+} from "@/services/callUploadKnowledgeForAiSchool";
 import { successToast, errorToast } from "@/shared/toasts";
 
 interface Props {
@@ -119,7 +119,7 @@ export function ChooseFile(props: Props) {
         setUploadProgress(progress);
 
         try {
-          const result = await callUploadKnowledgeForSimilaritySearch(file);
+          const result = await callUploadKnowledgeForAiSchool(file);
           results.push(result);
 
           if (result.success) {
