@@ -1,7 +1,5 @@
-// import { WaitListForm } from "@/components/shared/forms/wait-list-form";
-
-import { AuthForm } from "@/components/shared/forms/auth-form";
+import { LandingPage } from "@/components/landing/landing-page";
 
 export default function Home() {
-  return <AuthForm />;
+  return <LandingPage />;
 }
