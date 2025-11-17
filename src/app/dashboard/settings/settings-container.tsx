@@ -12,6 +12,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { getCurrentUser } from "@/services/getCurrentUser";
 import { getPaymentMethods, PaymentMethod } from "@/services/getPaymentMethods";
 import { addPaymentMethod } from "@/services/addPaymentMethod";
+import { deletePaymentMethod } from "@/services/deletePaymentMethod";
 import { errorReporter } from "@/shared/errorReporter";
 import { Spinner } from "@/components/shared/common/spinner";
 import { successToast } from "@/shared/toasts";
@@ -61,13 +62,13 @@ export function SettingsContainer() {
       return;
     }
     try {
-      // TODO: Implement API call to delete payment method
-      console.log("Deleting payment method:", paymentMethodId);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await deletePaymentMethod(paymentMethodId);
+
+      // Remove from local state
       setPaymentMethods(
         paymentMethods.filter((pm) => pm.id !== paymentMethodId)
       );
+
       successToast("Payment method deleted successfully");
     } catch (err) {
       errorReporter(err);
