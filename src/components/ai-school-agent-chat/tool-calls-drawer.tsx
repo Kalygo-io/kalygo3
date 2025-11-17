@@ -231,9 +231,6 @@ export function ToolCallsDrawer({
                                       <span className="text-sm text-gray-400">
                                         #{resultIndex + 1}
                                       </span>
-                                      <span className="text-xs font-mono text-gray-500 bg-gray-700/50 px-2 py-1 rounded">
-                                        {result.chunk_id}
-                                      </span>
                                     </div>
                                     <div className="flex items-center space-x-3">
                                       <div className="flex items-center space-x-1">
