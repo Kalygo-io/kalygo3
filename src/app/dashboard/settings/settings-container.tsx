@@ -7,21 +7,24 @@ import {
   TrashIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import { getCurrentUser } from "@/services/getCurrentUser";
 import { getPaymentMethods, PaymentMethod } from "@/services/getPaymentMethods";
+import { addPaymentMethod } from "@/services/addPaymentMethod";
 import { errorReporter } from "@/shared/errorReporter";
 import { Spinner } from "@/components/shared/common/spinner";
 import { successToast } from "@/shared/toasts";
+import { StripePaymentForm } from "@/components/shared/stripe-payment-form";
+
+// Initialize Stripe
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+);
 
 export function SettingsContainer() {
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [cardholderName, setCardholderName] = useState<string>("");
-  const [expiryDate, setExpiryDate] = useState<string>("");
-  const [cvv, setCvv] = useState<string>("");
-  const [billingZip, setBillingZip] = useState<string>("");
-  const [isSavingCard, setIsSavingCard] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(true);
 
@@ -75,7 +78,8 @@ export function SettingsContainer() {
     const brandLower = brand.toLowerCase();
     if (brandLower.includes("visa")) return "💳";
     if (brandLower.includes("mastercard")) return "💳";
-    if (brandLower.includes("amex") || brandLower.includes("american")) return "💳";
+    if (brandLower.includes("amex") || brandLower.includes("american"))
+      return "💳";
     if (brandLower.includes("discover")) return "💳";
     return "💳";
   };
@@ -84,72 +88,18 @@ export function SettingsContainer() {
     return `${String(month).padStart(2, "0")}/${String(year).slice(-2)}`;
   };
 
-  const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || "";
-    const parts = [];
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
-    if (parts.length) {
-      return parts.join(" ");
-    } else {
-      return v;
-    }
-  };
-
-  const formatExpiryDate = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
-    if (v.length >= 2) {
-      return v.substring(0, 2) + "/" + v.substring(2, 4);
-    }
-    return v;
-  };
-
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatCardNumber(e.target.value);
-    setCardNumber(formatted);
-  };
-
-  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatExpiryDate(e.target.value);
-    setExpiryDate(formatted);
-  };
-
-  const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = e.target.value.replace(/\D/g, "").substring(0, 4);
-    setCvv(v);
-  };
-
-  const handleSaveCard = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSavingCard(true);
+  const handlePaymentMethodCreated = async (paymentMethodId: string) => {
     try {
-      // TODO: Implement API call to save credit card
-      console.log("Saving card:", {
-        cardNumber: cardNumber.replace(/\s/g, ""),
-        cardholderName,
-        expiryDate,
-        cvv,
-        billingZip,
-      });
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Credit card saved successfully!");
-      // Reset form
-      setCardNumber("");
-      setCardholderName("");
-      setExpiryDate("");
-      setCvv("");
-      setBillingZip("");
+      // Attach the payment method to the customer using the backend endpoint
+      await addPaymentMethod(paymentMethodId);
+
+      successToast("Payment method added successfully!");
+
       // Refresh payment methods list
       const methods = await getPaymentMethods();
       setPaymentMethods(methods);
     } catch (err) {
-      errorReporter(err);
-    } finally {
-      setIsSavingCard(false);
+      throw err; // Re-throw to be handled by StripePaymentForm
     }
   };
 
@@ -212,7 +162,9 @@ export function SettingsContainer() {
             {isLoadingPaymentMethods ? (
               <div className="flex items-center justify-center py-8">
                 <Spinner />
-                <span className="ml-2 text-gray-400">Loading payment methods...</span>
+                <span className="ml-2 text-gray-400">
+                  Loading payment methods...
+                </span>
               </div>
             ) : paymentMethods.length === 0 ? (
               <div className="text-center py-8">
@@ -237,7 +189,9 @@ export function SettingsContainer() {
                         <div className="flex items-center space-x-2">
                           <span className="text-white font-semibold">
                             {pm.card
-                              ? `${pm.card.brand.toUpperCase()} •••• ${pm.card.last4}`
+                              ? `${pm.card.brand.toUpperCase()} •••• ${
+                                  pm.card.last4
+                                }`
                               : "Card"}
                           </span>
                           {pm.isDefault && (
@@ -251,7 +205,11 @@ export function SettingsContainer() {
                           {pm.card && (
                             <>
                               <span>
-                                Expires {formatExpiry(pm.card.exp_month, pm.card.exp_year)}
+                                Expires{" "}
+                                {formatExpiry(
+                                  pm.card.exp_month,
+                                  pm.card.exp_year
+                                )}
                               </span>
                               {pm.billing_details?.name && (
                                 <span>• {pm.billing_details.name}</span>
@@ -282,93 +240,20 @@ export function SettingsContainer() {
                 Add Payment Method
               </h2>
             </div>
-            <form onSubmit={handleSaveCard} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Card Number
-                </label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={handleCardNumberChange}
-                  placeholder="1234 5678 9012 3456"
-                  maxLength={19}
-                  required
-                  className="bg-gray-900/50 w-full px-4 py-3 border border-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-mono"
+            {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? (
+              <Elements stripe={stripePromise}>
+                <StripePaymentForm
+                  onPaymentMethodCreated={handlePaymentMethodCreated}
+                  onError={errorReporter}
                 />
+              </Elements>
+            ) : (
+              <div className="bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-4 text-yellow-400 text-sm">
+                Stripe publishable key not configured. Please set
+                NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY in your environment
+                variables.
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Cardholder Name
-                </label>
-                <input
-                  type="text"
-                  value={cardholderName}
-                  onChange={(e) => setCardholderName(e.target.value)}
-                  placeholder="John Doe"
-                  required
-                  className="bg-gray-900/50 w-full px-4 py-3 border border-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Expiry Date
-                  </label>
-                  <input
-                    type="text"
-                    value={expiryDate}
-                    onChange={handleExpiryChange}
-                    placeholder="MM/YY"
-                    maxLength={5}
-                    required
-                    className="bg-gray-900/50 w-full px-4 py-3 border border-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-mono"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    CVV
-                  </label>
-                  <input
-                    type="text"
-                    value={cvv}
-                    onChange={handleCvvChange}
-                    placeholder="123"
-                    maxLength={4}
-                    required
-                    className="bg-gray-900/50 w-full px-4 py-3 border border-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-mono"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Billing ZIP Code
-                </label>
-                <input
-                  type="text"
-                  value={billingZip}
-                  onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, "").substring(0, 10))}
-                  placeholder="12345"
-                  maxLength={10}
-                  required
-                  className="bg-gray-900/50 w-full px-4 py-3 border border-gray-700 text-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isSavingCard}
-                className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-blue-500/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSavingCard ? (
-                  <div className="flex items-center justify-center space-x-2">
-                    <Spinner />
-                    <span>Saving...</span>
-                  </div>
-                ) : (
-                  "Save Payment Method"
-                )}
-              </button>
-            </form>
+            )}
           </div>
 
           {/* Notifications */}
@@ -398,4 +283,3 @@ export function SettingsContainer() {
     </div>
   );
 }
-
