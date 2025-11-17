@@ -8,7 +8,7 @@ import {
 } from "@/app/dashboard/ai-school-agent/chat-session-context";
 import { useEnterSubmit } from "@/shared/hooks/use-enter-submit";
 import { nanoid } from "@/shared/utils";
-import { callAiSchoolRagAgent } from "@/services/callAiSchoolRagAgent";
+import { callAiSchoolAgent } from "@/services/callAiSchoolAgent";
 import { ResizableTextarea } from "@/components/shared/resizable-textarea";
 import { StopIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
@@ -76,12 +76,7 @@ export function PromptForm({
             payload: true,
           });
 
-          await callAiSchoolRagAgent(
-            sessionId,
-            prompt,
-            dispatch,
-            abortController
-          );
+          await callAiSchoolAgent(sessionId, prompt, dispatch, abortController);
 
           dispatch({
             type: "SET_COMPLETION_LOADING",

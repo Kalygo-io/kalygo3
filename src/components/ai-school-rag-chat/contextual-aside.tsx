@@ -4,34 +4,46 @@ import { useState, useEffect } from "react";
 import {
   InformationCircleIcon,
   XMarkIcon,
+  ChartBarIcon,
   DocumentTextIcon,
+  CogIcon,
   ArrowPathIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import { ChooseFile } from "./choose-file";
 import {
-  callGetAgenticRagKbStats,
+  callGetSimilaritySearchKbStats,
   KbStats,
-} from "@/services/callGetAgenticRagKbStats";
-import { callDeleteVectorsInNamespace } from "@/services/callDeleteVectorsInNamespace";
+} from "@/services/callGetSimilaritySearchKbStats";
+import {
+  callDeleteSimilaritySearchVectorsInNamespace,
+  DeleteVectorsResponse,
+} from "@/services/callDeleteSimilaritySearchVectorsInNamespace";
 import { errorToast, successToast } from "@/shared/toasts";
 
 interface ContextualAsideProps {
   isOpen: boolean;
   onClose: () => void;
+  onUploadSuccess?: () => void;
 }
 
-export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
-  const [activeTab, setActiveTab] = useState("overview");
+export function ContextualAside({
+  isOpen,
+  onClose,
+  onUploadSuccess,
+}: ContextualAsideProps) {
+  const [activeTab, setActiveTab] = useState("kb-stats");
   const [kbStats, setKbStats] = useState<KbStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [files, setFiles] = useState<File[] | null>(null);
 
   const fetchKbStats = async () => {
     setLoading(true);
     setError(null);
     try {
-      const stats = await callGetAgenticRagKbStats();
+      const stats = await callGetSimilaritySearchKbStats();
       setKbStats(stats);
     } catch (err) {
       const errorMessage =
@@ -60,7 +72,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
     setDeleting(true);
     setError(null);
     try {
-      const response = await callDeleteVectorsInNamespace(kbStats.namespace);
+      const response = await callDeleteSimilaritySearchVectorsInNamespace(
+        kbStats.namespace
+      );
       if (response.success) {
         successToast(
           `Successfully deleted vectors from namespace "${kbStats.namespace}"`
@@ -89,13 +103,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
   }, [isOpen, activeTab]);
 
   const tabs = [
-    { id: "overview", name: "Overview", icon: InformationCircleIcon },
     { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
+    { id: "update-kb", name: "Update KB", icon: CogIcon },
   ];
-
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat().format(num);
-  };
 
   return (
     <>
@@ -116,7 +126,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Agentic RAG</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Similarity Search
+            </h2>
             <div className="flex items-center space-x-2">
               <button
                 onClick={onClose}
@@ -153,49 +165,6 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-4">
-            {activeTab === "overview" && (
-              <div className="space-y-4">
-                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    What is Agentic RAG?
-                  </h3>
-                  <p className="text-white text-sm leading-relaxed">
-                    Agentic RAG combines the power of RAG (Retrieval-Augmented
-                    Generation) with agentic capabilities. It uses an LLM agent
-                    that can reason, plan, and execute multi-step processes to
-                    retrieve and synthesize information from external knowledge
-                    sources.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <h4 className="text-md font-semibold text-white">
-                    Key Characteristics:
-                  </h4>
-                  <ul className="space-y-2 text-sm text-white">
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>
-                        Intelligent information retrieval and synthesis
-                      </span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Multi-step reasoning and planning</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Dynamic query generation and refinement</span>
-                    </li>
-                    <li className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                      <span>Context-aware information processing</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
             {activeTab === "kb-stats" && (
               <div className="space-y-4">
                 <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
@@ -283,7 +252,9 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                             Vectors in Namespace
                           </span>
                           <span className="text-sm font-medium text-white">
-                            {formatNumber(kbStats.namespace_vector_count || 0)}
+                            {new Intl.NumberFormat().format(
+                              kbStats.namespace_vector_count || 0
+                            )}
                           </span>
                         </div>
                       </div>
@@ -316,6 +287,39 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+
+            {activeTab === "update-kb" && (
+              <div className="space-y-4">
+                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Update Knowledge Base
+                  </h3>
+                  <p className="text-white text-sm leading-relaxed">
+                    Upload new data into your knowledge base. This tools
+                    supports .csv files with 2 columns: q,a
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-md font-semibold text-white">
+                    Provide Knowledge:
+                  </h4>
+                  <div className="space-y-3">
+                    <ChooseFile
+                      files={files}
+                      setFiles={setFiles}
+                      onUploadSuccess={() => {
+                        if (onUploadSuccess) {
+                          onUploadSuccess();
+                        }
+                        // Refresh KB stats after upload
+                        fetchKbStats();
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </div>

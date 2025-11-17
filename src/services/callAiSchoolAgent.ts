@@ -2,21 +2,21 @@ import { Action } from "@/app/dashboard/agentic-rag/chat-session-reducer";
 import { nanoid } from "@/shared/utils";
 import React from "react";
 
-export async function callAiSchoolRagAgent(
+export async function callAiSchoolAgent(
   sessionId: string,
   prompt: string,
   dispatch: React.Dispatch<Action>,
   abortController?: AbortController
 ) {
   console.log(
-    "Starting agentic RAG call with sessionId:",
+    "Starting AI School Agent call with sessionId:",
     sessionId,
     "prompt:",
     prompt
   );
 
   const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/ai-school-rag-agent/completion`,
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/ai-school-agent/completion`,
     {
       method: "POST",
       headers: {
