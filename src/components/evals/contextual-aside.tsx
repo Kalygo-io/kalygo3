@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  XMarkIcon,
   BookOpenIcon,
   LightBulbIcon,
   AcademicCapIcon,
   ChartBarIcon,
   CogIcon,
 } from "@heroicons/react/24/outline";
+import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
 
 interface ContextualAsideProps {
   isOpen: boolean;
@@ -102,7 +102,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
 
       {/* Drawer */}
       <div
-        className={`fixed inset-y-0 right-0 w-96 bg-gray-900 border-l border-gray-700 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 right-0 w-96 bg-gray-900 border-l border-gray-700 z-[70] transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -112,12 +112,7 @@ export function ContextualAside({ isOpen, onClose }: ContextualAsideProps) {
             <h2 className="text-lg font-semibold text-white">
               Evaluation Resources
             </h2>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-lg hover:bg-gray-800 transition-colors text-white"
-            >
-              <XMarkIcon className="w-5 h-5" />
-            </button>
+            <DrawerCloseButton onClose={onClose} />
           </div>
 
           {/* Content */}

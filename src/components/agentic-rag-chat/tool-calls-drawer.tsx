@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  XMarkIcon,
   DocumentTextIcon,
   WrenchScrewdriverIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
+import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
 import { RetrievalCall } from "@/ts/types/Message";
 import { cn } from "@/shared/utils";
 import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
@@ -90,12 +90,7 @@ export function ToolCallsDrawer({
                 Tool Calls & References
               </h2>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-            >
-              <XMarkIcon className="w-5 h-5 text-gray-400" />
-            </button>
+            <DrawerCloseButton onClose={onClose} />
           </div>
 
           {/* Content */}

@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { RerankedMatch } from "@/ts/types/Message";
 import {
-  XMarkIcon,
   DocumentTextIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   InformationCircleIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
+import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
 import { useCopyToClipboard } from "@/shared/hooks/use-copy-to-clipboard";
 
 interface ChunksDrawerProps {
@@ -85,7 +85,7 @@ export function ChunksDrawer({
 
       {/* Drawer */}
       <div
-        className={`fixed inset-y-0 right-0 w-96 bg-gray-900 border-l border-gray-700 z-50 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 right-0 w-96 bg-gray-900 border-l border-gray-700 z-[70] transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -98,15 +98,7 @@ export function ChunksDrawer({
                 Knowledge Chunks
               </h2>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={onClose}
-                className="p-1 hover:bg-gray-700 rounded transition-colors"
-                title="Close panel"
-              >
-                <XMarkIcon className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
+            <DrawerCloseButton onClose={onClose} />
           </div>
 
           {/* Content */}
