@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   XMarkIcon,
   DocumentTextIcon,
@@ -27,6 +27,19 @@ export function ToolCallsDrawer({
   );
   const [expandedChunks, setExpandedChunks] = useState<Set<string>>(new Set());
   const { copyToClipboard } = useCopyToClipboard({ timeout: 2000 });
+
+  // Expand all chunks by default when drawer opens or retrievalCalls change
+  useEffect(() => {
+    if (isOpen && retrievalCalls.length > 0) {
+      const allChunkKeys = new Set<string>();
+      retrievalCalls.forEach((call, toolCallIndex) => {
+        call.reranked_results.forEach((_, chunkIndex) => {
+          allChunkKeys.add(`${toolCallIndex}-${chunkIndex}`);
+        });
+      });
+      setExpandedChunks(allChunkKeys);
+    }
+  }, [isOpen, retrievalCalls]);
 
   if (!isOpen) return null;
 
