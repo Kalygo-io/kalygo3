@@ -69,6 +69,11 @@ export const navigation = [
     href: "/dashboard/ai-school-agent",
     enabled: true,
   },
+  {
+    name: "JWT Agent",
+    href: "/dashboard/jwt-agent",
+    enabled: true,
+  },
   // {
   //   name: "Multimodal Embeddings",
   //   href: "/dashboard/multimodal",
