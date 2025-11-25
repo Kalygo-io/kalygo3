@@ -1,14 +1,14 @@
 export const navigation = [
-  {
-    name: "Tokenizers",
-    href: "/dashboard/tokenizers",
-    enabled: true,
-  },
-  {
-    name: "Raw LLMs",
-    href: "/dashboard/raw-llm",
-    enabled: true,
-  },
+  // {
+  //   name: "Tokenizers",
+  //   href: "/dashboard/tokenizers",
+  //   enabled: true,
+  // },
+  // {
+  //   name: "Raw LLMs",
+  //   href: "/dashboard/raw-llm",
+  //   enabled: true,
+  // },
   // {
   //   name: "Basic Memory",
   //   href: "/dashboard/basic-memory",
@@ -39,11 +39,11 @@ export const navigation = [
   //   href: "/dashboard/chunking",
   //   enabled: true,
   // },
-  // {
-  //   name: "Reranking",
-  //   href: "/dashboard/reranking",
-  //   enabled: true,
-  // },
+  {
+    name: "Reranking",
+    href: "/dashboard/reranking",
+    enabled: true,
+  },
   // {
   //   name: "Reranking + LLM",
   //   href: "/dashboard/reranking-with-llm",
@@ -69,11 +69,11 @@ export const navigation = [
     href: "/dashboard/ai-school-agent",
     enabled: true,
   },
-  {
-    name: "JWT Agent",
-    href: "/dashboard/jwt-agent",
-    enabled: true,
-  },
+  // {
+  //   name: "JWT Agent",
+  //   href: "/dashboard/jwt-agent",
+  //   enabled: true,
+  // },
   // {
   //   name: "Multimodal Embeddings",
   //   href: "/dashboard/multimodal",
