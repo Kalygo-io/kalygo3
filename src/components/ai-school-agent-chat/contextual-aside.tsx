@@ -11,7 +11,8 @@ import {
   DocumentArrowUpIcon,
 } from "@heroicons/react/24/outline";
 import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
-import { ChooseFile } from "./choose-file";
+import { ChooseCsvFile } from "./choose-csv-file";
+import { ChooseTextFile } from "./choose-text-file";
 import {
   callGetAiSchoolKbStats,
   KbStats,
@@ -301,7 +302,7 @@ export function ContextualAside({
                     Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
-                    <ChooseFile
+                    <ChooseCsvFile
                       files={files}
                       setFiles={setFiles}
                       onUploadSuccess={() => {
@@ -335,7 +336,7 @@ export function ContextualAside({
                     Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
-                    <ChooseFile
+                    <ChooseTextFile
                       files={files}
                       setFiles={setFiles}
                       onUploadSuccess={() => {

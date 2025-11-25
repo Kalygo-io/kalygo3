@@ -1,15 +1,10 @@
 import { errorReporter } from "@/shared/errorReporter";
-import {
-  XCircleIcon,
-  DocumentDuplicateIcon,
-  DocumentIcon,
-  Square2StackIcon,
-} from "@heroicons/react/24/outline";
+import { XCircleIcon, Square2StackIcon } from "@heroicons/react/24/outline";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  callUploadKnowledgeForAiSchool,
+  callUploadTextKnowledgeForAiSchool,
   UploadResponse,
-} from "@/services/callUploadKnowledgeForAiSchool";
+} from "@/services/callUploadTextKnowledgeForAiSchool";
 import { successToast, errorToast } from "@/shared/toasts";
 
 interface Props {
@@ -18,7 +13,7 @@ interface Props {
   onUploadSuccess?: () => void;
 }
 
-export function ChooseFile(props: Props) {
+export function ChooseTextFile(props: Props) {
   const { files, setFiles } = props;
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -119,7 +114,7 @@ export function ChooseFile(props: Props) {
         setUploadProgress(progress);
 
         try {
-          const result = await callUploadKnowledgeForAiSchool(file);
+          const result = await callUploadTextKnowledgeForAiSchool(file);
           results.push(result);
 
           if (result.success) {

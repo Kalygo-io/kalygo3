@@ -9,7 +9,7 @@ export interface UploadResponse {
   error?: string;
 }
 
-export async function callUploadKnowledgeForAiSchool(
+export async function callUploadQnaKnowledgeForAiSchool(
   file: File
 ): Promise<UploadResponse> {
   try {
@@ -17,7 +17,7 @@ export async function callUploadKnowledgeForAiSchool(
     formData.append("file", file);
 
     const resp = await fetch(
-      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/ai-school-agent/upload-single`,
+      `${process.env.NEXT_PUBLIC_AI_API_URL}/api/ai-school-agent/upload-csv-single`,
       {
         method: "POST",
         body: formData,
