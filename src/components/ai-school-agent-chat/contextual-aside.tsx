@@ -319,19 +319,20 @@ export function ContextualAside({
 
             {activeTab === "ingest-text" && (
               <div className="space-y-4">
-                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                <div className="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-white mb-2">
                     Ingest Text
                   </h3>
                   <p className="text-white text-sm leading-relaxed">
-                    Upload text files to add to your knowledge base. This tool
-                    supports .txt files.
+                    Upload .txt and .md files to train and improve the AI School
+                    Agent. These files will be processed and added to the
+                    knowledge base.
                   </p>
                 </div>
 
                 <div className="space-y-3">
                   <h4 className="text-md font-semibold text-white">
-                    Provide Text:
+                    Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
                     <ChooseFile

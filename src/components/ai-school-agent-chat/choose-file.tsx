@@ -38,12 +38,12 @@ export function ChooseFile(props: Props) {
       const dataTransferFiles = e.dataTransfer?.files;
       for (let i = 0; i < dataTransferFiles.length; i++) {
         const file = dataTransferFiles[i];
-        // Check for CSV files by extension and MIME type
+        // Check for text and markdown files by extension and MIME type
         const isValidFile =
-          file.type === "text/csv" ||
           file.type === "text/plain" ||
           file.type === "text/markdown" ||
-          file.name.toLowerCase().endsWith(".csv");
+          file.name.toLowerCase().endsWith(".txt") ||
+          file.name.toLowerCase().endsWith(".md");
 
         if (!isValidFile) {
           setDragActive(false);
@@ -64,12 +64,12 @@ export function ChooseFile(props: Props) {
 
       if (e.dataTransfer.files) {
         const validFiles = Array.from(e.dataTransfer.files).filter((file) => {
-          // Check for CSV files by extension and MIME type
+          // Check for text and markdown files by extension and MIME type
           return (
-            file.type === "text/csv" ||
             file.type === "text/plain" ||
             file.type === "text/markdown" ||
-            file.name.toLowerCase().endsWith(".csv")
+            file.name.toLowerCase().endsWith(".txt") ||
+            file.name.toLowerCase().endsWith(".md")
           );
         });
 
@@ -214,14 +214,14 @@ export function ChooseFile(props: Props) {
                         id="input-file-upload"
                         multiple={true}
                         onChange={handleChange}
-                        accept=".csv"
+                        accept=".txt,.md"
                         className="sr-only"
                       />
                     </button>
                   </label>
                 </div>
                 <p className="text-xs leading-5 text-gray-400">
-                  <sup>*</sup>Supports .csv files
+                  <sup>*</sup>Supports .txt and .md files
                 </p>
               </div>
             </div>
