@@ -29,21 +29,21 @@ export const navigation = [
   //   href: "/dashboard/vectors",
   //   enabled: true,
   // },
-  {
-    name: "Search Knowledge Base",
-    href: "/dashboard/similarity-search",
-    enabled: true,
-  },
+  // {
+  //   name: "Search Knowledge Base",
+  //   href: "/dashboard/similarity-search",
+  //   enabled: true,
+  // },
   // {
   //   name: "Chunking",
   //   href: "/dashboard/chunking",
   //   enabled: true,
   // },
-  {
-    name: "Reranking",
-    href: "/dashboard/reranking",
-    enabled: true,
-  },
+  // {
+  //   name: "Reranking",
+  //   href: "/dashboard/reranking",
+  //   enabled: true,
+  // },
   // {
   //   name: "Reranking + LLM",
   //   href: "/dashboard/reranking-with-llm",
