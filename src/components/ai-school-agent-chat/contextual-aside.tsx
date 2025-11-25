@@ -8,6 +8,7 @@ import {
   CogIcon,
   ArrowPathIcon,
   TrashIcon,
+  DocumentArrowUpIcon,
 } from "@heroicons/react/24/outline";
 import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
 import { ChooseFile } from "./choose-file";
@@ -105,6 +106,7 @@ export function ContextualAside({
   const tabs = [
     { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
     { id: "update-kb", name: "Ingest QnA", icon: CogIcon },
+    { id: "ingest-text", name: "Ingest Text", icon: DocumentArrowUpIcon },
   ];
 
   return (
@@ -297,6 +299,39 @@ export function ContextualAside({
                 <div className="space-y-3">
                   <h4 className="text-md font-semibold text-white">
                     Provide Knowledge:
+                  </h4>
+                  <div className="space-y-3">
+                    <ChooseFile
+                      files={files}
+                      setFiles={setFiles}
+                      onUploadSuccess={() => {
+                        if (onUploadSuccess) {
+                          onUploadSuccess();
+                        }
+                        // Refresh KB stats after upload
+                        fetchKbStats();
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "ingest-text" && (
+              <div className="space-y-4">
+                <div className="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Ingest Text
+                  </h3>
+                  <p className="text-white text-sm leading-relaxed">
+                    Upload text files to add to your knowledge base. This tool
+                    supports .txt files.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-md font-semibold text-white">
+                    Provide Text:
                   </h4>
                   <div className="space-y-3">
                     <ChooseFile
