@@ -16,8 +16,7 @@ export async function callJwtAgent(
   );
 
   const resp = await fetch(
-    // `${process.env.NEXT_PUBLIC_AI_API_URL}/api/ai-school-agent/completion`,
-    "https://commandlabs.app.n8n.cloud/webhook-test/2202b519-db70-489a-841a-b1df7e661ca9",
+    `${process.env.NEXT_PUBLIC_AI_API_URL}/api/jwt-agent/completion`,
     {
       method: "POST",
       headers: {
@@ -38,123 +37,123 @@ export async function callJwtAgent(
     throw `Network response was not OK: ${resp.status} - ${errorText}`;
   }
 
-  debugger;
+  // debugger;
 
-  // const reader = resp?.body?.getReader();
-  // if (!reader) {
-  //   throw new Error("Failed to get response reader");
-  // }
-  // const decoder = new TextDecoder();
+  const reader = resp?.body?.getReader();
+  if (!reader) {
+    throw new Error("Failed to get response reader");
+  }
+  const decoder = new TextDecoder();
 
-  // const aiMessageId = nanoid();
-  // let accMessage = {
-  //   content: "",
-  // };
-  // let retrievalCalls: any[] = [];
+  const aiMessageId = nanoid();
+  let accMessage = {
+    content: "",
+  };
+  let retrievalCalls: any[] = [];
 
-  // console.log("Starting to read stream...");
+  console.log("Starting to read stream...");
 
-  // try {
-  //   while (true) {
-  //     // Check for cancellation before reading
-  //     if (abortController?.signal.aborted) {
-  //       console.log("Ai School RAG request cancelled");
-  //       break;
-  //     }
+  try {
+    while (true) {
+      // Check for cancellation before reading
+      if (abortController?.signal.aborted) {
+        console.log("Ai School RAG request cancelled");
+        break;
+      }
 
-  //     const { done, value } = await reader.read();
-  //     if (done) {
-  //       console.log("Stream complete");
-  //       break;
-  //     }
+      const { done, value } = await reader.read();
+      if (done) {
+        console.log("Stream complete");
+        break;
+      }
 
-  //     let chunk = decoder.decode(value);
-  //     console.log("Raw chunk received:", chunk);
+      let chunk = decoder.decode(value);
+      console.log("Raw chunk received:", chunk);
 
-  //     try {
-  //       const parsedChunk = JSON.parse(chunk);
-  //       console.log("Parsed chunk:", parsedChunk);
-  //       dispatchEventToState(
-  //         parsedChunk,
-  //         dispatch,
-  //         aiMessageId,
-  //         accMessage,
-  //         retrievalCalls
-  //       );
-  //     } catch (e) {
-  //       console.log(
-  //         "Failed to parse as single JSON, trying multi-chunk parsing..."
-  //       );
-  //       let multiChunkAcc = "";
-  //       let idx = 0;
-  //       let braceCount = 0;
-  //       let inString = false;
-  //       let escapeNext = false;
+      try {
+        const parsedChunk = JSON.parse(chunk);
+        console.log("Parsed chunk:", parsedChunk);
+        dispatchEventToState(
+          parsedChunk,
+          dispatch,
+          aiMessageId,
+          accMessage,
+          retrievalCalls
+        );
+      } catch (e) {
+        console.log(
+          "Failed to parse as single JSON, trying multi-chunk parsing..."
+        );
+        let multiChunkAcc = "";
+        let idx = 0;
+        let braceCount = 0;
+        let inString = false;
+        let escapeNext = false;
 
-  //       while (idx < chunk.length) {
-  //         const char = chunk[idx];
+        while (idx < chunk.length) {
+          const char = chunk[idx];
 
-  //         if (escapeNext) {
-  //           multiChunkAcc += char;
-  //           escapeNext = false;
-  //         } else if (char === "\\") {
-  //           multiChunkAcc += char;
-  //           escapeNext = true;
-  //         } else if (char === '"' && !escapeNext) {
-  //           multiChunkAcc += char;
-  //           inString = !inString;
-  //         } else if (!inString) {
-  //           if (char === "{") {
-  //             braceCount++;
-  //           } else if (char === "}") {
-  //             braceCount--;
-  //           }
-  //           multiChunkAcc += char;
+          if (escapeNext) {
+            multiChunkAcc += char;
+            escapeNext = false;
+          } else if (char === "\\") {
+            multiChunkAcc += char;
+            escapeNext = true;
+          } else if (char === '"' && !escapeNext) {
+            multiChunkAcc += char;
+            inString = !inString;
+          } else if (!inString) {
+            if (char === "{") {
+              braceCount++;
+            } else if (char === "}") {
+              braceCount--;
+            }
+            multiChunkAcc += char;
 
-  //           // Try to parse when we have a complete JSON object
-  //           if (braceCount === 0 && multiChunkAcc.trim()) {
-  //             try {
-  //               const parsedChunk = JSON.parse(multiChunkAcc.trim());
-  //               console.log("Parsed multi-chunk:", parsedChunk);
+            // Try to parse when we have a complete JSON object
+            if (braceCount === 0 && multiChunkAcc.trim()) {
+              try {
+                const parsedChunk = JSON.parse(multiChunkAcc.trim());
+                console.log("Parsed multi-chunk:", parsedChunk);
 
-  //               dispatchEventToState(
-  //                 parsedChunk,
-  //                 dispatch,
-  //                 aiMessageId,
-  //                 accMessage,
-  //                 retrievalCalls
-  //               );
+                dispatchEventToState(
+                  parsedChunk,
+                  dispatch,
+                  aiMessageId,
+                  accMessage,
+                  retrievalCalls
+                );
 
-  //               // Move to next character after the parsed JSON
-  //               chunk = chunk.substring(idx + 1);
-  //               idx = 0;
-  //               multiChunkAcc = "";
-  //               braceCount = 0;
-  //               continue;
-  //             } catch (parseError) {
-  //               // Continue accumulating if this isn't valid JSON yet
-  //             }
-  //           }
-  //         } else {
-  //           multiChunkAcc += char;
-  //         }
+                // Move to next character after the parsed JSON
+                chunk = chunk.substring(idx + 1);
+                idx = 0;
+                multiChunkAcc = "";
+                braceCount = 0;
+                continue;
+              } catch (parseError) {
+                // Continue accumulating if this isn't valid JSON yet
+              }
+            }
+          } else {
+            multiChunkAcc += char;
+          }
 
-  //         idx++;
-  //       }
-  //     }
-  //   }
-  // } catch (error) {
-  //   if (error instanceof Error && error.name === "AbortError") {
-  //     console.log("Agentic RAG request aborted");
-  //     throw error;
-  //   }
-  //   console.error("Error in streaming response:", error);
-  //   throw error;
-  // } finally {
-  //   if (reader) {
-  //     reader.releaseLock();
-  //   }
-  // }
+          idx++;
+        }
+      }
+    }
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.log("Agentic RAG request aborted");
+      throw error;
+    }
+    console.error("Error in streaming response:", error);
+    throw error;
+  } finally {
+    if (reader) {
+      reader.releaseLock();
+    }
+  }
 }
 
 function dispatchEventToState(
@@ -233,6 +232,63 @@ function dispatchEventToState(
         console.log("No retrieval calls found in chain end event");
         console.log("Available keys in parsedChunk:", Object.keys(parsedChunk));
       }
+    } else if (parsedChunk.event === "completion") {
+      const finalContent = parsedChunk.data.output || accMessage.content;
+      // debugger;
+
+      dispatch({
+        type: "ADD_MESSAGE",
+        payload: {
+          id: aiMessageId,
+          content: finalContent,
+          role: "ai",
+          error: null,
+        },
+      });
+      // dispatch({
+      //   type: "EDIT_MESSAGE",
+      //   payload: {
+      //     id: aiMessageId,
+      //     content: finalContent,
+      //   },
+      // });
+
+      // // Handle retrieval calls if available
+      // console.log(
+      //   "Chain end event - checking for retrieval calls:",
+      //   parsedChunk
+      // );
+      // console.log("Chain end event keys:", Object.keys(parsedChunk));
+      // if (parsedChunk.retrieval_calls) {
+      //   try {
+      //     console.log("Retrieval calls found:", parsedChunk.retrieval_calls);
+      //     const retrievalCallsData = Array.isArray(parsedChunk.retrieval_calls)
+      //       ? parsedChunk.retrieval_calls
+      //       : [];
+
+      //     console.log("Processed retrieval calls data:", retrievalCallsData);
+
+      //     dispatch({
+      //       type: "EDIT_MESSAGE",
+      //       payload: {
+      //         id: aiMessageId,
+      //         retrievalCalls: retrievalCallsData,
+      //       },
+      //     });
+
+      //     console.log("Retrieval calls dispatched to state");
+      //     console.log(
+      //       "Message should now have retrievalCalls:",
+      //       retrievalCallsData
+      //     );
+      //     console.log("Retrieval calls count:", retrievalCallsData.length);
+      //   } catch (error) {
+      //     console.error("Error processing retrieval calls:", error);
+      //   }
+      // } else {
+      //   console.log("No retrieval calls found in chain end event");
+      //   console.log("Available keys in parsedChunk:", Object.keys(parsedChunk));
+      // }
     } else if (parsedChunk.event === "on_tool_start") {
       try {
         console.log("Tool start event data:", parsedChunk);
