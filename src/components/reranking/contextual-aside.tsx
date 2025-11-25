@@ -106,7 +106,7 @@ export function ContextualAside({
 
   const tabs = [
     { id: "kb-stats", name: "KB Stats", icon: DocumentTextIcon },
-    { id: "update-kb", name: "Update KB", icon: CogIcon },
+    { id: "update-kb", name: "Ingest Text", icon: CogIcon },
     { id: "overview", name: "Overview", icon: InformationCircleIcon },
   ];
 
