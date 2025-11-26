@@ -10,7 +10,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { DrawerCloseButton } from "@/components/shared/drawer-close-button";
-import { ChooseFile } from "./choose-file";
+// import { ChooseFile } from "./choose-file";
 import {
   callGetAiSchoolKbStats,
   KbStats,
@@ -296,17 +296,16 @@ export function ContextualAside({
                     Provide Knowledge:
                   </h4>
                   <div className="space-y-3">
-                    <ChooseFile
+                    {/* <ChooseFile
                       files={files}
                       setFiles={setFiles}
                       onUploadSuccess={() => {
                         if (onUploadSuccess) {
                           onUploadSuccess();
                         }
-                        // Refresh KB stats after upload
                         fetchKbStats();
                       }}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
