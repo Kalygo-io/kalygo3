@@ -290,9 +290,12 @@ export function ChooseFile(props: Props) {
                       : "bg-red-900/20 border-red-700/30"
                   }`}
                 >
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="text-sm font-medium text-white">
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="text-sm font-medium text-white truncate"
+                        title={result.filename}
+                      >
                         {result.filename}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
@@ -302,7 +305,7 @@ export function ChooseFile(props: Props) {
                       </p>
                     </div>
                     <span
-                      className={`text-xs font-medium ${
+                      className={`text-xs font-medium flex-shrink-0 ${
                         result.success ? "text-green-400" : "text-red-400"
                       }`}
                     >

@@ -295,14 +295,17 @@ export function ChooseFile(props: Props) {
             >
               {result.success ? (
                 <>
-                  <div>
-                    <p className="text-sm font-medium text-white">
+                  <div className="flex items-start justify-between gap-2">
+                    <p
+                      className="text-sm font-medium text-white truncate flex-1 min-w-0"
+                      title={result.filename}
+                    >
                       {result.filename}
                     </p>
+                    <span className={`text-xs font-medium text-green-400 flex-shrink-0`}>
+                      {"✓ Success"}
+                    </span>
                   </div>
-                  <span className={`text-xs font-medium text-green-400`}>
-                    {"✓ Success"}
-                  </span>
                 </>
               ) : (
                 <>
